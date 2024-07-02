@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}|%highlight(%-5level)|%X{log-trace-id}|[%blue(%t)]|%yellow(%logger{36})|%method|%msg%n</Pattern>
+        </layout>
+    </appender>
+    <!-- Set the root logger level and its appender -->
+    <root level="info">
+        <appender-ref ref="Console"/>
+    </root>
+    <!-- Set specific logger levels if needed -->
+    <!-- <logger name="com.example.package" level="debug"/> -->
+</configuration>
