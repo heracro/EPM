@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.epm.common.annotations.Stringify;
 import org.epm.material.model.Material;
 
 import java.time.LocalDate;
 
 @Data
 @Entity
-@Stringify
 @NoArgsConstructor
 public class Delivery {
     @Id
@@ -35,6 +33,9 @@ public class Delivery {
     private LocalDate orderDate;
     private LocalDate deliveryDate;
     private String store;
+
+    @Transient
+    private String action;
 
     public void setQty(Integer qty) {
         this.qty = qty;

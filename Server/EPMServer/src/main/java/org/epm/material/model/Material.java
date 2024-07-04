@@ -27,11 +27,11 @@ public class Material {
     @Enumerated(EnumType.STRING)
     private Unit qtyUnit;
 
-//    @Override
-//    public String toString() {
-//        return "Material {" + name + "(" + id + "), "
-//                + norm + ", qty: " + freeQty + "/" + totalQty + " " + qtyUnit + "}";
-//    }
+    @Override
+    public String toString() {
+        return "Material {" + name + "(" + id + "), "
+                + norm + ", qty: " + freeQty + "/" + totalQty + " " + qtyUnit + "}";
+    }
 
     public boolean isValidEntity() {
         return name != null && name.length() > 3
@@ -46,5 +46,11 @@ public class Material {
         return name != null || norm != null || datasheet != null
                 || weight != null || totalQty != null || freeQty != null
                 || qtyUnit != null;
+    }
+
+    public boolean hasValidValues() {
+        return isValidEntity() && name.length() > 3 && weight >= 0 && totalQty >= 0
+                && freeQty >= 0 && (norm == null || norm.length() > 3)
+                && (datasheet == null || datasheet.length() > 3);
     }
 }
