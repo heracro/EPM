@@ -62,7 +62,7 @@ public class MaterialEntityControllerTest {
         materialEntity.setWeight(250.0f);
         materialEntity.setTotalQty(50);
         materialEntity.setFreeQty(50);
-        materialEntity.setQtyUnit(Unit.G);
+        materialEntity.setUnit(Unit.G);
         String materialJson = objectMapper.writeValueAsString(materialEntity);
         mockMvc.perform(post("/materials")
                         .contentType(MediaType.APPLICATION_JSON)
