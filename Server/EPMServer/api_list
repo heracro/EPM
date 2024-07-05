@@ -4,47 +4,47 @@ GET /projects/{pid} -> find by id [404 when not found]
 GET /projects + {parameters=criteria} -> find by criteria [+ np. dateRange like "lastMonth", "nextWeek"]
 GET /projects/{pid}/boms -> findAllBomsForProject [page, size, sort]
 GET /projects/{pid}/boms/{bid} -> browse single bom
-.GET /materials -> get all materials [page, size, sort]
-.GET /materials/{mid} -> find by id
-GET /materials + {parameters=criteria}
-GET /materials/{mid}/deliveries -> find all deliveries for given mid
+.GET /materialEntities -> get all materialEntities [page, size, sort]
+.GET /materialEntities/{mid} -> find by id
+GET /materialEntities + {parameters=criteria}
+GET /materialEntities/{mid}/deliveries -> find all deliveries for given mid
 GET /deliveries -> find all deliveries [page, size, sort]
-GET /deliveries/{did} -> find one delivery
-GET /projects/{pid}/check -> check if all necessary materials are in stock
+GET /deliveries/{did} -> find one deliveryEntity
+GET /projects/{pid}/check -> check if all necessary materialEntities are in stock
 
     POST - zawiera Body (kompletne, bez id)
 POST /projects -> create project
 POST /projects/{pid}/boms -> create bom
 POST /projects/{pid}/boms/bulk -> create list of boms
-POST /deliveries -> create delivery
+POST /deliveries -> create deliveryEntity
 POST /deliveries/bulk
-.POST /materials -> create material
-.POST /materials/bulk
+.POST /materialEntities -> create materialEntity
+### POST /materialEntities/bulk
 POST /deliveries/delivered -> set status to delivered for a list of deliveries
 
     PUT - zawiera Body (kompletne, bez id)
 PUT /projects/{pid} -> replace project (?)
 PUT /projects/{pid}/boms -> replace all boms for project (accepts List<Bom> in body)
 PUT /projects/{pid}/boms/{bid} -> replace single bom
-PUT /deliveries/{did} -> replace delivery
-.PUT /materials/{mid} -> replace material
+PUT /deliveries/{did} -> replace deliveryEntity
+.PUT /materialEntities/{mid} -> replace materialEntity
 
     PATCH - zawiera Body niekompletne, tylko to co się zmienia
 PATCH /projects/{pid} -> update project
 PATCH /projects/{pid}/boms -> update bom (batch, List<Bom>)
 PATCH /projects/{pid}/boms/{bid} -> update single bom
-PATCH /deliveries/{did} -> update delivery
-PATCH /deliveries/{did} -> special case: json = {"status":"Delivered"} -> set status of single delivery to Delivered, other fields are ignored.
-.PATCH /materials/{mid} -> update material
-PATCH /projects/{pid}/start -> update start date, adjust material stock
-PATCH /projects/{pid}/stop -> update end date, adjust material stock
+PATCH /deliveries/{did} -> update deliveryEntity
+PATCH /deliveries/{did} -> special case: json = {"status":"Delivered"} -> set status of single deliveryEntity to Delivered, other fields are ignored.
+.PATCH /materialEntities/{mid} -> update materialEntity
+PATCH /projects/{pid}/start -> update start date, adjust materialEntity stock
+PATCH /projects/{pid}/stop -> update end date, adjust materialEntity stock
 
     DELETE - parametry (PathVariable, RequestParameter)
 DELETE /projects/{pid} -> delete project
 DELETE /projects/{pid}/boms -> delete all boms in project
 DELETE /projects/{pid}/boms/{bid} -> delete single bom from project
-DELETE /deliveries/{did} -> delete delivery
-.DELETE /materials/{mid} -> delete material.
+DELETE /deliveries/{did} -> delete deliveryEntity
+.DELETE /materialEntities/{mid} -> delete materialEntity.
 
 POST /auth/login
 POST /auth/logout

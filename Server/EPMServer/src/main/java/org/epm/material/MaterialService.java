@@ -1,70 +1,67 @@
 package org.epm.material;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.epm.delivery.model.Delivery;
-import org.epm.material.model.Material;
+import org.epm.common.repository.IRepository;
+import org.epm.common.service.AbstractEntityService;
+import org.epm.delivery.model.DeliveryDTO;
+import org.epm.delivery.model.DeliveryEntity;
+import org.epm.delivery.model.DeliveryMapper;
+import org.epm.material.model.MaterialDTO;
+import org.epm.material.model.MaterialEntity;
+import org.epm.material.model.MaterialMapper;
 import org.epm.mediator.IMaterialDeliveryMediator;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
-@RequiredArgsConstructor
-public class MaterialService {
+public class MaterialService
+        extends AbstractEntityService<MaterialEntity, MaterialDTO> {
     private final MaterialRepository  materialRepository;
     private final IMaterialDeliveryMediator materialDeliveryMediator;
-    private final MaterialMapper materialMapper;
+    private final DeliveryMapper deliveryMapper;
 
-    public Material createMaterial(Material material) {
-        return materialRepository.save(material);
+    public MaterialService(MaterialRepository materialRepository,
+                           IMaterialDeliveryMediator materialDeliveryMediator,
+                           MaterialMapper materialMapper, DeliveryMapper deliveryMapper) {
+        super(materialMapper);
+        this.materialRepository = materialRepository;
+        this.materialDeliveryMediator = materialDeliveryMediator;
+        this.deliveryMapper = deliveryMapper;
     }
 
-    public Material replaceMaterial(Long mid, Material material) {
-        if (!materialRepository.existsById(mid)) {
-            return null;
-        }
-        material.setId(mid);
-        return materialRepository.save(material);
-    }
-
-    public Page<Material> findAll(Pageable pageable) {
-        return materialRepository.findAll(pageable);
-    }
-
-    public Optional<Material> findById(Long id) {
-        return materialRepository.findById(id);
-    }
-
-    public List<Material> createMaterials(List<Material> materials) {
-        return materialRepository.saveAll(materials);
-    }
-
-    public Material updateMaterial(Long id, Material material)
-            throws IllegalArgumentException, EntityNotFoundException {
-        Material existingMaterial = materialRepository.findById(id)
+    public Page<DeliveryDTO> findDeliveriesForMaterial(final Long id, final Pageable pageable)
+            throws EntityNotFoundException {
+        MaterialEntity material = materialRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Material not found"));
-        materialMapper.updateMaterialFromDto(existingMaterial, material);
-        if (!existingMaterial.hasValidValues()) {
-            throw new IllegalArgumentException("Material has invalid values");
-        }
-        return materialRepository.save(existingMaterial);
+        Page<DeliveryEntity> deliveries = materialDeliveryMediator
+                .findDeliveriesForMaterial(material, pageable);
+        return deliveries.map(deliveryMapper::toDto);
     }
 
-    public void deleteMaterial(Long id) throws EntityNotFoundException {
-        if (!materialRepository.existsById(id)) {
-            throw new EntityNotFoundException("Material not found");
-        }
-        materialRepository.deleteById(id);
+    @Override
+    public IRepository<MaterialEntity> getRepository() {
+        return materialRepository;
     }
 
-    public Page<Delivery> findDeliveriesForMaterial(Long id, PageRequest pageRequest) {
-        Material material = materialRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Material not found"));
-        return materialDeliveryMediator.findDeliveriesForMaterial(material, pageRequest);
+    @Override
+    public String getEntityName() {
+        return "Material";
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

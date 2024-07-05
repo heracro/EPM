@@ -3,7 +3,7 @@ package org.epm.material;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletContext;
 import org.epm.EPM;
-import org.epm.material.model.Material;
+import org.epm.material.model.MaterialEntity;
 import org.epm.material.model.Unit;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = EPM.class)
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class MaterialControllerTest {
+public class MaterialEntityControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,14 +56,14 @@ public class MaterialControllerTest {
     @Test
     @Order(2)
     void testCreateValidMaterial() throws Exception {
-        Material material = new Material();
-        material.setName("Steel Beam");
-        material.setDimensions("200x200x1000");
-        material.setWeight(250.0f);
-        material.setTotalQty(50);
-        material.setFreeQty(50);
-        material.setQtyUnit(Unit.G);
-        String materialJson = objectMapper.writeValueAsString(material);
+        MaterialEntity materialEntity = new MaterialEntity();
+        materialEntity.setName("Steel Beam");
+        materialEntity.setDimensions("200x200x1000");
+        materialEntity.setWeight(250.0f);
+        materialEntity.setTotalQty(50);
+        materialEntity.setFreeQty(50);
+        materialEntity.setQtyUnit(Unit.G);
+        String materialJson = objectMapper.writeValueAsString(materialEntity);
         mockMvc.perform(post("/materials")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(materialJson))

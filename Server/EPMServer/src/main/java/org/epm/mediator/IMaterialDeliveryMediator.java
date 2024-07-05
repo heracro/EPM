@@ -1,10 +1,10 @@
 package org.epm.mediator;
 
-import org.epm.delivery.model.Delivery;
-import org.epm.material.model.Material;
+import org.epm.delivery.model.DeliveryEntity;
+import org.epm.material.model.MaterialEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IMaterialDeliveryMediator {
-    Page<Delivery> findDeliveriesForMaterial(Material material, Pageable pageable);
+    Page<DeliveryEntity> findDeliveriesForMaterial(MaterialEntity materialEntity, Pageable pageable);
 }

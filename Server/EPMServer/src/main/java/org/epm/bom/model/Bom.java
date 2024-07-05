@@ -3,7 +3,7 @@ package org.epm.bom.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.epm.material.model.Material;
+import org.epm.material.model.MaterialEntity;
 import org.epm.project.model.Project;
 
 @Data
@@ -20,7 +20,7 @@ public class Bom {
 
     @ManyToOne
     @JoinColumn(name = "material_id")
-    private Material material;
+    private MaterialEntity materialEntity;
 
     @Enumerated(EnumType.STRING)
     private BomStatus status;
@@ -31,7 +31,7 @@ public class Bom {
     public String toString() {
         return "Bom{(" + id + "), "
                 + project.getName() + "(" + project.getId() + "), "
-                + material.getName() + "(" + material.getId() + "), total "
+                + materialEntity.getName() + "(" + materialEntity.getId() + "), total "
                 + qty + ", res. " + reservedQty + "}";
     }
 }

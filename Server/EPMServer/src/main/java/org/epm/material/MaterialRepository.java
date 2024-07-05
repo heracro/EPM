@@ -1,9 +1,9 @@
 package org.epm.material;
 
-import org.epm.material.model.Material;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.epm.common.repository.IRepository;
+import org.epm.material.model.MaterialEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MaterialRepository extends JpaRepository<Material, Long> {
+public interface MaterialRepository extends IRepository<MaterialEntity> {
 }
