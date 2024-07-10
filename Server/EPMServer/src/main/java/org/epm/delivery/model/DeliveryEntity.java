@@ -41,10 +41,10 @@ public class DeliveryEntity implements IEntity {
 
     public static DeliveryEntity randomInstance() {
         DeliveryEntity d = new DeliveryEntity();
+        d.setQty(RandomUtils.randomInt(20));
         d.setStatus(DeliveryStatus.randomDeliveryStatus());
         if (d.getStatus() != DeliveryStatus.SHOPPING_LIST) {
             d.setUnitPrice(RandomUtils.randomInt(10000) / 100f);
-            d.setQty(RandomUtils.randomInt(20));
             d.setTotalPrice(d.getUnitPrice() * d.getQty());
         }
         switch (d.getStatus()) {

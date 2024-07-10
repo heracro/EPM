@@ -55,7 +55,7 @@ public abstract class AbstractEntityController<DTO extends IDTO> {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DTO> findById(@RequestParam Long id) {
+    public ResponseEntity<DTO> findById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(entityService.findById(id));
         } catch (EntityNotFoundException e) {

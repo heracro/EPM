@@ -1,5 +1,6 @@
 package org.epm.bom.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.epm.common.model.IDTO;
@@ -9,6 +10,7 @@ import org.epm.project.model.ProjectDTO;
 
 @Data
 @NoArgsConstructor
+@JsonTypeName("BomDTO")
 public class BomDTO implements IDTO {
     private ProjectDTO project;
     private MaterialDTO material;

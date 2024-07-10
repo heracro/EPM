@@ -1,27 +1,41 @@
 package org.epm.delivery;
 
-import org.epm.ITestParameterProvider;
+import org.epm.AbstractTestParameterProvider;
 import org.epm.delivery.model.DeliveryDTO;
 import org.epm.delivery.model.DeliveryEntity;
+import org.epm.delivery.model.DeliveryMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Stream;
-
 @Component
-public class DeliveryTestParameterProvider implements ITestParameterProvider<DeliveryEntity, DeliveryDTO> {
+public class DeliveryTestParameterProvider
+        extends AbstractTestParameterProvider<DeliveryEntity, DeliveryDTO> {
+
+    @Autowired
+    private DeliveryMapper mapper;
+
     @Override
-    public DeliveryDTO createRandomValidDTO() {
-        return null;
+    protected int getDTOAttrCount() {
+        return 8;
     }
 
     @Override
-    public Stream<DeliveryDTO> createDTOWhichIsValidEntity() {
-        DeliveryDTO dto = DeliveryDTO.randomInstance();
-        return Stream.empty();
+    protected DeliveryMapper getMapper() {
+        return mapper;
     }
 
     @Override
-    public Stream<DeliveryDTO> createDTOWhichIsInvalidEntity() {
-        return Stream.empty();
+    protected DeliveryEntity randomInstance() {
+        return DeliveryEntity.randomInstance();
+    }
+
+    @Override
+    protected DeliveryDTO provideSingleAttribute(DeliveryDTO deliveryDTO, int caseNumber) {
+        return deliveryDTO;
+    }
+
+    @Override
+    protected DeliveryDTO breakSingleAttribute(DeliveryDTO deliveryDTO, int caseNumber) {
+        return deliveryDTO;
     }
 }

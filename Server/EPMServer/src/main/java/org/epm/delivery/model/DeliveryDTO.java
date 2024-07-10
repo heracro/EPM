@@ -1,6 +1,7 @@
 package org.epm.delivery.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.epm.common.Config;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
+@JsonTypeName("DeliveryDTO")
 public class DeliveryDTO implements IDTO {
     private MaterialEntity material;
     private DeliveryStatus status;

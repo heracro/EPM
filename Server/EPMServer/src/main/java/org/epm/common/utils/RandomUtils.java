@@ -16,6 +16,7 @@ public class RandomUtils {
     }
 
     public static int randomInt(int bound) {
+        if (bound < 1) return 0;
         return random.nextInt(bound);
     }
 }

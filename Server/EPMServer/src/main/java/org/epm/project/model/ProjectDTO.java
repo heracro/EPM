@@ -1,5 +1,6 @@
 package org.epm.project.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.epm.common.Config;
@@ -11,6 +12,7 @@ import java.util.Random;
 
 @Data
 @NoArgsConstructor
+@JsonTypeName("ProjectDTO")
 public class ProjectDTO implements IDTO {
     private String name;
     private String body;

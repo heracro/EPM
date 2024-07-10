@@ -1,27 +1,37 @@
 package org.epm.project;
 
-import org.epm.ITestParameterProvider;
+import org.epm.AbstractTestParameterProvider;
+import org.epm.common.model.IMapper;
 import org.epm.project.model.ProjectDTO;
 import org.epm.project.model.ProjectEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Stream;
-
 @Component
 public class ProjectTestParameterProvider
-        implements ITestParameterProvider<ProjectEntity, ProjectDTO> {
+        extends AbstractTestParameterProvider<ProjectEntity, ProjectDTO> {
+
     @Override
-    public ProjectDTO createRandomValidDTO() {
+    protected int getDTOAttrCount() {
+        return 0;
+    }
+
+    @Override
+    protected IMapper<ProjectEntity, ProjectDTO> getMapper() {
         return null;
     }
 
     @Override
-    public Stream<ProjectDTO> createDTOWhichIsValidEntity() {
-        return Stream.empty();
+    protected ProjectEntity randomInstance() {
+        return null;
     }
 
     @Override
-    public Stream<ProjectDTO> createDTOWhichIsInvalidEntity() {
-        return Stream.empty();
+    protected ProjectDTO provideSingleAttribute(ProjectDTO projectDTO, int caseNumber) {
+        return null;
+    }
+
+    @Override
+    protected ProjectDTO breakSingleAttribute(ProjectDTO projectDTO, int caseNumber) {
+        return null;
     }
 }

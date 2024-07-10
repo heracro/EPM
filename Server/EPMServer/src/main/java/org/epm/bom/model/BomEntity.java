@@ -44,7 +44,7 @@ public class BomEntity implements IEntity {
         return bom;
     }
 
-    public void propagateRandomProject(ProjectEntity project) {
+    public void setRandomProject(ProjectEntity project) {
         this.project = project;
         this.status = BomStatus.randomBomStatus(project.getStatus());
         switch (status) {
