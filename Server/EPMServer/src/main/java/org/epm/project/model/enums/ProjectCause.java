@@ -1,4 +1,4 @@
-package org.epm.project.model;
+package org.epm.project.model.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

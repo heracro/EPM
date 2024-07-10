@@ -1,6 +1,7 @@
 package org.epm;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletContext;
 import org.epm.common.controller.AbstractEntityController;
@@ -68,6 +69,10 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
         return getTestParameterProvider().provideDTOsWithSingleInvalidAttribute();
     }
 
+    @BeforeAll
+    void setup() {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     @AfterAll
     void cleanUp() {
@@ -113,7 +118,6 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     void testCreateInvalidEntityAndFail(DTO dto) throws Exception {
         assertNotNull(dto, "ParameterProvider delivered invalid dto (null)");
         String json = objectMapper.writeValueAsString(dto);
-        Entity toBeUpdated = getRepository().findFirstByOrderByIdAsc();
         mockMvc.perform(post(getController().getMapping())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
@@ -124,14 +128,14 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     @MethodSource("provideDTOsWithSingleValidAttribute")
     @Order(2)
     void testUpdateEntityWithSingleValidParameter(DTO dto) {
-
+        assertNotNull(dto);
     }
 
     @ParameterizedTest
     @MethodSource("provideDTOsWithSingleInvalidAttribute")
     @Order(2)
     void testUpdateEntityWithSingleInvalidParameter(DTO dto) {
-
+        assertNotNull(dto);
     }
 
     @ParameterizedTest
@@ -166,14 +170,14 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     void testFindAll() throws Exception {
         mockMvc.perform(get(getController().getMapping()))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     void testFindByIdExistingEntity() throws Exception {
         long firstId = getRepository().findFirstByOrderByIdAsc().getId();
         mockMvc.perform(get(getController().getMapping() + "/" + firstId))
@@ -181,7 +185,7 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     void testFindByIdNonExistingEntity() throws Exception {
         long afterLastId = getRepository().findFirstByOrderByIdDesc().getId() + 1;
         mockMvc.perform(get(getController().getMapping() + "/" + afterLastId))
@@ -189,7 +193,7 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     void testDeleteExistingEntity() throws Exception {
         // to have unconstrained entity in DB (i.e. material which does not occur in any Bom nor Delivery), create:
         DTO dto = provideFewDTOsWhichAreValidEntity()
@@ -203,7 +207,7 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     void testDeleteNonExistingEntity() throws Exception {
         long afterLastId = getRepository().findFirstByOrderByIdDesc().getId() + 1;
         mockMvc.perform(delete(getController().getMapping() + "/" + afterLastId))

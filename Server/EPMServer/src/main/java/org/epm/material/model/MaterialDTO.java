@@ -53,6 +53,10 @@ public class MaterialDTO implements IDTO {
         return m;
     }
 
+    public static MaterialDTO emptyInstance() {
+        return new MaterialDTO();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

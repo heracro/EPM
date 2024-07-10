@@ -35,6 +35,10 @@ public class DeliveryDTO implements IDTO {
                 || deliveryDate != null || store != null || action != null;
     }
 
+    public static DeliveryDTO emptyInstance() {
+        return new DeliveryDTO();
+    }
+
     public static DeliveryDTO randomInstance() {
         DeliveryDTO d = new DeliveryDTO();
         d.setStatus(DeliveryStatus.randomDeliveryStatus());

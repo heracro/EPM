@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.epm.project.model.ProjectStatus;
+import org.epm.project.model.enums.ProjectStatus;
 
 import java.util.Random;
 

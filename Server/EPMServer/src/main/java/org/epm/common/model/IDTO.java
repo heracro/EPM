@@ -24,5 +24,8 @@ public interface IDTO {
     static IDTO randomInstance() {
         throw new UnsupportedOperationException("METHOD 'randomInstance()' NOT IMPLEMENTED");
     }
+    static IDTO emptyInstance() {
+        throw new UnsupportedOperationException("METHOD 'emptyInstance()' NOT IMPLEMENTED");
+    }
 
 }

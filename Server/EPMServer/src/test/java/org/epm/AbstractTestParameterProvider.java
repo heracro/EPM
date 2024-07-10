@@ -17,6 +17,8 @@ public abstract class AbstractTestParameterProvider
 
     protected abstract Entity randomInstance();
 
+    protected abstract DTO emptyInstance();
+
     protected abstract DTO provideSingleAttribute(DTO dto, int caseNumber);
 
     protected abstract DTO breakSingleAttribute(DTO dto, int caseNumber);
@@ -41,7 +43,7 @@ public abstract class AbstractTestParameterProvider
     public Stream<DTO> provideDTOsWithSingleValidAttribute() {
         List<DTO> list = new ArrayList<>();
         for (int i = 0; i < getDTOAttrCount(); ++i) {
-            list.add(provideSingleAttribute(null, i));
+            list.add(provideSingleAttribute(emptyInstance(), i));
         }
         return list.stream();
     }
@@ -49,7 +51,7 @@ public abstract class AbstractTestParameterProvider
     public Stream<DTO> provideDTOsWithSingleInvalidAttribute() {
         List<DTO> list = new ArrayList<>();
         for(int i = 0; i < getDTOAttrCount(); ++i) {
-            list.add(breakSingleAttribute(null, i));
+            list.add(breakSingleAttribute(emptyInstance(), i));
         }
         return list.stream();
     }

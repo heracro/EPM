@@ -30,6 +30,11 @@ public class DeliveryTestParameterProvider
     }
 
     @Override
+    protected DeliveryDTO emptyInstance() {
+        return DeliveryDTO.emptyInstance();
+    }
+
+    @Override
     protected DeliveryDTO provideSingleAttribute(DeliveryDTO deliveryDTO, int caseNumber) {
         return deliveryDTO;
     }

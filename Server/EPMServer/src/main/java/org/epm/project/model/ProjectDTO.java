@@ -1,19 +1,22 @@
 package org.epm.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.epm.common.Config;
 import org.epm.common.model.IDTO;
-import org.epm.common.utils.RandomUtils;
+import org.epm.project.model.enums.LocationType;
+import org.epm.project.model.enums.ProjectCause;
+import org.epm.project.model.enums.ProjectStatus;
 
 import java.time.LocalDate;
-import java.util.Random;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @JsonTypeName("ProjectDTO")
-public class ProjectDTO implements IDTO {
+public class ProjectDTO extends ProjectData<ProjectDTO> implements IDTO {
     private String name;
     private String body;
     private LocalDate plannedStartDate;
@@ -28,6 +31,7 @@ public class ProjectDTO implements IDTO {
     private ProjectStatus status;
     private String action;
 
+    @JsonIgnore
     @Override
     public boolean isValidDTO() {
         return name != null || body != null || plannedStartDate != null
@@ -38,29 +42,18 @@ public class ProjectDTO implements IDTO {
                 || status != null || action != null;
     }
 
+    @Override
+    public ProjectDTO self() {
+        return this;
+    }
+
     public static ProjectDTO randomInstance() {
-        ProjectDTO dto = new ProjectDTO();
-        Random random = new Random();
-        dto.setName("Project " + random.nextInt(1000));
-        dto.setBody("This is random project.");
-        dto.setPlannedStartDate(RandomUtils.randomDate(Config.BIG_BANG_DATE, LocalDate.now().plusDays(92)));
-        dto.setPlannedEndDate(RandomUtils.randomDate(dto.getPlannedStartDate().plusDays(7), Config.FAR_FAR_DATE));
-        dto.setStatus(ProjectStatus.randomProjectStatus());
-        switch (dto.getStatus()) {
-            case COMPLETED:
-                dto.setRealEndDate(RandomUtils.randomDate(
-                        Config.BIG_BANG_DATE.plusDays(365), LocalDate.now().minusDays(1)));
-            case ONGOING:
-                dto.setRealStartDate(RandomUtils.randomDate(
-                        Config.BIG_BANG_DATE,
-                        (dto.getRealEndDate() == null ? LocalDate.now().minusDays(1) : dto.getRealEndDate().minusDays(7))
-                ));
-        }
-        dto.setCause(ProjectCause.randomProjectCause());
-        dto.setWorkingHoursCount(dto.getStatus() == ProjectStatus.COMPLETED ? random.nextInt(60) : 0);
-        dto.setProjectLocationUrl("file:///home/inventor/some/project/location");
-        dto.setLocationType(LocationType.LOCAL);
-        return dto;
+        ProjectDTO project = new ProjectDTO();
+        return project.randomizeProjectData();
+    }
+
+    public static ProjectDTO emptyInstance() {
+        return new ProjectDTO();
     }
 
 }

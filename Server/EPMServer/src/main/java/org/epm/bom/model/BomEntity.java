@@ -10,6 +10,7 @@ import org.epm.project.model.ProjectEntity;
 
 @Data
 @Entity
+@Table(name = "boms")
 @NoArgsConstructor
 public class BomEntity implements IEntity {
     @Id

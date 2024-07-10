@@ -19,4 +19,8 @@ public class RandomUtils {
         if (bound < 1) return 0;
         return random.nextInt(bound);
     }
+
+    public static boolean randomBool() {
+        return random.nextBoolean();
+    }
 }

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@Table(name = "deliveries")
 @NoArgsConstructor
 public class DeliveryEntity implements IEntity {
 

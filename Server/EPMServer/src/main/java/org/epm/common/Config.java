@@ -8,7 +8,7 @@ public class Config {
     public static final int MIN_SEARCH_CRITERIA_LENGTH = 3;
     public static final int MIN_BODY_SEARCH_CRITERIA_LENGTH = 6;
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    public static final LocalDate BIG_BANG_DATE = LocalDate.parse("20-02-2022", DATE_FORMATTER);
+    public static final LocalDate BIG_BANG_DATE = LocalDate.parse("20-02-2002", DATE_FORMATTER);
     public static final LocalDate FAR_FAR_DATE = LocalDate.parse("24-02-2062", DATE_FORMATTER);
 
     public static final int DELIVERIES_PER_PAGE = 30;

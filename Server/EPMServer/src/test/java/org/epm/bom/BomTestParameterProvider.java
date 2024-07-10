@@ -38,6 +38,11 @@ public class BomTestParameterProvider
     }
 
     @Override
+    protected BomDTO emptyInstance() {
+        return BomDTO.emptyInstance();
+    }
+
+    @Override
     protected BomDTO provideSingleAttribute(BomDTO bomDTO, int caseNumber) {
         return bomDTO;
     }

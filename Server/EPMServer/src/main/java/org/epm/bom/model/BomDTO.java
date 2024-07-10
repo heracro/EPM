@@ -31,6 +31,10 @@ public class BomDTO implements IDTO {
         return bom;
     }
 
+    public static BomDTO emptyInstance() {
+        return new BomDTO();
+    }
+
     public void propagateRandomProject(ProjectDTO project) {
         this.project = project;
         this.status = BomStatus.randomBomStatus(project.getStatus());

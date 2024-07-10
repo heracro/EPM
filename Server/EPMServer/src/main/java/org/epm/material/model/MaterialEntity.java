@@ -10,6 +10,7 @@ import java.util.Random;
 
 @Data
 @Entity
+@Table(name = "materials")
 @NoArgsConstructor
 @AllArgsConstructor
 public class MaterialEntity implements IEntity {
