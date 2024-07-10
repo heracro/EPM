@@ -1,9 +1,9 @@
 package org.epm.bom;
 
-import org.epm.bom.model.Bom;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.epm.bom.model.BomEntity;
+import org.epm.common.repository.IRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BomRepository extends JpaRepository<Bom, Long> {
+public interface BomRepository extends IRepository<BomEntity> {
 }

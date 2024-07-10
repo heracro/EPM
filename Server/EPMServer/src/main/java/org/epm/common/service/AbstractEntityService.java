@@ -14,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public abstract class AbstractEntityService<Entity extends IEntity, DTO extends IDTO>
         implements IService<DTO> {
+
     protected final IMapper<Entity, DTO> mapper;
 
     @Override
@@ -62,7 +63,7 @@ public abstract class AbstractEntityService<Entity extends IEntity, DTO extends 
 
     @Override
     public void deleteEntity(final Long id) throws EntityNotFoundException {
-        Entity entity = getRepository().findById(id).orElseThrow(this::throwNotFound);
+        getRepository().findById(id).orElseThrow(this::throwNotFound);
         getRepository().deleteById(id);
     }
 

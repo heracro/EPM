@@ -3,9 +3,11 @@ package org.epm.project.model;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Random;
+
 @Getter
 @RequiredArgsConstructor
-public enum Cause {
+public enum ProjectCause {
     HOBBY                   ("Hobby"),
     HOME_IMPROVEMENT        ("Usprawnienia domu"),
     ORDERED_COMMERCIAL      ("Zamówienie komercyjne"),
@@ -14,4 +16,9 @@ public enum Cause {
     GIFT                    ("Prezent");
 
     private final String value;
+
+    public static ProjectCause randomProjectCause() {
+        Random random = new Random();
+        return ProjectCause.values()[random.nextInt(ProjectCause.values().length)];
+    }
 }

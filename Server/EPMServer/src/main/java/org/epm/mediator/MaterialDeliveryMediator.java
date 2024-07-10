@@ -1,8 +1,10 @@
 package org.epm.mediator;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.epm.delivery.DeliveryRepository;
-import org.epm.delivery.model.DeliveryEntity;
+import org.epm.delivery.model.DeliveryDTO;
+import org.epm.delivery.model.DeliveryMapper;
 import org.epm.material.MaterialRepository;
 import org.epm.material.model.MaterialEntity;
 import org.springframework.data.domain.Page;
@@ -14,9 +16,13 @@ import org.springframework.stereotype.Service;
 public class MaterialDeliveryMediator implements IMaterialDeliveryMediator {
     private final MaterialRepository materialRepository;
     private final DeliveryRepository deliveryRepository;
+    private final DeliveryMapper deliveryMapper;
 
     @Override
-    public Page<DeliveryEntity> findDeliveriesForMaterial(MaterialEntity materialEntity, Pageable pageable) {
-        return deliveryRepository.findByMaterial(materialEntity, pageable);
+    public Page<DeliveryDTO> findDeliveriesForMaterialId(Long materialId, Pageable pageable) {
+        MaterialEntity materialEntity = materialRepository
+                .findById(materialId)
+                .orElseThrow(() -> new EntityNotFoundException("Material not found"));
+        return deliveryRepository.findByMaterial(materialEntity, pageable).map(deliveryMapper::toDto);
     }
 }

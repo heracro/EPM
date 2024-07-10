@@ -1,14 +1,12 @@
 package org.epm.material.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.epm.common.model.IEntity;
+
+import java.util.Random;
 
 @Data
 @Entity
@@ -18,24 +16,19 @@ public class MaterialEntity implements IEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @NotNull
-    @Size(min = 4)
+    @Column(nullable = false)
     private String name;
     private String norm;
     private String datasheet;
-    @NotNull
-    @Size(min = 2)
+    @Column(nullable = false)
     private String dimensions;
-    @NotNull
-    @Positive
+    @Column(nullable = false)
     private Float weight;
-    @NotNull
-    @PositiveOrZero
+    @Column(nullable = false)
     private Integer totalQty;
-    @NotNull
-    @PositiveOrZero
+    @Column(nullable = false)
     private Integer freeQty;
-    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Unit unit;
 
@@ -56,4 +49,16 @@ public class MaterialEntity implements IEntity {
                 && unit != null;
     }
 
+    public static MaterialEntity randomInstance() {
+        MaterialEntity m = new MaterialEntity();
+        Random random = new Random();
+        m.setName("Material " + random.nextInt(2000));
+        m.setNorm((random.nextBoolean() ? "DIN" : "ISO") + (random.nextInt(1500) + 500));
+        m.setDimensions("" + random.nextInt(200) + "x" + random.nextInt(160) + "x" + random.nextInt(40));
+        m.setWeight(random.nextInt(30000) / 100f);
+        m.setTotalQty(random.nextBoolean() || random.nextBoolean() ? random.nextInt(60) : 0);
+        m.setFreeQty((random.nextBoolean() || random.nextBoolean()) && m.getTotalQty() > 0 ? random.nextInt(m.getTotalQty()) : 0);
+        m.setUnit(Unit.randomUnit());
+        return m;
+    }
 }

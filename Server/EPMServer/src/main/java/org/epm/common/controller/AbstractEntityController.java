@@ -13,9 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-public class AbstractEntityController<DTO extends IDTO> {
+public abstract class AbstractEntityController<DTO extends IDTO> {
 
-    private final IService<DTO> entityService;
+    protected final IService<DTO> entityService;
+
+    public abstract String getMapping();
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody final DTO dto) {

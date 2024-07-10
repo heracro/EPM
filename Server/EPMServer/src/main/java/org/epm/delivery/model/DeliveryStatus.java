@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Random;
+
 @Getter
 @RequiredArgsConstructor
 public enum DeliveryStatus {
@@ -31,4 +33,8 @@ public enum DeliveryStatus {
         throw new IllegalArgumentException("Unknown DeliveryStatus: " + value);
     }
 
+    public static DeliveryStatus randomDeliveryStatus() {
+        Random random = new Random();
+        return DeliveryStatus.values()[random.nextInt(DeliveryStatus.values().length)];
+    }
 }

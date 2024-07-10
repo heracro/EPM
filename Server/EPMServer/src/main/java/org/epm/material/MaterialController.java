@@ -4,9 +4,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.epm.common.Config;
 import org.epm.common.controller.AbstractEntityController;
-import org.epm.common.service.IService;
 import org.epm.delivery.model.DeliveryDTO;
 import org.epm.material.model.MaterialDTO;
+import org.epm.mediator.IMaterialDeliveryMediator;
+import org.epm.mediator.MaterialDeliveryMediator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,12 +18,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/materials")
 public class MaterialController extends AbstractEntityController<MaterialDTO> {
-    private final MaterialService materialService;
+
+    private final IMaterialDeliveryMediator mediator;
 
     @Autowired
-    public MaterialController(IService<MaterialDTO> entityService, MaterialService materialService) {
-        super(entityService);
-        this.materialService = materialService;
+    public MaterialController(MaterialService materialService, MaterialDeliveryMediator mediator) {
+        super(materialService);
+        this.mediator = mediator;
+    }
+
+    @Override
+    public String getMapping() {
+        return "/materials";
     }
 
     //.GET /materials/{mid}/deliveries -> find all deliveries for given mid
@@ -32,11 +39,12 @@ public class MaterialController extends AbstractEntityController<MaterialDTO> {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "" + Config.DELIVERIES_PER_PAGE) int size) {
         try {
-            Page<DeliveryDTO> deliveries = materialService.findDeliveriesForMaterial(id, PageRequest.of(page, size));
+            Page<DeliveryDTO> deliveries = mediator.findDeliveriesForMaterialId(id, PageRequest.of(page, size));
             return ResponseEntity.ok(deliveries);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 }

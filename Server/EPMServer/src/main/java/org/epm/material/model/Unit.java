@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Random;
+
 @Getter
 @RequiredArgsConstructor
 public enum Unit {
@@ -28,5 +30,10 @@ public enum Unit {
             }
         }
         throw new IllegalArgumentException("Unknown Unit: " + value);
+    }
+
+    public static Unit randomUnit() {
+        Random random = new Random();
+        return Unit.values()[random.nextInt(Unit.values().length)];
     }
 }
