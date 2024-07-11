@@ -2,30 +2,50 @@ package org.epm.delivery.model;
 
 import org.epm.common.model.DataModel;
 import org.epm.delivery.enums.DeliveryStatus;
+import org.epm.invoice.enums.InvoiceStatus;
+import org.epm.invoice.model.InvoiceEntity;
 import org.epm.material.model.MaterialEntity;
-
-import java.time.LocalDate;
 
 public abstract class DeliveryData<T extends DeliveryData<T>> implements DataModel {
 
-    public boolean areDatesOk() {
-        return getDeliveryDate() == null
-                || (getOrderDate() != null && getOrderDate().isAfter(getDeliveryDate()));
-    }
-
-    public boolean isStatusOk() {
-//        switch (getStatus()) {
-//            case SHOPPING_LIST ->
-//        }
-        return true;
-    }
-
     @Override
     public boolean isValidEntity() {
-        return getMaterial() != null && getStatus() != null && getUnitPrice() != null
-                && getUnitPrice() >= 0 && getTotalPrice() != null && getTotalPrice() >= 0
-                && getQty() != null && getQty() > 0 && getQty() * getUnitPrice() == getTotalPrice()
-                && (getStore() == null || getStore().length() >= 4);
+        return getMaterial() != null && isStatusOk() && isQtyOk() && arePricesOk();
+    }
+
+    private boolean isStatusOk() {
+        if (getStatus() == null) return false;
+        switch (getStatus()) {
+            case SHOPPING_LIST -> {
+                return getInvoice() == null && getUnitPrice() == null;
+            }
+            case ORDERED -> {
+                return getInvoice() != null && getInvoice().getOrderDate() != null
+                        && getUnitPrice() == null && getUnitPrice() > 0;
+            }
+            case DELIVERED, CANCELLED -> {
+                return getInvoice() != null && getInvoice().getDeliveryDate() != null;
+            }
+            case COMPLAINT -> {
+                return getInvoice() != null && getInvoice().getDeliveryDate() != null
+                        && getInvoice().getStatus() == InvoiceStatus.DISPUTED;
+            }
+        }
+        return false;
+    }
+
+    private boolean isQtyOk() {
+        return getQty() != null && getQty() > 0;
+    }
+
+    private boolean arePricesOk() {
+        boolean bothNull = getUnitPrice() == null && getTotalPrice() == null;
+        boolean noneNull = getUnitPrice() != null && getTotalPrice() != null;
+        boolean bothNotNegative = bothNull || (noneNull && getUnitPrice() >= 0
+                && getTotalPrice() >= 0);
+        boolean formulaMatches = noneNull && bothNotNegative && getQty() != null
+                && (getUnitPrice() * getQty() == getTotalPrice());
+        return bothNull || formulaMatches;
     }
 
     public abstract void setMaterial(MaterialEntity material);
@@ -38,11 +58,6 @@ public abstract class DeliveryData<T extends DeliveryData<T>> implements DataMod
     public abstract Float getTotalPrice();
     public abstract void setQty(Integer qty);
     public abstract Integer getQty();
-    public abstract void setOrderDate(LocalDate orderDate);
-    public abstract LocalDate getOrderDate();
-    public abstract void setDeliveryDate(LocalDate deliveryDate);
-    public abstract LocalDate getDeliveryDate();
-    public abstract void setStore(String store);
-    public abstract String getStore();
-
+    public abstract void setInvoice(InvoiceEntity invoice);
+    public abstract InvoiceEntity getInvoice();
 }

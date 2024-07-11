@@ -1,10 +1,12 @@
 package org.epm.invoice.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.epm.common.model.IEntity;
+import org.epm.invoice.enums.InvoiceStatus;
 
 import java.time.LocalDate;
 
@@ -19,6 +21,7 @@ public class InvoiceEntity
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @NotNull
     private LocalDate orderDate;
     private LocalDate deliveryDate;
     private LocalDate invoiceDate;
@@ -26,6 +29,8 @@ public class InvoiceEntity
     private LocalDate paymentDate;
     private String invoiceNumber;
     private String parcelTrackingNumber;
+    @NotNull
     private String store;
     private Float totalAmount;
+    private InvoiceStatus status;
 }

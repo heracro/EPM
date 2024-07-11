@@ -1,6 +1,7 @@
 package org.epm.invoice.model;
 
 import org.epm.common.model.DataModel;
+import org.epm.invoice.enums.InvoiceStatus;
 
 import java.time.LocalDate;
 
@@ -8,7 +9,12 @@ public abstract class InvoiceData<T extends InvoiceData<T>> implements DataModel
 
     @Override
     public boolean isValidEntity() {
-        return true;
+        return getOrderDate() != null && getStore() != null
+                && areDatesOk() && isStatusOk();
+    }
+
+    private boolean areDatesOk() {
+        return isPaymentDueDateOk() && isInvoiceDateOk() && isPaymentDateOk() && isDeliveryDateOk();
     }
 
     private boolean isPaymentDueDateOk() {
@@ -23,15 +29,40 @@ public abstract class InvoiceData<T extends InvoiceData<T>> implements DataModel
 
     private boolean isInvoiceDateOk() {
         return getInvoiceDate() == null
-                || (getOrderDate() != null && !getInvoiceDate().isBefore(getOrderDate()));
+                || (!getInvoiceDate().isBefore(getOrderDate()));
     }
 
     private boolean isDeliveryDateOk() {
         return getDeliveryDate() == null
-                || (getOrderDate() != null && !getDeliveryDate().isBefore(getOrderDate()));
+                || (getOrderDate() != null && !getDeliveryDate().isBefore(getOrderDate())
+                    && getParcelTrackingNumber() != null);
     }
 
-
+    private boolean isStatusOk() {
+        switch (getStatus()) {
+            case UNISSUED -> {
+                return getInvoiceDate() == null; }
+            case ISSUED -> {
+                return getInvoiceDate() != null && getPaymentDate() == null
+                        && getPaymentDueDate() != null && getPaymentDueDate().isAfter(LocalDate.now()); }
+            case PAID -> {
+                return getInvoiceDate() != null && getPaymentDueDate() != null
+                        && getPaymentDate() != null && getPaymentDueDate().isBefore(getPaymentDueDate());
+            }
+            case EXPIRED -> {
+                return getInvoiceDate() != null && getPaymentDueDate() != null
+                        && getPaymentDueDate().isBefore(
+                                getPaymentDate() == null ? LocalDate.now() : getPaymentDueDate());
+            }
+            case DISPUTED, CORRECTED -> {
+                return getInvoiceDate() != null && getDeliveryDate() != null;
+            }
+            case CANCELLED -> {
+                return getInvoiceDate() != null;
+            }
+        }
+        return false;
+    }
 
     public abstract LocalDate getOrderDate();
     public abstract void setOrderDate(LocalDate orderDate);
@@ -51,5 +82,6 @@ public abstract class InvoiceData<T extends InvoiceData<T>> implements DataModel
     public abstract void setStore(String store);
     public abstract Float getTotalAmount();
     public abstract void setTotalAmount(Float totalAmount);
-
+    public abstract InvoiceStatus getStatus();
+    public abstract void setStatus(InvoiceStatus status);
 }
