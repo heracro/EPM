@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.epm.bom.repository.BomRepository;
 import org.epm.delivery.repository.DeliveryRepository;
 import org.epm.material.repository.MaterialRepository;
-import org.epm.project.ProjectRepository;
+import org.epm.project.repository.ProjectRepository;
 import org.springframework.stereotype.Component;
 
 @Slf4j

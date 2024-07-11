@@ -1,4 +1,4 @@
-package org.epm.project;
+package org.epm.project.repository;
 
 import org.epm.common.repository.IRepository;
 import org.epm.project.model.ProjectEntity;

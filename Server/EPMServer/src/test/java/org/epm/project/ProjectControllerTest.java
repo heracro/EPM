@@ -2,9 +2,12 @@ package org.epm.project;
 
 import org.epm.GenericControllerTest;
 import org.epm.common.model.IMapper;
+import org.epm.project.controller.ProjectController;
 import org.epm.project.model.ProjectDTO;
 import org.epm.project.model.ProjectEntity;
 import org.epm.project.model.ProjectMapper;
+import org.epm.project.repository.ProjectRepository;
+import org.epm.project.service.ProjectService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
