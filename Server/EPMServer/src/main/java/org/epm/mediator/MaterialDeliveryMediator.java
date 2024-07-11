@@ -2,10 +2,10 @@ package org.epm.mediator;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.epm.delivery.DeliveryRepository;
+import org.epm.delivery.repository.DeliveryRepository;
 import org.epm.delivery.model.DeliveryDTO;
 import org.epm.delivery.model.DeliveryMapper;
-import org.epm.material.MaterialRepository;
+import org.epm.material.repository.MaterialRepository;
 import org.epm.material.model.MaterialEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

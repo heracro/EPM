@@ -3,6 +3,7 @@ package org.epm.bom.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.epm.bom.enums.BomStatus;
 import org.epm.common.model.IEntity;
 import org.epm.common.utils.RandomUtils;
 import org.epm.material.model.MaterialEntity;

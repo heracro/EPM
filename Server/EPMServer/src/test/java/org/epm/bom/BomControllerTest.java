@@ -1,9 +1,12 @@
 package org.epm.bom;
 
 import org.epm.GenericControllerTest;
+import org.epm.bom.controller.BomController;
 import org.epm.bom.model.BomDTO;
 import org.epm.bom.model.BomEntity;
 import org.epm.bom.model.BomMapper;
+import org.epm.bom.repository.BomRepository;
+import org.epm.bom.service.BomService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;

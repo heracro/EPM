@@ -2,19 +2,24 @@ package org.epm.delivery.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.epm.common.Config;
+import org.epm.common.configuration.Config;
 import org.epm.common.model.IEntity;
 import org.epm.common.utils.RandomUtils;
+import org.epm.delivery.enums.DeliveryStatus;
+import org.epm.invoice.model.InvoiceEntity;
 import org.epm.material.model.MaterialEntity;
 
 import java.time.LocalDate;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "deliveries")
 @NoArgsConstructor
-public class DeliveryEntity implements IEntity {
+public class DeliveryEntity
+        extends DeliveryData<DeliveryEntity> implements IEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -29,16 +34,8 @@ public class DeliveryEntity implements IEntity {
     private Float totalPrice;
     @Column(nullable = false)
     private Integer qty;
-    private LocalDate orderDate;
-    private LocalDate deliveryDate;
-    private String store;
-
-    public boolean isValidEntity() {
-        return material != null && status != null && unitPrice != null
-                && unitPrice >= 0 && totalPrice != null && totalPrice >= 0
-                && qty != null && qty > 0 && qty * unitPrice == totalPrice
-                && (store == null || store.length() >= 4);
-    }
+    @ManyToOne @JoinColumn(name = "invoice_id", nullable = false)
+    private InvoiceEntity invoice;
 
     public static DeliveryEntity randomInstance() {
         DeliveryEntity d = new DeliveryEntity();

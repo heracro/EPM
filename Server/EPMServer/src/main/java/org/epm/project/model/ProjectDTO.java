@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.epm.common.model.IDTO;
-import org.epm.project.model.enums.LocationType;
-import org.epm.project.model.enums.ProjectCause;
-import org.epm.project.model.enums.ProjectStatus;
+import org.epm.project.enums.LocationType;
+import org.epm.project.enums.ProjectCause;
+import org.epm.project.enums.ProjectStatus;
 
 import java.time.LocalDate;
 
@@ -40,20 +40,6 @@ public class ProjectDTO extends ProjectData<ProjectDTO> implements IDTO {
                 || cause != null || materialsReadyDate != null
                 || projectLocationUrl != null || locationType != null
                 || status != null || action != null;
-    }
-
-    @Override
-    public ProjectDTO self() {
-        return this;
-    }
-
-    public static ProjectDTO randomInstance() {
-        ProjectDTO project = new ProjectDTO();
-        return project.randomizeProjectData();
-    }
-
-    public static ProjectDTO emptyInstance() {
-        return new ProjectDTO();
     }
 
 }

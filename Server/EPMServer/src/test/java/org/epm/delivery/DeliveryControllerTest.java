@@ -2,9 +2,12 @@ package org.epm.delivery;
 
 import org.epm.GenericControllerTest;
 import org.epm.common.model.IMapper;
+import org.epm.delivery.controller.DeliveryController;
 import org.epm.delivery.model.DeliveryDTO;
 import org.epm.delivery.model.DeliveryEntity;
 import org.epm.delivery.model.DeliveryMapper;
+import org.epm.delivery.repository.DeliveryRepository;
+import org.epm.delivery.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DeliveryControllerTest extends GenericControllerTest<DeliveryEntity, DeliveryDTO> {

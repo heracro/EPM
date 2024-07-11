@@ -3,6 +3,7 @@ package org.epm.bom.model;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.epm.bom.enums.BomStatus;
 import org.epm.common.model.IDTO;
 import org.epm.common.utils.RandomUtils;
 import org.epm.material.model.MaterialDTO;

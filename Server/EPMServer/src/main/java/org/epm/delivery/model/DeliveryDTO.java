@@ -1,12 +1,14 @@
 package org.epm.delivery.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.epm.common.Config;
+import org.epm.common.configuration.Config;
 import org.epm.common.model.IDTO;
 import org.epm.common.utils.RandomUtils;
+import org.epm.delivery.enums.DeliveryStatus;
 import org.epm.material.model.MaterialEntity;
 
 import java.time.LocalDate;
@@ -29,10 +31,11 @@ public class DeliveryDTO implements IDTO {
     private String store;
     private String action;
 
+    @JsonIgnore
     public boolean isValidDTO() {
-        return material != null || status != null || unitPrice != null
-                || totalPrice != null || qty != null || orderDate != null
-                || deliveryDate != null || store != null || action != null;
+        return getMaterial() != null || getStatus() != null || getUnitPrice() != null
+                || getTotalPrice() != null || getQty() != null || getOrderDate() != null
+                || getDeliveryDate() != null || getStore() != null || getAction() != null;
     }
 
     public static DeliveryDTO emptyInstance() {

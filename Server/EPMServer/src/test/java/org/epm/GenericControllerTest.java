@@ -11,7 +11,7 @@ import org.epm.common.model.IMapper;
 import org.epm.common.repository.IRepository;
 import org.epm.common.service.AbstractEntityService;
 import org.epm.common.utils.DatabaseSeeder;
-import org.epm.material.MaterialController;
+import org.epm.material.controller.MaterialController;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,10 +1,11 @@
 package org.epm.delivery.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.epm.common.Config;
+import org.epm.common.configuration.Config;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.epm.delivery.enums.DeliveryStatus;
 
 import java.time.LocalDate;
 import java.util.List;

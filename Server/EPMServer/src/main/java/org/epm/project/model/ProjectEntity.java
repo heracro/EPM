@@ -7,10 +7,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.epm.common.configuration.Config;
 import org.epm.common.model.IEntity;
-import org.epm.project.model.enums.LocationType;
-import org.epm.project.model.enums.ProjectCause;
-import org.epm.project.model.enums.ProjectStatus;
+import org.epm.project.enums.LocationType;
+import org.epm.project.enums.ProjectCause;
+import org.epm.project.enums.ProjectStatus;
 
 import java.time.LocalDate;
 
@@ -44,8 +45,7 @@ public class ProjectEntity extends ProjectData<ProjectEntity> implements IEntity
     private ProjectStatus status;
 
     @JsonIgnore
-    @Override
-    public boolean isValidEntity() {
+    private boolean isValidEntityVerbose() {
         boolean valid = true;
         if (name != null && name.length() > 5) {
             log.info("Project has valid name: {}", name);
@@ -82,24 +82,19 @@ public class ProjectEntity extends ProjectData<ProjectEntity> implements IEntity
         } else valid = false;
         log.info("Project is valid?: {}", valid);
         return valid;
-//
-//        return name != null && name.length() > 5
-//                && (body == null || body.length() > 20)
-//                && (projectLocationUrl == null || projectLocationUrl.length() > 12)
-//                && (workingHoursCount == null || workingHoursCount > 0)
-//                && (projectLocationUrl == null || projectLocationUrl.length() > 13)
-//                && locationType != null && status != null && cause != null
-//                && areDatesOk() && isStatusOk();
     }
 
+    @JsonIgnore
     @Override
-    public ProjectEntity self() {
-        return this;
-    }
-
-    public static ProjectEntity randomInstance() {
-        ProjectEntity project = new ProjectEntity();
-        return project.randomizeProjectData();
+    public boolean isValidEntity() {
+        if (Config.PREFER_VERBOSE_METHODS) return isValidEntityVerbose();
+        return name != null && name.length() > 5
+            && (body == null || body.length() > 20)
+            && (projectLocationUrl == null || projectLocationUrl.length() > 12)
+            && (workingHoursCount == null || workingHoursCount > 0)
+            && (projectLocationUrl == null || projectLocationUrl.length() > 13)
+            && locationType != null && cause != null
+            && areDatesOk() && isStatusOk();
     }
 
 }

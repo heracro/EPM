@@ -15,9 +15,9 @@ public abstract class AbstractTestParameterProvider
 
     protected abstract IMapper<Entity, DTO> getMapper();
 
-    protected abstract Entity randomInstance();
+    protected abstract Entity randomValidEntity();
 
-    protected abstract DTO emptyInstance();
+    protected abstract DTO emptyDTO();
 
     protected abstract DTO provideSingleAttribute(DTO dto, int caseNumber);
 
@@ -26,7 +26,7 @@ public abstract class AbstractTestParameterProvider
     public Stream<DTO> provideFewDTOsWhichAreValidEntity() {
         List<DTO> list = new ArrayList<>();
         for (int i = 0; i < 3; ++i) {
-            list.add(getMapper().toDto(randomInstance()));
+            list.add(getMapper().toDto(randomValidEntity()));
         }
         return list.stream();
     }
@@ -35,7 +35,7 @@ public abstract class AbstractTestParameterProvider
         List<DTO> list = new ArrayList<>();
         for (int i = 0; i < getDTOAttrCount(); ++i) {
             list.add(
-                    breakSingleAttribute(getMapper().toDto(randomInstance()), i));
+                    breakSingleAttribute(getMapper().toDto(randomValidEntity()), i));
         }
         return list.stream();
     }
@@ -43,7 +43,7 @@ public abstract class AbstractTestParameterProvider
     public Stream<DTO> provideDTOsWithSingleValidAttribute() {
         List<DTO> list = new ArrayList<>();
         for (int i = 0; i < getDTOAttrCount(); ++i) {
-            list.add(provideSingleAttribute(emptyInstance(), i));
+            list.add(provideSingleAttribute(emptyDTO(), i));
         }
         return list.stream();
     }
@@ -51,7 +51,7 @@ public abstract class AbstractTestParameterProvider
     public Stream<DTO> provideDTOsWithSingleInvalidAttribute() {
         List<DTO> list = new ArrayList<>();
         for(int i = 0; i < getDTOAttrCount(); ++i) {
-            list.add(breakSingleAttribute(emptyInstance(), i));
+            list.add(breakSingleAttribute(emptyDTO(), i));
         }
         return list.stream();
     }

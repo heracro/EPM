@@ -2,9 +2,12 @@ package org.epm.material;
 
 import org.epm.GenericControllerTest;
 import org.epm.common.model.IMapper;
+import org.epm.material.controller.MaterialController;
 import org.epm.material.model.MaterialDTO;
 import org.epm.material.model.MaterialEntity;
 import org.epm.material.model.MaterialMapper;
+import org.epm.material.repository.MaterialRepository;
+import org.epm.material.service.MaterialService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;

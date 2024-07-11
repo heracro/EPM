@@ -2,11 +2,11 @@ package org.epm.common.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.epm.bom.BomRepository;
+import org.epm.bom.repository.BomRepository;
 import org.epm.bom.model.BomEntity;
-import org.epm.delivery.DeliveryRepository;
+import org.epm.delivery.repository.DeliveryRepository;
 import org.epm.delivery.model.DeliveryEntity;
-import org.epm.material.MaterialRepository;
+import org.epm.material.repository.MaterialRepository;
 import org.epm.material.model.MaterialEntity;
 import org.epm.project.ProjectRepository;
 import org.epm.project.model.ProjectEntity;

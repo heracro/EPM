@@ -2,12 +2,12 @@ package org.epm.project;
 
 import jakarta.validation.constraints.NotNull;
 import org.epm.AbstractTestParameterProvider;
-import org.epm.common.Config;
+import org.epm.common.configuration.Config;
 import org.epm.common.utils.RandomUtils;
 import org.epm.project.model.ProjectDTO;
 import org.epm.project.model.ProjectEntity;
 import org.epm.project.model.ProjectMapper;
-import org.epm.project.model.enums.ProjectStatus;
+import org.epm.project.enums.ProjectStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +19,9 @@ public class ProjectTestParameterProvider
 
     @Autowired
     private ProjectMapper mapper;
+
+    private final ProjectRandomizer randomizer = new ProjectRandomizer();
+
     public static int DTO_ATTR_COUNT = 12;
 
     @Override
@@ -32,30 +35,31 @@ public class ProjectTestParameterProvider
     }
 
     @Override
-    protected ProjectEntity randomInstance() {
-        return ProjectEntity.randomInstance();
+    protected ProjectEntity randomValidEntity() {
+        return randomizer.provideValidEntity();
     }
 
     @Override
-    protected ProjectDTO emptyInstance() {
-        return ProjectDTO.emptyInstance();
+    protected ProjectDTO emptyDTO() {
+        return randomizer.provideEmptyDTO();
     }
 
     @Override
     protected ProjectDTO provideSingleAttribute(@NotNull ProjectDTO dto, int caseNumber) {
+        ProjectRandomizer randomizer = new ProjectRandomizer();
         switch (caseNumber % getDTOAttrCount()) {
-            case 0 -> dto.setRandomName();
-            case 1 -> dto.setRandomBody();
-            case 2 -> dto.setRandomPlannedStartDate();
-            case 3 -> dto.setRandomPlannedEndDate();
-            case 4 -> dto.setRandomRealStartDate();
-            case 5 -> dto.setRandomRealEndDate();
-            case 6 -> dto.setRandomWorkHoursCount();
-            case 7 -> dto.setRandomCause();
-            case 8 -> dto.setRandomMaterialsReadyDate();
-            case 9 -> dto.setRandomProjectLocationUrl();
-            case 10 -> dto.setRandomLocationType();
-            case 11 -> dto.setRandomStatus();
+            case 0 -> randomizer.setRandomName(dto);
+            case 1 -> randomizer.setRandomBody(dto);
+            case 2 -> randomizer.setRandomPlannedStartDate(dto);
+            case 3 -> randomizer.setRandomPlannedEndDate(dto);
+            case 4 -> randomizer.setRandomRealStartDate(dto);
+            case 5 -> randomizer.setRandomRealEndDate(dto);
+            case 6 -> randomizer.setRandomWorkHoursCount(dto);
+            case 7 -> randomizer.setRandomCause(dto);
+            case 8 -> randomizer.setRandomMaterialsReadyDate(dto);
+            case 9 -> randomizer.setRandomProjectLocationUrl(dto);
+            case 10 -> randomizer.setRandomLocationType(dto);
+            case 11 -> randomizer.setRandomStatus(dto);
             default -> throw new IllegalStateException("Unexpected value: " + caseNumber);
         }
         return dto;
