@@ -30,13 +30,13 @@ public class MaterialTestParameterProvider
     }
 
     @Override
-    protected MaterialEntity randomInstance() {
-        return MaterialEntity.randomInstance();
+    protected MaterialEntity randomValidEntity() {
+        return null;
     }
 
     @Override
-    protected MaterialDTO emptyInstance() {
-        return MaterialDTO.emptyInstance();
+    protected MaterialDTO emptyDTO() {
+        return null;
     }
 
     @Override

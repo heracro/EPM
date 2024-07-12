@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 import org.epm.project.model.ProjectEntity;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tasks")
 @NoArgsConstructor
+@EntityListeners(EntityListener.class)
 public class TaskEntity extends TaskData implements IEntity {
 
     @Id

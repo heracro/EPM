@@ -4,7 +4,6 @@ import org.epm.bom.model.BomDTO;
 import org.epm.bom.model.BomEntity;
 import org.epm.bom.model.BomMapper;
 import org.epm.bom.repository.BomRepository;
-import org.epm.common.repository.IRepository;
 import org.epm.common.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class BomService extends AbstractService<BomEntity, BomDTO> {
     }
 
     @Override
-    protected IRepository<BomEntity> getRepository() {
+    protected BomRepository getRepository() {
         return bomRepository;
     }
 

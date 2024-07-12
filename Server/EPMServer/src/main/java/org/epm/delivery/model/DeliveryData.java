@@ -1,5 +1,6 @@
 package org.epm.delivery.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -45,11 +46,13 @@ public abstract class DeliveryData implements DataModel {
     @JoinColumn(name = "invoice_id")
     private InvoiceEntity invoice;
 
+    @JsonIgnore
     @Override
     public boolean isValidEntity() {
         return getMaterial() != null && isStatusOk() && isQtyOk() && arePricesOk();
     }
 
+    @JsonIgnore
     @Override
     public boolean isValidDTO() {
         return getMaterial() != null || getStatus() != null || getUnitPrice() != null

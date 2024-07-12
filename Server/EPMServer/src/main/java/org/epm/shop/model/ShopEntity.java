@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 
 @EqualsAndHashCode(callSuper = true)
@@ -11,6 +12,7 @@ import org.epm.common.model.IEntity;
 @Entity
 @Table(name = "shops")
 @NoArgsConstructor
+@EntityListeners(EntityListener.class)
 public class ShopEntity extends ShopData implements IEntity {
 
     @Id

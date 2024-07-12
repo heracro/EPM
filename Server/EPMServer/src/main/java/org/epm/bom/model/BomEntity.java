@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.epm.bom.enums.BomStatus;
+import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 
 @EqualsAndHashCode(callSuper = true)
@@ -11,6 +13,7 @@ import org.epm.common.model.IEntity;
 @Entity
 @Table(name = "boms")
 @NoArgsConstructor
+@EntityListeners(EntityListener.class)
 public class BomEntity extends BomData implements IEntity {
 
     @Id
@@ -21,6 +24,7 @@ public class BomEntity extends BomData implements IEntity {
     @PreUpdate
     public void setDefaults() {
         if (getReservedQty() == null) setReservedQty(0);
+        if (getStatus() == null) setStatus(BomStatus.MISSING);
     }
 
     @Override

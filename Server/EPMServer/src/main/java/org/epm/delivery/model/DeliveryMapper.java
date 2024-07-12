@@ -16,7 +16,8 @@ public interface DeliveryMapper extends IMapper<DeliveryEntity, DeliveryDTO> {
     DeliveryEntity toEntity(DeliveryDTO deliveryDTO);
 
     @Override
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "targetId", ignore = true)
+    @Mapping(target = "action", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(DeliveryDTO deliveryDTO, @MappingTarget DeliveryEntity deliveryEntity);
 }

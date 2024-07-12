@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletContext;
-import org.epm.common.controller.AbstractEntityController;
+import org.epm.common.controller.AbstractRestController;
 import org.epm.common.model.IDTO;
 import org.epm.common.model.IEntity;
 import org.epm.common.model.IMapper;
@@ -50,7 +50,7 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
 
     protected abstract IMapper<Entity, DTO> getMapper();
     protected abstract AbstractTestParameterProvider<Entity, DTO> getTestParameterProvider();
-    protected abstract AbstractEntityController<DTO> getController();
+    protected abstract AbstractRestController<DTO> getController();
     protected abstract AbstractService<Entity, DTO> getService();
     protected abstract IRepository<Entity> getRepository();
 
@@ -145,7 +145,7 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     void testReplaceWithValidEntity(DTO dto) throws Exception {
         assertNotNull(dto, "ParameterProvider delivered invalid dto (null)");
         String json = objectMapper.writeValueAsString(dto);
-        Long firstId = getRepository().findFirstByOrderByIdAsc().getId();
+        Integer firstId = getRepository().findFirstByOrderByIdAsc().getId();
         String response = mockMvc.perform(put(getController().getMapping() + "/" + firstId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
@@ -163,7 +163,7 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     void testReplaceWithInvalidEntity(DTO dto) throws Exception {
         assertNotNull(dto, "ParameterProvider delivered invalid dto (null)");
         String json = objectMapper.writeValueAsString(dto);
-        Long firstId = getRepository().findFirstByOrderByIdAsc().getId();
+        Integer firstId = getRepository().findFirstByOrderByIdAsc().getId();
         mockMvc.perform(put(getController().getMapping() + "/" + firstId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

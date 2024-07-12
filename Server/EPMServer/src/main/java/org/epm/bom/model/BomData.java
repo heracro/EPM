@@ -7,24 +7,32 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.epm.bom.enums.BomStatus;
 import org.epm.common.model.DataModel;
-import org.epm.material.model.MaterialEntity;
-import org.epm.project.model.ProjectEntity;
+import org.epm.material.model.MaterialData;
+import org.epm.project.model.ProjectData;
 
 @Slf4j
 @Data
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public abstract class BomData implements DataModel {
 
+    @Column(nullable = false, unique = true)
     private Integer id;
+
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
-    private ProjectEntity project;
-    @ManyToOne @JoinColumn(name = "material_id", nullable = false)
-    private MaterialEntity material;
-    @Enumerated(EnumType.STRING) @Column(nullable = false)
+    private ProjectData project;
+
+    @ManyToOne
+    @JoinColumn(name = "material_id", nullable = false)
+    private MaterialData material;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private BomStatus status;
+
     @Column(nullable = false)
     private Integer qty;
+
     private Integer reservedQty;
 
     @JsonIgnore

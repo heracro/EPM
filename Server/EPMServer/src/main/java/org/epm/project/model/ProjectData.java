@@ -1,12 +1,12 @@
 package org.epm.project.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 import org.epm.bom.model.BomEntity;
 import org.epm.common.model.DataModel;
 import org.epm.project.enums.LocationType;
@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Slf4j
+
 @Getter
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -35,12 +35,16 @@ public abstract class ProjectData implements DataModel {
     @ToString.Exclude
     private String body;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate plannedStartDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate plannedEndDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate realStartDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate realEndDate;
 
     @Column(nullable = false)
@@ -50,10 +54,10 @@ public abstract class ProjectData implements DataModel {
     @Enumerated(EnumType.STRING)
     private ProjectCause cause;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate materialsReadyDate;
 
     @Column(nullable = false)
-    @ToString.Exclude
     private String projectLocationUrl;
 
     @Column(nullable = false)
@@ -92,15 +96,10 @@ public abstract class ProjectData implements DataModel {
                 || getRealEndDate() != null || getWorkingHoursCount() != null
                 || getCause() != null || getMaterialsReadyDate() != null
                 || getProjectLocationUrl() != null || getLocationType() != null
-                || getStatus() != null || getAction() != null;
+                || getStatus() != null;
     }
 
-    private String getAction() {
-        return null;
-    }
-
-    @JsonIgnore
-    public boolean areDatesOk() {
+    private boolean areDatesOk() {
         return arePlannedDatesOk() && areRealDatesOk() && isMaterialsReadyDateOk();
     }
 

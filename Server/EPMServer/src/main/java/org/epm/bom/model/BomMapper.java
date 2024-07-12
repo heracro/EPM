@@ -16,7 +16,7 @@ public interface BomMapper extends IMapper<BomEntity, BomDTO> {
     BomEntity toEntity(BomDTO bomDTO);
 
     @Override
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "privateId", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(BomDTO bomDTO, @MappingTarget BomEntity bomEntity);
 }

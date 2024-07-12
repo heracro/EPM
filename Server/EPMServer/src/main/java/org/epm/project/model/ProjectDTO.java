@@ -24,4 +24,9 @@ public class ProjectDTO extends ProjectData implements IDTO {
         return super.toString().substring(0, super.toString().length()-2)
                 + ", action: " + getAction() + "}";
     }
+
+    @Override
+    public boolean isValidDTO() {
+        return super.isValidDTO() || getAction() != null;
+    }
 }

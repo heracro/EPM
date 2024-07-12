@@ -6,6 +6,9 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface IRepository<Entity extends IEntity> extends JpaRepository<Entity, Long> {
+
     Entity findFirstByOrderByIdAsc();
+
     Entity findFirstByOrderByIdDesc();
+
 }

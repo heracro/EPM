@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 import org.epm.material.enums.Unit;
 
@@ -14,6 +15,7 @@ import org.epm.material.enums.Unit;
 @Table(name = "materials")
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(EntityListener.class)
 public class MaterialEntity extends MaterialData implements IEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

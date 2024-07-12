@@ -1,17 +1,20 @@
 package org.epm.project.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 
-@Slf4j
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "projects")
 @NoArgsConstructor
+@EntityListeners(EntityListener.class)
 public class ProjectEntity extends ProjectData implements IEntity {
 
     @Id

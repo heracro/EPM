@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 import org.epm.project.model.ProjectEntity;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tags")
 @NoArgsConstructor
+@EntityListeners(EntityListener.class)
 public class TagEntity extends TagData implements IEntity {
 
     @Id

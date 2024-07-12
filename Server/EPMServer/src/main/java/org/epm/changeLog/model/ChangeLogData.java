@@ -1,5 +1,6 @@
 package org.epm.changeLog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.epm.changeLog.enums.ChangeLogSource;
 import org.epm.changeLog.enums.ChangeType;
 import org.epm.common.model.DataModel;
-import org.epm.project.model.ProjectEntity;
+import org.epm.project.model.ProjectData;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +25,7 @@ public abstract class ChangeLogData implements DataModel {
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
-    private ProjectEntity project;
+    private ProjectData project;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -40,6 +41,7 @@ public abstract class ChangeLogData implements DataModel {
     @Column(length = 63)
     private String author;
 
+    @JsonIgnore
     @Override
     public boolean isValidEntity() {
         return getId() != null && getProject() != null
@@ -47,6 +49,7 @@ public abstract class ChangeLogData implements DataModel {
                 && getDescription() != null;
     }
 
+    @JsonIgnore
     @Override
     public boolean isValidDTO() {
         return getId() != null || getTimestamp() != null
