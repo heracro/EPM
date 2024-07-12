@@ -1,13 +1,13 @@
 package org.epm.project.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Random;
+import org.epm.common.enums.DeserializableEnum;
 
 @Getter
 @RequiredArgsConstructor
-public enum ProjectCause {
+public enum ProjectCause implements DeserializableEnum<ProjectCause> {
     HOBBY                   ("Hobby"),
     HOME_IMPROVEMENT        ("Usprawnienia domu"),
     ORDERED_COMMERCIAL      ("Zamówienie komercyjne"),
@@ -17,8 +17,9 @@ public enum ProjectCause {
 
     private final String value;
 
-    public static ProjectCause randomProjectCause() {
-        Random random = new Random();
-        return ProjectCause.values()[random.nextInt(ProjectCause.values().length)];
+    @JsonCreator
+    public static ProjectCause of(String value) {
+        return DeserializableEnum.of(value, ProjectCause.class);
     }
+
 }

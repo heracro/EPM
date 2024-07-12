@@ -3,8 +3,9 @@ package org.epm.common.controller;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.epm.common.model.IDTO;
+import org.epm.common.model.DataModel;
 import org.epm.common.service.IService;
+import org.epm.common.utils.FontColor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,9 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.epm.common.utils.ConsoleStringUtils.fontColor;
+
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AbstractEntityController<DTO extends IDTO> {
+public abstract class AbstractRestController<DTO extends DataModel> {
 
     protected final IService<DTO> entityService;
 
@@ -23,18 +26,22 @@ public abstract class AbstractEntityController<DTO extends IDTO> {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody final DTO dto) {
+        log.info(fontColor(FontColor.BRIGHT_GREEN, "Creating entity: {}", dto));
         try {
             DTO createdDto = entityService.createEntity(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdDto);
-        } catch (IllegalArgumentException ignored) {}
-        return ResponseEntity.badRequest()
-                .body("Failed to create " + entityService.getEntityName());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Failed to create "
+                    + entityService.getEntityName() + ": " + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> replace(
             @PathVariable final Long id,
             @RequestBody final DTO dto) {
+        log.info(fontColor(FontColor.BRIGHT_GREEN, "Replacing {} id {} with new entity: {}",
+                entityService.getEntityName(), id, dto));
         try {
             DTO replaced = entityService.replaceEntity(id, dto);
             return ResponseEntity.ok(replaced);
@@ -51,6 +58,7 @@ public abstract class AbstractEntityController<DTO extends IDTO> {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "name") String sort,
             @RequestParam(defaultValue = "asc") String direction) {
+        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding all {}s", entityService.getEntityName()));
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
         return ResponseEntity.ok(entityService.findAll(pageable));
@@ -58,6 +66,7 @@ public abstract class AbstractEntityController<DTO extends IDTO> {
 
     @GetMapping("/{id}")
     public ResponseEntity<DTO> findById(@PathVariable Long id) {
+        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding {} by id {}", entityService.getEntityName(), id));
         try {
             return ResponseEntity.ok(entityService.findById(id));
         } catch (EntityNotFoundException e) {
@@ -68,6 +77,8 @@ public abstract class AbstractEntityController<DTO extends IDTO> {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateMaterial(
             @PathVariable Long id, @RequestBody DTO dto) {
+        log.info(fontColor(FontColor.BRIGHT_GREEN, "Updating {} id {} with new entity: {}",
+                entityService.getEntityName(), id, dto));
         if (!dto.isValidDTO()) {
             return ResponseEntity.badRequest().body("Invalid request body");
         }
@@ -83,6 +94,7 @@ public abstract class AbstractEntityController<DTO extends IDTO> {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMaterial(@PathVariable Long id) {
+        log.info(fontColor(FontColor.BRIGHT_GREEN, "Deleting {} id {}", entityService.getEntityName(), id));
         try {
             entityService.deleteEntity(id);
             return ResponseEntity.noContent().build();

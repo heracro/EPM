@@ -1,16 +1,79 @@
 package org.epm.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.epm.bom.model.BomEntity;
 import org.epm.common.model.DataModel;
 import org.epm.project.enums.LocationType;
 import org.epm.project.enums.ProjectCause;
 import org.epm.project.enums.ProjectStatus;
+import org.epm.tag.model.TagEntity;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
-public abstract class ProjectData<T extends ProjectData<T>> implements DataModel {
+@Getter
+@Setter
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+public abstract class ProjectData implements DataModel {
 
+    @Column(nullable = false, unique = true)
+    private Integer id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(columnDefinition = "TEXT")
+    @ToString.Exclude
+    private String body;
+
+    private LocalDate plannedStartDate;
+
+    private LocalDate plannedEndDate;
+
+    private LocalDate realStartDate;
+
+    private LocalDate realEndDate;
+
+    @Column(nullable = false)
+    private Integer workingHoursCount;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProjectCause cause;
+
+    private LocalDate materialsReadyDate;
+
+    @Column(nullable = false)
+    @ToString.Exclude
+    private String projectLocationUrl;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private LocationType locationType;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BomEntity> boms;
+
+    @ManyToMany
+    @JoinTable(name = "project_tag", joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<TagEntity> tags = new HashSet<>();
+
+    @JsonIgnore
     @Override
     public boolean isValidEntity() {
         return getName() != null && getName().length() > 5
@@ -21,25 +84,42 @@ public abstract class ProjectData<T extends ProjectData<T>> implements DataModel
                 && areDatesOk() && isStatusOk();
     }
 
+    @JsonIgnore
+    @Override
+    public boolean isValidDTO() {
+        return getName() != null || getBody() != null || getPlannedStartDate() != null
+                || getPlannedEndDate() != null || getRealStartDate() != null
+                || getRealEndDate() != null || getWorkingHoursCount() != null
+                || getCause() != null || getMaterialsReadyDate() != null
+                || getProjectLocationUrl() != null || getLocationType() != null
+                || getStatus() != null || getAction() != null;
+    }
+
+    private String getAction() {
+        return null;
+    }
+
+    @JsonIgnore
     public boolean areDatesOk() {
         return arePlannedDatesOk() && areRealDatesOk() && isMaterialsReadyDateOk();
     }
 
-    protected boolean arePlannedDatesOk() {
+    private boolean arePlannedDatesOk() {
         return getPlannedEndDate() == null
                 || (getPlannedStartDate() != null && getPlannedStartDate().isBefore(getPlannedEndDate()));
     }
 
-    protected boolean areRealDatesOk() {
+    private boolean areRealDatesOk() {
         return getRealEndDate() == null
                 || (getRealStartDate() != null && getRealStartDate().isBefore(getRealEndDate()));
     }
 
-    protected boolean isMaterialsReadyDateOk() {
+    private boolean isMaterialsReadyDateOk() {
         return getMaterialsReadyDate() == null || getRealStartDate() == null
                 || getMaterialsReadyDate().isBefore(getRealStartDate());
     }
 
+    @JsonIgnore
     public boolean isStatusOk() {
         if (getStatus() == null) return false;
         switch (getStatus()) {
@@ -67,29 +147,8 @@ public abstract class ProjectData<T extends ProjectData<T>> implements DataModel
         return false;
     }
 
-    public abstract void setName(String name);
-    public abstract String getName();
-    public abstract void setBody(String body);
-    public abstract String getBody();
-    public abstract void setPlannedStartDate(LocalDate plannedStartDate);
-    public abstract LocalDate getPlannedStartDate();
-    public abstract void setPlannedEndDate(LocalDate plannedEndDate);
-    public abstract LocalDate getPlannedEndDate();
-    public abstract void setRealStartDate(LocalDate realStartDate);
-    public abstract LocalDate getRealStartDate();
-    public abstract void setRealEndDate(LocalDate realEndDate);
-    public abstract LocalDate getRealEndDate();
-    public abstract void setStatus(ProjectStatus status);
-    public abstract ProjectStatus getStatus();
-    public abstract void setCause(ProjectCause cause);
-    public abstract ProjectCause getCause();
-    public abstract void setWorkingHoursCount(Integer workingHoursCount);
-    public abstract Integer getWorkingHoursCount();
-    public abstract void setProjectLocationUrl(String projectLocationUrl);
-    public abstract String getProjectLocationUrl();
-    public abstract void setLocationType(LocationType locationType);
-    public abstract LocationType getLocationType();
-    public abstract void setMaterialsReadyDate(LocalDate materialsReadyDate);
-    public abstract LocalDate getMaterialsReadyDate();
-
+    public String toString() {
+        return "Project {" + getId() + ", " + getName() + ", "
+                + getCause() + ", " + getStatus() + "}";
+    }
 }

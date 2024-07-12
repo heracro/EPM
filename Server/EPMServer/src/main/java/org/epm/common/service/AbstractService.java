@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public abstract class AbstractEntityService<Entity extends IEntity, DTO extends IDTO>
+public abstract class AbstractService<Entity extends IEntity, DTO extends IDTO>
         implements IService<DTO> {
 
     protected final IMapper<Entity, DTO> mapper;
@@ -29,9 +29,9 @@ public abstract class AbstractEntityService<Entity extends IEntity, DTO extends 
     @Override
     public DTO replaceEntity(final Long id, final DTO dto)
             throws IllegalArgumentException, EntityNotFoundException {
-        getRepository().findById(id).orElseThrow(this::throwNotFound);
+        Entity replacedEntity = getRepository().findById(id).orElseThrow(this::throwNotFound);
         Entity replacementEntity = mapper.toEntity(dto);
-        replacementEntity.setId(id);
+        replacementEntity.setId(replacedEntity.getId());
         if(!replacementEntity.isValidEntity()) {
             throw throwIllegalArgument();
         }

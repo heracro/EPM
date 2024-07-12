@@ -5,12 +5,12 @@ import org.epm.bom.model.BomEntity;
 import org.epm.bom.model.BomMapper;
 import org.epm.bom.repository.BomRepository;
 import org.epm.common.repository.IRepository;
-import org.epm.common.service.AbstractEntityService;
+import org.epm.common.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BomService extends AbstractEntityService<BomEntity, BomDTO> {
+public class BomService extends AbstractService<BomEntity, BomDTO> {
 
     private final BomRepository bomRepository;
 

@@ -2,17 +2,19 @@ package org.epm.bom.model;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.epm.bom.enums.BomStatus;
 import org.epm.common.model.IDTO;
-import org.epm.common.utils.RandomUtils;
 import org.epm.material.model.MaterialDTO;
 import org.epm.project.model.ProjectDTO;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-@JsonTypeName("BomDTO")
-public class BomDTO implements IDTO {
+@JsonTypeName("Bom")
+public class BomDTO extends BomData implements IDTO {
+
     private ProjectDTO project;
     private MaterialDTO material;
     private BomStatus status;
@@ -26,23 +28,15 @@ public class BomDTO implements IDTO {
                 || reservedQty != null;
     }
 
-    public static BomDTO randomInstance() {
-        BomDTO bom = new BomDTO();
-        bom.setQty(RandomUtils.randomInt(13));
-        return bom;
+    @Override
+    public String toString() {
+        return super.toString().substring(0, super.toString().length()-2)
+                + ", action: " + getAction();
     }
 
-    public static BomDTO emptyInstance() {
-        return new BomDTO();
+    @Override
+    public String getAction() {
+        return null;
     }
 
-    public void propagateRandomProject(ProjectDTO project) {
-        this.project = project;
-        this.status = BomStatus.randomBomStatus(project.getStatus());
-        switch (status) {
-            case COMPLETE, TAKEN -> setReservedQty(getQty());
-            case PARTIAL -> setReservedQty(RandomUtils.randomInt(10) + 1);
-            case MISSING -> setReservedQty(0);
-        }
-    }
 }

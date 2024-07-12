@@ -16,7 +16,7 @@ public interface ProjectMapper extends IMapper<ProjectEntity, ProjectDTO> {
     ProjectEntity toEntity(ProjectDTO projectDTO);
 
     @Override
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "privateId", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(ProjectDTO projectDTO, @MappingTarget ProjectEntity projectEntity);
 }

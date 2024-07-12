@@ -3,10 +3,10 @@ package org.epm.material.controller;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.epm.common.configuration.Config;
-import org.epm.common.controller.AbstractEntityController;
+import org.epm.common.controller.AbstractRestController;
 import org.epm.delivery.model.DeliveryDTO;
-import org.epm.material.service.MaterialService;
 import org.epm.material.model.MaterialDTO;
+import org.epm.material.service.MaterialService;
 import org.epm.mediator.IMaterialDeliveryMediator;
 import org.epm.mediator.MaterialDeliveryMediator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/materials")
-public class MaterialController extends AbstractEntityController<MaterialDTO> {
+public class MaterialController extends AbstractRestController<MaterialDTO> {
 
     private final IMaterialDeliveryMediator mediator;
 
@@ -38,7 +38,7 @@ public class MaterialController extends AbstractEntityController<MaterialDTO> {
     public ResponseEntity<?> findDeliveriesForMaterial(
             @PathVariable Long id,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "" + Config.DELIVERIES_PER_PAGE) int size) {
+            @RequestParam(defaultValue = "" + Config.DEFAULT_PAGE_SIZE) int size) {
         try {
             Page<DeliveryDTO> deliveries = mediator.findDeliveriesForMaterialId(id, PageRequest.of(page, size));
             return ResponseEntity.ok(deliveries);

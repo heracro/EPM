@@ -1,20 +1,23 @@
 package org.epm.project.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Random;
+import org.epm.common.enums.DeserializableEnum;
 
 @Getter
 @RequiredArgsConstructor
-public enum LocationType {
-    LOCAL,
-    REMOTE_HTTP,
-    REMOTE_HTTPS,
-    REMOTE_FTP;
+public enum LocationType implements DeserializableEnum<LocationType> {
+    LOCAL ("Lokalny"),
+    REMOTE_HTTP ("Zdalny http"),
+    REMOTE_HTTPS ("Zdalny https"),
+    REMOTE_FTP ("Zdalny ftp"),
+    SHELF ("Papierowy");
 
-    public static LocationType randomLocationType() {
-        Random random = new Random();
-        return LocationType.values()[random.nextInt(LocationType.values().length)];
+    private final String value;
+
+    @JsonCreator
+    public static LocationType of(String value) {
+        return DeserializableEnum.of(value, LocationType.class);
     }
 }

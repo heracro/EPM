@@ -1,4 +1,7 @@
 package org.epm.invoice.repository;
 
-public interface InvoiceRepository {
+import org.epm.common.repository.IRepository;
+import org.epm.invoice.model.InvoiceEntity;
+
+public interface InvoiceRepository extends IRepository<InvoiceEntity> {
 }

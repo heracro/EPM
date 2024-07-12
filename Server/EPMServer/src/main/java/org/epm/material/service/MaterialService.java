@@ -1,6 +1,6 @@
 package org.epm.material.service;
 
-import org.epm.common.service.AbstractEntityService;
+import org.epm.common.service.AbstractService;
 import org.epm.material.model.MaterialDTO;
 import org.epm.material.model.MaterialEntity;
 import org.epm.material.model.MaterialMapper;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MaterialService extends AbstractEntityService<MaterialEntity, MaterialDTO> {
+public class MaterialService extends AbstractService<MaterialEntity, MaterialDTO> {
 
     private final MaterialRepository materialRepository;
 

@@ -9,7 +9,7 @@ import org.epm.common.model.IDTO;
 import org.epm.common.model.IEntity;
 import org.epm.common.model.IMapper;
 import org.epm.common.repository.IRepository;
-import org.epm.common.service.AbstractEntityService;
+import org.epm.common.service.AbstractService;
 import org.epm.material.controller.MaterialController;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
@@ -31,6 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -49,7 +51,7 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     protected abstract IMapper<Entity, DTO> getMapper();
     protected abstract AbstractTestParameterProvider<Entity, DTO> getTestParameterProvider();
     protected abstract AbstractEntityController<DTO> getController();
-    protected abstract AbstractEntityService<Entity, DTO> getService();
+    protected abstract AbstractService<Entity, DTO> getService();
     protected abstract IRepository<Entity> getRepository();
 
     private Stream<DTO> provideFewDTOsWhichAreValidEntity() {

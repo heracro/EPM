@@ -1,6 +1,6 @@
 package org.epm.task.service;
 
-import org.epm.common.service.AbstractEntityService;
+import org.epm.common.service.AbstractService;
 import org.epm.task.model.TaskDTO;
 import org.epm.task.model.TaskEntity;
 import org.epm.task.model.TaskMapper;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TaskService extends AbstractEntityService<TaskEntity, TaskDTO> {
+public class TaskService extends AbstractService<TaskEntity, TaskDTO> {
 
     private final TaskRepository taskRepository;
 

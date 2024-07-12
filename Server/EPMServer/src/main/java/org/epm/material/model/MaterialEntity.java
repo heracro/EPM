@@ -3,26 +3,29 @@ package org.epm.material.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.epm.common.model.IEntity;
+import org.epm.material.enums.Unit;
 
-import java.util.Random;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "materials")
 @NoArgsConstructor
 @AllArgsConstructor
-public class MaterialEntity implements IEntity {
+public class MaterialEntity extends MaterialData implements IEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long privateId;
     @Column(nullable = false)
     private String name;
     private String norm;
     private String datasheet;
     @Column(nullable = false)
     private String dimensions;
+    @Column(length = 1023)
+    private String description;
     @Column(nullable = false)
     private Float weight;
     @Column(nullable = false)
@@ -35,31 +38,8 @@ public class MaterialEntity implements IEntity {
 
     @Override
     public String toString() {
-        return "Material {" + name + "(" + id + "), "
-                + norm + ", qty: " + freeQty + "/" + totalQty + " " + unit + "}";
+        return "Material {" + getName() + "(" + getId() + "), "
+                + getNorm() + ", qty: " + getFreeQty() + "/" + getTotalQty() + " " + getUnit() + "}";
     }
 
-    public boolean isValidEntity() {
-        return name != null && name.length() > 3
-                && (norm == null || norm.length() > 3)
-                && (datasheet == null || datasheet.length() > 4)
-                && dimensions != null && dimensions.length() > 1
-                && weight != null && weight >= 0
-                && totalQty != null && totalQty >= 0
-                && freeQty != null && freeQty >= 0
-                && unit != null;
-    }
-
-    public static MaterialEntity randomInstance() {
-        MaterialEntity m = new MaterialEntity();
-        Random random = new Random();
-        m.setName("Material " + random.nextInt(2000));
-        m.setNorm((random.nextBoolean() ? "DIN" : "ISO") + (random.nextInt(1500) + 500));
-        m.setDimensions("" + random.nextInt(200) + "x" + random.nextInt(160) + "x" + random.nextInt(40));
-        m.setWeight(random.nextInt(30000) / 100f);
-        m.setTotalQty(random.nextBoolean() || random.nextBoolean() ? random.nextInt(60) : 0);
-        m.setFreeQty((random.nextBoolean() || random.nextBoolean()) && m.getTotalQty() > 0 ? random.nextInt(m.getTotalQty()) : 0);
-        m.setUnit(Unit.randomUnit());
-        return m;
-    }
 }

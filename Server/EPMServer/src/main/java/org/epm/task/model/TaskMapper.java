@@ -5,7 +5,6 @@ import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-
 public interface TaskMapper extends IMapper<TaskEntity, TaskDTO> {
 
     TaskMapper INSTANCE = Mappers.getMapper(TaskMapper.class);

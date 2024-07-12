@@ -1,21 +1,25 @@
 package org.epm.project.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Random;
+import org.epm.common.enums.DeserializableEnum;
 
 @Getter
 @RequiredArgsConstructor
-public enum ProjectStatus {
-    PLANNED,
-    AWAITING_MATERIALS,
-    READY,
-    ONGOING,
-    COMPLETED;
+public enum ProjectStatus implements DeserializableEnum<ProjectStatus> {
+    PLANNED ("Zaplanowany"),
+    AWAITING_MATERIALS ("Oczekuje na materiały"),
+    READY ("Gotowy do rozpoczęcia"),
+    ONGOING ("Trwa"),
+    COMPLETED ("Zakończony"),
+    CANCELLED ("Anulowany");
 
-    public static ProjectStatus randomProjectStatus() {
-        Random random = new Random();
-        return ProjectStatus.values()[random.nextInt(ProjectStatus.values().length)];
+    private final String value;
+
+    @JsonCreator
+    public static ProjectStatus of(String value) {
+        return DeserializableEnum.of(value, ProjectStatus.class);
     }
+
 }

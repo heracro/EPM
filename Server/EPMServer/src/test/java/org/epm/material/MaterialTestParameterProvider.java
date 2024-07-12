@@ -4,7 +4,7 @@ import org.epm.AbstractTestParameterProvider;
 import org.epm.material.model.MaterialDTO;
 import org.epm.material.model.MaterialEntity;
 import org.epm.material.model.MaterialMapper;
-import org.epm.material.model.Unit;
+import org.epm.material.enums.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,16 +1,56 @@
 package org.epm.invoice.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.epm.common.model.DataModel;
 import org.epm.invoice.enums.InvoiceStatus;
 
 import java.time.LocalDate;
 
-public abstract class InvoiceData<T extends InvoiceData<T>> implements DataModel {
+@Slf4j
+@Getter
+@Setter
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+public abstract class InvoiceData implements DataModel {
+
+    private Integer id;
+    @Column(nullable = false)
+    private LocalDate orderDate;
+    private LocalDate deliveryDate;
+    @Column(nullable = false)
+    private LocalDate invoiceDate;
+    @Column(nullable = false)
+    private LocalDate paymentDueDate;
+    private LocalDate paymentDate;
+    @Column(nullable = false)
+    private String invoiceNumber;
+    private String parcelTrackingNumber;
+    @Column(nullable = false)
+    private String store;
+    @Column(nullable = false)
+    private Float totalAmount;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private InvoiceStatus status;
 
     @Override
     public boolean isValidEntity() {
         return getOrderDate() != null && getStore() != null
                 && areDatesOk() && isStatusOk();
+    }
+
+    @Override
+    public boolean isValidDTO() {
+        return getOrderDate() != null || getDeliveryDate() != null || getInvoiceDate() != null
+                || getPaymentDueDate() != null || getPaymentDate() != null
+                || getInvoiceNumber() != null || getParcelTrackingNumber() != null
+                || getStore() != null || getTotalAmount() != null
+                || getStatus() != null;
     }
 
     private boolean areDatesOk() {
@@ -64,24 +104,4 @@ public abstract class InvoiceData<T extends InvoiceData<T>> implements DataModel
         return false;
     }
 
-    public abstract LocalDate getOrderDate();
-    public abstract void setOrderDate(LocalDate orderDate);
-    public abstract LocalDate getDeliveryDate();
-    public abstract void setDeliveryDate(LocalDate deliveryDate);
-    public abstract LocalDate getInvoiceDate();
-    public abstract void setInvoiceDate(LocalDate invoiceDate);
-    public abstract LocalDate getPaymentDueDate();
-    public abstract void setPaymentDueDate(LocalDate paymentDueDate);
-    public abstract LocalDate getPaymentDate();
-    public abstract void setPaymentDate(LocalDate paymentDate);
-    public abstract String getInvoiceNumber();
-    public abstract void setInvoiceNumber(String invoiceNumber);
-    public abstract String getParcelTrackingNumber();
-    public abstract void setParcelTrackingNumber(String parcelTrackingNumber);
-    public abstract String getStore();
-    public abstract void setStore(String store);
-    public abstract Float getTotalAmount();
-    public abstract void setTotalAmount(Float totalAmount);
-    public abstract InvoiceStatus getStatus();
-    public abstract void setStatus(InvoiceStatus status);
 }

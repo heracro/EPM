@@ -14,9 +14,9 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-@JsonTypeName("InvoiceDTO")
+@JsonTypeName("Invoice")
 public class InvoiceDTO
-        extends InvoiceData<InvoiceDTO> implements IDTO {
+        extends InvoiceData implements IDTO {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate orderDate;

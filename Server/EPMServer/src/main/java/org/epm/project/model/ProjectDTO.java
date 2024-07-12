@@ -1,45 +1,27 @@
 package org.epm.project.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.epm.common.model.IDTO;
-import org.epm.project.enums.LocationType;
-import org.epm.project.enums.ProjectCause;
-import org.epm.project.enums.ProjectStatus;
 
-import java.time.LocalDate;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@JsonTypeName("ProjectDTO")
-public class ProjectDTO extends ProjectData<ProjectDTO> implements IDTO {
-    private String name;
-    private String body;
-    private LocalDate plannedStartDate;
-    private LocalDate plannedEndDate;
-    private LocalDate realStartDate;
-    private LocalDate realEndDate;
-    private Integer workingHoursCount;
-    private ProjectCause cause;
-    private LocalDate materialsReadyDate;
-    private String projectLocationUrl;
-    private LocationType locationType;
-    private ProjectStatus status;
+@JsonTypeName("Project")
+public class ProjectDTO extends ProjectData implements IDTO {
+
     private String action;
 
-    @JsonIgnore
-    @Override
-    public boolean isValidDTO() {
-        return name != null || body != null || plannedStartDate != null
-                || plannedEndDate != null || realStartDate != null
-                || realEndDate != null || workingHoursCount != null
-                || cause != null || materialsReadyDate != null
-                || projectLocationUrl != null || locationType != null
-                || status != null || action != null;
+    public List<String> getAllowedActions() {
+        return List.of("begin", "end");
     }
 
+    @Override
+    public String toString() {
+        return super.toString().substring(0, super.toString().length()-2)
+                + ", action: " + getAction() + "}";
+    }
 }
