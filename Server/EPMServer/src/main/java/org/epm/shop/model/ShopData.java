@@ -53,15 +53,15 @@ public abstract class ShopData extends AbstractModuleData {
     }
 
     public String toString() {
-        return "\n\tShop {"
-                + "\n\t\tuid: " + getUid()
-                + "\n\t\tid: " + getId()
-                + "\n\t\tname: " + getName()
-                + "\n\t\twebpage: " + getWebpage()
-                + "\n\t\taddress: " + getAddress()
-                + "\n\t\temail: " + getEmail()
-                + "\n\t\tphone: " + getPhone()
-                + "\n\t}";
+        return "Shop {"
+                + " uid: " + getUid()
+                + " id: " + getId()
+                + " name: " + getName()
+                + " webpage: " + getWebpage()
+                + " address: " + getAddress()
+                + " email: " + getEmail()
+                + " phone: " + getPhone()
+                + "}";
     }
 
 }

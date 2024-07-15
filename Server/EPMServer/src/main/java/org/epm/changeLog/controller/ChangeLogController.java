@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.epm.changeLog.model.ChangeLogDTO;
 import org.epm.changeLog.service.ChangeLogService;
-import org.epm.common.controller.AbstractRestController;
+import org.epm.common.controller.AbstractDependantResourceRestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/projects/{parentUid}/changelogs")
 @RequiredArgsConstructor
-public class ChangeLogController extends AbstractRestController<ChangeLogDTO> {
+public class ChangeLogController extends AbstractDependantResourceRestController<ChangeLogDTO> {
 
     private final ChangeLogService changeLogService;
 

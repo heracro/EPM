@@ -42,19 +42,30 @@ public abstract class MaterialData extends AbstractModuleData {
     @Enumerated(EnumType.STRING)
     private Unit unit;
 
+    public boolean isValidEntity() {
+        return getName() != null && getName().length() > 3
+                && (getNorm() == null || getNorm().length() > 3)
+                && (getDatasheet() == null || getDatasheet().length() > 4)
+                && getDimensions() != null && getDimensions().length() > 1
+                && getWeight() != null && getWeight() >= 0
+                && getTotalQty() != null && getTotalQty() >= 0
+                && getFreeQty() != null && getFreeQty() >= 0
+                && getFreeQty() <= getTotalQty() && getUnit() != null;
+    }
+
     public String toString() {
-        return "\n\tMaterial {"
-                + "\n\t\tuid: " + getUid()
-                + "\n\t\tid: " + getId()
-                + "\n\t\tname: " + getName()
-                + "\n\t\tnorm: " + getNorm()
-                + "\n\t\tdatasheet: " + getDatasheet()
-                + "\n\t\tdimensions: " + getDimensions()
-                + "\n\t\tweight: " + getWeight()
-                + "\n\t\ttotalQty: " + getTotalQty()
-                + "\n\t\tfreeQty: " + getFreeQty()
-                + "\n\t\tunit: " + getUnit()
-                + "\n\t}";
+        return "Material {"
+                + " uid: " + getUid()
+                + " id: " + getId()
+                + " name: " + getName()
+                + " norm: " + getNorm()
+                + " datasheet: " + getDatasheet()
+                + " dimensions: " + getDimensions()
+                + " weight: " + getWeight()
+                + " totalQty: " + getTotalQty()
+                + " freeQty: " + getFreeQty()
+                + " unit: " + getUnit()
+                + "}";
     }
 
 }

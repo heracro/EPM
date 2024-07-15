@@ -34,10 +34,4 @@ public class InvoiceDTO extends InvoiceData implements IDTO {
                 + ", action: " + getAction() + "}";
     }
 
-    @Override
-    public void setShop(ShopData shop) {
-        log.warn(ConsoleStringUtils.fontColor(Color.RED,
-                "InvoiceDTO::setShop(ShopData data)"));
-    }
-
 }

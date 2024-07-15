@@ -101,23 +101,21 @@ public abstract class DeliveryData extends AbstractModuleData {
     }
 
     public String toString() {
-        return "\n\tDelivery {"
-                + "\n\t\tuid: " + getUid()
-                + ",\n\t\tid: " + getId()
-                + ",\n\t\tstatus: " + getStatus()
-                + ",\n\t\tunitPrice: " + getUnitPrice()
-                + ",\n\t\ttotalPrice: " + getTotalPrice()
-                + ",\n\t\tqty: " + getQty()
-                + ",\n\t\tunit: " + getUnit()
-                + ",\n\t\tunitPrice: " + getUnitPrice()
-                + ",\n\t\ttotalPrice: " + getTotalPrice()
-                + ",\n\t\tqty: " + getQty()
-                + ",\n\t\tstatus: " + getStatus()
-                + "\n\t}";
+        return "Delivery {"
+                + " uid: " + getUid()
+                + ", id: " + getId()
+                + ", status: " + getStatus()
+                + ", unitPrice: " + getUnitPrice()
+                + ", totalPrice: " + getTotalPrice()
+                + ", qty: " + getQty()
+                + ", unit: " + getUnit()
+                + ", unitPrice: " + getUnitPrice()
+                + ", totalPrice: " + getTotalPrice()
+                + ", qty: " + getQty()
+                + ", status: " + getStatus()
+                + "}";
     }
 
     public abstract MaterialData getMaterial();
-    public abstract void setMaterial(MaterialData material);
     public abstract InvoiceData getInvoice();
-    public abstract void setInvoice(InvoiceData invoice);
 }

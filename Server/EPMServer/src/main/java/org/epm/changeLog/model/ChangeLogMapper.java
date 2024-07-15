@@ -15,10 +15,12 @@ public interface ChangeLogMapper extends IMapper<ChangeLogEntity, ChangeLogDTO> 
 
     @Override
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "timestamp", ignore = true)
     ChangeLogEntity toEntity(ChangeLogDTO dto);
 
     @Override
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "timestamp", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(ChangeLogDTO dto, @MappingTarget ChangeLogEntity entity);
 }

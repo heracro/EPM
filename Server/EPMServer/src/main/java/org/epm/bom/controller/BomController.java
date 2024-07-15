@@ -14,8 +14,6 @@ public class BomController extends AbstractDependantResourceRestController<BomDT
 
     private final BomService bomService;
 
-    private static final String DEFAULT_SORT_CATEGORY = "project.name";
-
     @Override
     public BomService getEntityService() {
         return bomService;

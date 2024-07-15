@@ -53,7 +53,7 @@ public abstract class ProjectData extends AbstractModuleData {
     private LocalDate materialsReadyDate;
 
     @Column(nullable = false)
-    private String projectLocationUrl;
+    private String projectLocation;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -71,7 +71,7 @@ public abstract class ProjectData extends AbstractModuleData {
     public boolean isValidEntity() {
         return getName() != null && getName().length() > 5
                 && (getBody() == null || getBody().length() > 20)
-                && (getProjectLocationUrl() == null || getProjectLocationUrl().length() > 13)
+                && (getProjectLocation() == null || getProjectLocation().length() > 13)
                 && (getWorkingHoursCount() == null || getWorkingHoursCount() > 0)
                 && getLocationType() != null && getCause() != null && getStatus() != null
                 && areDatesOk() && isStatusOk();
@@ -127,21 +127,21 @@ public abstract class ProjectData extends AbstractModuleData {
     }
 
     public String toString() {
-        return "\n\tProject {"
-                + "\n\t\tuid: " + getUid()
-                + ",\n\t\tid: " + getId()
-                + ",\n\t\tname: " + getName()
-                + ",\n\t\tplannedStartDate: " + getPlannedStartDate()
-                + ",\n\t\tplannedEndDate: " + getPlannedEndDate()
-                + ",\n\t\trealStartDate: " + getRealStartDate()
-                + ",\n\t\trealEndDate: " + getRealEndDate()
-                + ",\n\t\tworkingHoursCount: " + getWorkingHoursCount()
-                + ",\n\t\tmaterialsReadyDate: " + getMaterialsReadyDate()
-                + ",\n\t\tprojectLocationUrl: " + getProjectLocationUrl()
-                + ",\n\t\tlocationType: " + getLocationType()
-                + ",\n\t\tstatus: " + getStatus()
-                + ",\n\t\tcause: " + getCause()
-                + "\n\t}";
+        return "Project {"
+                + " uid: " + getUid()
+                + ", id: " + getId()
+                + ", name: " + getName()
+                + ", plannedStartDate: " + getPlannedStartDate()
+                + ", plannedEndDate: " + getPlannedEndDate()
+                + ", realStartDate: " + getRealStartDate()
+                + ", realEndDate: " + getRealEndDate()
+                + ", workingHoursCount: " + getWorkingHoursCount()
+                + ", materialsReadyDate: " + getMaterialsReadyDate()
+                + ", projectLocationUrl: " + getProjectLocation()
+                + ", locationType: " + getLocationType()
+                + ", status: " + getStatus()
+                + ", cause: " + getCause()
+                + "}";
     }
 
     public abstract List<? extends BomData> getBoms();

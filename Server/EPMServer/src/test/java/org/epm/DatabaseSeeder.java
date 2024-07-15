@@ -28,7 +28,7 @@ public class DatabaseSeeder {
 //        int projectCount = (int) projectRepository.count();
 //        if (matCount >= 10 * scale && projectCount >= 2 * scale
 //                && bomCount >= 5 * scale && deliveryCount >= 3 * scale) return;
-//        log.info("\033[36mNow in db:\n\t\tProjects: {}\n\t\tMaterials: {}\n\t\tBoms: {}\n\t\tDeliveries: {}\033[0m",
+//        log.info("\033[36mNow in db: Projects: {} Materials: {} Boms: {} Deliveries: {}\033[0m",
 //                projectCount, matCount, bomCount, deliveryCount);
 //        List<MaterialEntity> materials = new ArrayList<>(materialRepository.findAll());
 //        for (int i = matCount; i < 10 * scale; ++i) {

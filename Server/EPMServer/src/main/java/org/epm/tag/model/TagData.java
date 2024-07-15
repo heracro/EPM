@@ -21,19 +21,16 @@ public abstract class TagData extends AbstractModuleData {
     private Integer uid;
 
     @Column(nullable = false)
-    private TagType type;
+    private TagType tagType;
 
     @Column(nullable = false)
     private String name;
 
     @JsonIgnore
     public boolean isValidEntity() {
-        throw new UnsupportedOperationException("TagData::isValidEntity is not implemented yet");
+        return getTagType() != null && getName() != null;
     }
 
-    @JsonIgnore
-    public boolean isValidDTO() {
-        throw new UnsupportedOperationException("TagData::isValidDTO is not implemented yet");
-    }
+
 
 }

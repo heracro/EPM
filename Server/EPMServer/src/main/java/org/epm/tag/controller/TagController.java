@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/projects/{projectId}/tags")
+@RequestMapping("/tags")
 @RequiredArgsConstructor
 public class TagController extends AbstractRestController<TagDTO> {
 

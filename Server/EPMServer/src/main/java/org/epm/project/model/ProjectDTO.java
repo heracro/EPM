@@ -26,7 +26,7 @@ public class ProjectDTO extends ProjectData implements IDTO {
                 || getPlannedEndDate() != null || getRealStartDate() != null
                 || getRealEndDate() != null || getWorkingHoursCount() != null
                 || getCause() != null || getMaterialsReadyDate() != null
-                || getProjectLocationUrl() != null || getLocationType() != null
+                || getProjectLocation() != null || getLocationType() != null
                 || getStatus() != null || getAction() != null;
     }
 

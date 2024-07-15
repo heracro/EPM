@@ -3,14 +3,17 @@ package org.epm.task.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import org.epm.common.model.AbstractModuleData;
 import org.epm.project.model.ProjectData;
 import org.epm.task.enums.TaskStatus;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -28,21 +31,21 @@ public abstract class TaskData extends AbstractModuleData {
     private String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
     public String toString() {
-        return "\n\tTask {"
-                + "\n\tuid: " + getUid()
-                + ",\n\tid: " + getId()
-                + ",\n\tname: " + getName()
-                + ",\n\tdueDate: " + getDueDate()
-                + ",\n\tstatus: " + getStatus()
-                + ",\n\tproject: " + getProject().getName()
-                + "\n\t}";
+        return "Task {"
+                + "uid: " + getUid()
+                + ", id: " + getId()
+                + ", name: " + getName()
+                + ", dueDate: " + getDueDate()
+                + ", status: " + getStatus()
+                + ", project: " + getProject().getName()
+                + "}";
     }
 
     @JsonIgnore
@@ -50,11 +53,7 @@ public abstract class TaskData extends AbstractModuleData {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @JsonIgnore
-    public boolean isValidDTO() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+
 
     public abstract ProjectData getProject();
-    public abstract void setProject(ProjectData project);
 }

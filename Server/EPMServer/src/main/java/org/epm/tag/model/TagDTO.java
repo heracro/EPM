@@ -18,7 +18,7 @@ public class TagDTO extends TagData implements IDTO {
     @Override
     @JsonIgnore
     public boolean isValidDTO() {
-        return super.isValidDTO() || getAction() != null;
+        return getTagType() != null || getName() != null || getAction() != null;
     }
 
     @Override

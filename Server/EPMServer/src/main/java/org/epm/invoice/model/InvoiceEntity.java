@@ -8,12 +8,9 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
-import org.epm.common.utils.ConsoleStringUtils;
 import org.epm.delivery.model.DeliveryEntity;
-import org.epm.shop.model.ShopData;
 import org.epm.shop.model.ShopEntity;
 
-import java.awt.*;
 import java.util.List;
 
 @Slf4j
@@ -33,10 +30,4 @@ public class InvoiceEntity extends InvoiceData implements IEntity {
     @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DeliveryEntity> deliveries;
 
-    @Override
-    public void setShop(ShopData shop) {
-        log.warn(ConsoleStringUtils.fontColor(Color.RED,
-                "InvoiceEntity::setShop(ShopData shop)"));
-        this.shop = (ShopEntity) shop;
-    }
 }

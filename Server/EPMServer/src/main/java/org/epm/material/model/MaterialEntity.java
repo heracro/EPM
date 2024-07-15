@@ -17,14 +17,5 @@ import org.epm.common.model.IEntity;
 @EntityListeners(EntityListener.class)
 public class MaterialEntity extends MaterialData implements IEntity {
 
-    public boolean isValidEntity() {
-        return getName() != null && getName().length() > 3
-                && (getNorm() == null || getNorm().length() > 3)
-                && (getDatasheet() == null || getDatasheet().length() > 4)
-                && getDimensions() != null && getDimensions().length() > 1
-                && getWeight() != null && getWeight() >= 0
-                && getTotalQty() != null && getTotalQty() >= 0
-                && getFreeQty() != null && getFreeQty() >= 0
-                && getFreeQty() <= getTotalQty() && getUnit() != null;
-    }
+
 }

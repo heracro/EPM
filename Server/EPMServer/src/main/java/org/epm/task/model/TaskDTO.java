@@ -1,10 +1,12 @@
 package org.epm.task.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.epm.common.model.IDTO;
 import org.epm.project.model.ProjectDTO;
-import org.epm.project.model.ProjectData;
 
 @Getter
 @Setter
@@ -15,8 +17,10 @@ public class TaskDTO extends TaskData implements IDTO {
     private ProjectDTO project;
     private String action;
 
-    @Override
-    public void setProject(ProjectData project) {
-        this.project = (ProjectDTO) project;
+    @JsonIgnore
+    public boolean isValidDTO() {
+        return getName() != null || getDescription() != null || getDueDate() != null
+                || getStatus() != null || getProject() != null;
     }
+
 }

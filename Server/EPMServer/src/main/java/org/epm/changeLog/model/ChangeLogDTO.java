@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.epm.common.model.IDTO;
 import org.epm.project.model.ProjectDTO;
-import org.epm.project.model.ProjectData;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -25,8 +24,4 @@ public class ChangeLogDTO extends ChangeLogData implements IDTO {
         return super.isValidDTO() || getAction() != null;
     }
 
-    @Override
-    public void setProject(ProjectData project) {
-        this.project = (ProjectDTO) project;
-    }
 }

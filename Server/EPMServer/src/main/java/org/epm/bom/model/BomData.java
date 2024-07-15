@@ -29,14 +29,14 @@ public abstract class BomData extends AbstractModuleData {
     private Integer reservedQty;
 
     public String toString() {
-        return "\n\tBom {"
-                + "\n\t\tuid: " + getUid()
-                + ",\n\t\tid: " + getId()
-                + ",\n\t\tstatus: " + getStatus()
-                + ",\n\t\tproject uid: " + getProjectUid()
-                + ",\n\t\tmaterial uid: " + getMaterialUid()
-                + ",\n\t\tqty: " + getQty() + "(r. " + getReservedQty() + ")"
-                + "\n\t}";
+        return "Bom {"
+                + " uid: " + getUid()
+                + ", id: " + getId()
+                + ", status: " + getStatus()
+                + ", project uid: " + getProjectUid()
+                + ", material uid: " + getMaterialUid()
+                + ", qty: " + getQty() + "(r. " + getReservedQty() + ")"
+                + "}";
     }
 
     public abstract Integer getProjectUid();

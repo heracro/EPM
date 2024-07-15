@@ -69,20 +69,20 @@ public abstract class InvoiceData extends AbstractModuleData {
     }
 
     public String toString() {
-        return "\n\tInvoice {"
-                + "\n\t\tuid: " + getUid()
-                + ",\n\t\tid: " + getId()
-                + ",\n\t\torderDate: " + getOrderDate()
-                + ",\n\t\tdeliveryDate: " + getDeliveryDate()
-                + ",\n\t\tinvoiceDate: " + getInvoiceDate()
-                + ",\n\t\tpaymentDueDate: " + getPaymentDueDate()
-                + ",\n\t\tpaymentDate: " + getPaymentDate()
-                + ",\n\t\tinvoiceNumber: " + getInvoiceNumber()
-                + ",\n\t\tparcelTrackingNumber: " + getParcelTrackingNumber()
-                + ",\n\t\tshop: " + getShop()
-                + ",\n\t\ttotalAmount: " + getTotalAmount()
-                + ",\n\t\tstatus: " + getStatus()
-                + "\n\t}";
+        return "Invoice {"
+                + " uid: " + getUid()
+                + ", id: " + getId()
+                + ", orderDate: " + getOrderDate()
+                + ", deliveryDate: " + getDeliveryDate()
+                + ", invoiceDate: " + getInvoiceDate()
+                + ", paymentDueDate: " + getPaymentDueDate()
+                + ", paymentDate: " + getPaymentDate()
+                + ", invoiceNumber: " + getInvoiceNumber()
+                + ", parcelTrackingNumber: " + getParcelTrackingNumber()
+                + ", shop: " + getShop()
+                + ", totalAmount: " + getTotalAmount()
+                + ", status: " + getStatus()
+                + "}";
     }
 
     private boolean areDatesOk() {
@@ -137,6 +137,5 @@ public abstract class InvoiceData extends AbstractModuleData {
     }
 
     public abstract ShopData getShop();
-    public abstract void setShop(ShopData shop);
 
 }

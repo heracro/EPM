@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.epm.common.model.EntityListener;
 import org.epm.common.model.IDependantEntity;
-import org.epm.project.model.ProjectData;
 import org.epm.project.model.ProjectEntity;
 
 @Getter
@@ -27,11 +26,6 @@ public class TaskEntity extends TaskData implements IDependantEntity<ProjectEnti
     @ManyToOne
     @JoinColumn(name = "project_uid", referencedColumnName = "uid")
     private ProjectEntity project;
-
-    @Override
-    public void setProject(ProjectData project) {
-        this.project = (ProjectEntity) project;
-    }
 
     @Override
     public void setParent(ProjectEntity projectEntity) {

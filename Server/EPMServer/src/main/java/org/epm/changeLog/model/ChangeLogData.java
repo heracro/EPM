@@ -56,16 +56,15 @@ public abstract class ChangeLogData extends AbstractModuleData {
     }
 
     public String toString() {
-        return "\n\tChangeLog {"
-                + "\n\t\tUid: " + getUid()
-                + ",\n\t\tid: " + getId()
-                + ",\n\t\tTimestamp: " + getTimestamp()
-                + ",\n\t\tSource: " + getSource()
-                + ",\n\t\tChangeType: " + getChangeType()
-                + ",\n\t\tAuthor: " + getAuthor()
-                + "\n\t}";
+        return "ChangeLog {"
+                + " Uid: " + getUid()
+                + ", id: " + getId()
+                + ", Timestamp: " + getTimestamp()
+                + ", Source: " + getSource()
+                + ", ChangeType: " + getChangeType()
+                + ", Author: " + getAuthor()
+                + "}";
     }
 
     public abstract ProjectData getProject();
-    public abstract void setProject(ProjectData project);
 }

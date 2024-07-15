@@ -77,4 +77,8 @@ public abstract class AbstractService<Entity extends IEntity, DTO extends IDTO>
     private EntityNotFoundException throwNotFound() {
         throw new EntityNotFoundException(getEntityName() + " not found");
     }
+
+    public Entity findEntityByUid(Integer uid) {
+        return getRepository().findByUid(uid).orElseThrow(this::throwNotFound);
+    }
 }
