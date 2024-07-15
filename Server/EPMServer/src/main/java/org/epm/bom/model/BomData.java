@@ -1,30 +1,23 @@
 package org.epm.bom.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
 import org.epm.bom.enums.BomStatus;
-import org.epm.common.model.DataModel;
-import org.epm.material.model.MaterialData;
-import org.epm.project.model.ProjectData;
+import org.epm.common.model.AbstractModuleData;
 
-@Slf4j
-@Data
+@Getter
+@Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-public abstract class BomData implements DataModel {
+@MappedSuperclass
+public abstract class BomData extends AbstractModuleData {
 
     @Column(nullable = false, unique = true)
-    private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private ProjectData project;
-
-    @ManyToOne
-    @JoinColumn(name = "material_id", nullable = false)
-    private MaterialData material;
+    private Integer uid;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -35,24 +28,17 @@ public abstract class BomData implements DataModel {
 
     private Integer reservedQty;
 
-    @JsonIgnore
-    @Override
-    public boolean isValidEntity() {
-        return getProject() != null && getMaterial() != null
-                && getStatus() != null && getQty() != null && getQty() > 0;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isValidDTO() {
-        return false;
-    }
-
     public String toString() {
-        return "Bom{(" + getId() + "), "
-                + project.getName() + "(" + project.getId() + "), "
-                + material.getName() + "(" + material.getId() + "), tot. "
-                + qty + ", res. " + reservedQty + "}";
+        return "\n\tBom {"
+                + "\n\t\tuid: " + getUid()
+                + ",\n\t\tid: " + getId()
+                + ",\n\t\tstatus: " + getStatus()
+                + ",\n\t\tproject uid: " + getProjectUid()
+                + ",\n\t\tmaterial uid: " + getMaterialUid()
+                + ",\n\t\tqty: " + getQty() + "(r. " + getReservedQty() + ")"
+                + "\n\t}";
     }
 
+    public abstract Integer getProjectUid();
+    public abstract Integer getMaterialUid();
 }

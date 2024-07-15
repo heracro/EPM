@@ -3,36 +3,35 @@ package org.epm.project.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.epm.bom.model.BomEntity;
-import org.epm.common.model.DataModel;
+import org.epm.bom.model.BomData;
+import org.epm.common.model.AbstractModuleData;
 import org.epm.project.enums.LocationType;
 import org.epm.project.enums.ProjectCause;
 import org.epm.project.enums.ProjectStatus;
-import org.epm.tag.model.TagEntity;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Getter
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-public abstract class ProjectData implements DataModel {
+@MappedSuperclass
+public abstract class ProjectData extends AbstractModuleData {
 
     @Column(nullable = false, unique = true)
-    private Integer id;
+    private Integer uid;
 
     @Column(nullable = false)
     private String name;
 
     @Column(columnDefinition = "TEXT")
-    @ToString.Exclude
     private String body;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -50,10 +49,6 @@ public abstract class ProjectData implements DataModel {
     @Column(nullable = false)
     private Integer workingHoursCount;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private ProjectCause cause;
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate materialsReadyDate;
 
@@ -68,17 +63,11 @@ public abstract class ProjectData implements DataModel {
     @Enumerated(EnumType.STRING)
     private ProjectStatus status;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<BomEntity> boms;
-
-    @ManyToMany
-    @JoinTable(name = "project_tag", joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Set<TagEntity> tags = new HashSet<>();
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProjectCause cause;
 
     @JsonIgnore
-    @Override
     public boolean isValidEntity() {
         return getName() != null && getName().length() > 5
                 && (getBody() == null || getBody().length() > 20)
@@ -88,16 +77,7 @@ public abstract class ProjectData implements DataModel {
                 && areDatesOk() && isStatusOk();
     }
 
-    @JsonIgnore
-    @Override
-    public boolean isValidDTO() {
-        return getName() != null || getBody() != null || getPlannedStartDate() != null
-                || getPlannedEndDate() != null || getRealStartDate() != null
-                || getRealEndDate() != null || getWorkingHoursCount() != null
-                || getCause() != null || getMaterialsReadyDate() != null
-                || getProjectLocationUrl() != null || getLocationType() != null
-                || getStatus() != null;
-    }
+
 
     private boolean areDatesOk() {
         return arePlannedDatesOk() && areRealDatesOk() && isMaterialsReadyDateOk();
@@ -147,7 +127,22 @@ public abstract class ProjectData implements DataModel {
     }
 
     public String toString() {
-        return "Project {" + getId() + ", " + getName() + ", "
-                + getCause() + ", " + getStatus() + "}";
+        return "\n\tProject {"
+                + "\n\t\tuid: " + getUid()
+                + ",\n\t\tid: " + getId()
+                + ",\n\t\tname: " + getName()
+                + ",\n\t\tplannedStartDate: " + getPlannedStartDate()
+                + ",\n\t\tplannedEndDate: " + getPlannedEndDate()
+                + ",\n\t\trealStartDate: " + getRealStartDate()
+                + ",\n\t\trealEndDate: " + getRealEndDate()
+                + ",\n\t\tworkingHoursCount: " + getWorkingHoursCount()
+                + ",\n\t\tmaterialsReadyDate: " + getMaterialsReadyDate()
+                + ",\n\t\tprojectLocationUrl: " + getProjectLocationUrl()
+                + ",\n\t\tlocationType: " + getLocationType()
+                + ",\n\t\tstatus: " + getStatus()
+                + ",\n\t\tcause: " + getCause()
+                + "\n\t}";
     }
+
+    public abstract List<? extends BomData> getBoms();
 }

@@ -1,25 +1,40 @@
 package org.epm.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.epm.bom.model.BomEntity;
 import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
+import org.epm.tag.model.TagEntity;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "projects")
+@TableGenerator(
+        name = "project_gen",
+        table = "id_gen",
+        pkColumnName = "gen_name",
+        valueColumnName = "gen_val",
+        pkColumnValue = "project_id",
+        allocationSize = 1)
 @NoArgsConstructor
 @EntityListeners(EntityListener.class)
 public class ProjectEntity extends ProjectData implements IEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long privateId;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<TagEntity> tags = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BomEntity> boms;
 
     @PrePersist
     @PreUpdate
@@ -27,9 +42,4 @@ public class ProjectEntity extends ProjectData implements IEntity {
         if (getWorkingHoursCount() == null) setWorkingHoursCount(0);
     }
 
-    @Override
-    public String toString() {
-        return super.toString().substring(0, super.toString().length()-2)
-                + ", privateId: " + getPrivateId() + "}";
-    }
 }

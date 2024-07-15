@@ -1,23 +1,23 @@
 package org.epm.project.service;
 
+import lombok.RequiredArgsConstructor;
 import org.epm.common.service.AbstractService;
 import org.epm.project.model.ProjectDTO;
 import org.epm.project.model.ProjectEntity;
 import org.epm.project.model.ProjectMapper;
 import org.epm.project.repository.ProjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectService extends AbstractService<ProjectEntity, ProjectDTO> {
 
     private final ProjectRepository projectRepository;
+    private final ProjectMapper projectMapper;
 
-    @Autowired
-    public ProjectService(ProjectRepository projectRepository,
-                          ProjectMapper projectMapper) {
-        super(projectMapper);
-        this.projectRepository = projectRepository;
+    @Override
+    public ProjectMapper getMapper() {
+        return projectMapper;
     }
 
     @Override

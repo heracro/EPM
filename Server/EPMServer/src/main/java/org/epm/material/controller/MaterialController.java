@@ -1,51 +1,24 @@
 package org.epm.material.controller;
 
-import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.epm.common.configuration.Config;
 import org.epm.common.controller.AbstractRestController;
-import org.epm.delivery.model.DeliveryDTO;
 import org.epm.material.model.MaterialDTO;
 import org.epm.material.service.MaterialService;
-import org.epm.mediator.IMaterialDeliveryMediator;
-import org.epm.mediator.MaterialDeliveryMediator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequestMapping("/materials")
+@RequiredArgsConstructor
 public class MaterialController extends AbstractRestController<MaterialDTO> {
 
-    private final IMaterialDeliveryMediator mediator;
-
-    @Autowired
-    public MaterialController(MaterialService materialService, MaterialDeliveryMediator mediator) {
-        super(materialService);
-        this.mediator = mediator;
-    }
+    private final MaterialService service;
 
     @Override
-    public String getMapping() {
-        return "/materials";
+    public MaterialService getEntityService() {
+        return service;
     }
-
-    //.GET /materials/{mid}/deliveries -> find all deliveries for given mid
-    @GetMapping("/{id}/deliveries")
-    public ResponseEntity<?> findDeliveriesForMaterial(
-            @PathVariable Long id,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "" + Config.DEFAULT_PAGE_SIZE) int size) {
-        try {
-            Page<DeliveryDTO> deliveries = mediator.findDeliveriesForMaterialId(id, PageRequest.of(page, size));
-            return ResponseEntity.ok(deliveries);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 
 }

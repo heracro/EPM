@@ -1,37 +1,60 @@
 package org.epm.material.model;
 
-import lombok.Data;
-import org.epm.common.model.DataModel;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.epm.common.model.AbstractModuleData;
 import org.epm.material.enums.Unit;
 
-@Data
-public abstract class MaterialData implements DataModel {
+@Getter
+@Setter
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@MappedSuperclass
+public abstract class MaterialData extends AbstractModuleData {
 
-    private Integer id;
+    @Column(nullable = false, unique = true)
+    private Integer uid;
 
-    @Override
-    public boolean isValidEntity() {
-        return getName() != null && getName().length() > 3
-                && (getNorm() == null || getNorm().length() > 3)
-                && (getDatasheet() == null || getDatasheet().length() > 4)
-                && getDimensions() != null && getDimensions().length() > 1
-                && getWeight() != null && getWeight() >= 0
-                && getTotalQty() != null && getTotalQty() >= 0
-                && getFreeQty() != null && getFreeQty() >= 0
-                && getFreeQty() <= getTotalQty() && getUnit() != null;
+    @Column(nullable = false)
+    private String name;
+
+    private String norm;
+
+    private String datasheet;
+
+    @Column(nullable = false)
+    private String dimensions;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(nullable = false)
+    private Float weight;
+
+    @Column(nullable = false)
+    private Integer totalQty;
+
+    @Column(nullable = false)
+    private Integer freeQty;
+
+    @Column(nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
+    private Unit unit;
+
+    public String toString() {
+        return "\n\tMaterial {"
+                + "\n\t\tuid: " + getUid()
+                + "\n\t\tid: " + getId()
+                + "\n\t\tname: " + getName()
+                + "\n\t\tnorm: " + getNorm()
+                + "\n\t\tdatasheet: " + getDatasheet()
+                + "\n\t\tdimensions: " + getDimensions()
+                + "\n\t\tweight: " + getWeight()
+                + "\n\t\ttotalQty: " + getTotalQty()
+                + "\n\t\tfreeQty: " + getFreeQty()
+                + "\n\t\tunit: " + getUnit()
+                + "\n\t}";
     }
 
-    @Override
-    public boolean isValidDTO() {
-        return false;
-    }
-
-    public abstract String getName();
-    public abstract String getNorm();
-    public abstract String getDatasheet();
-    public abstract String getDimensions();
-    public abstract Float getWeight();
-    public abstract Integer getTotalQty();
-    public abstract Integer getFreeQty();
-    public abstract Unit getUnit();
 }

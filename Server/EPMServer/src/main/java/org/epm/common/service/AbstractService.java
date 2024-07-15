@@ -15,66 +15,66 @@ import java.util.Optional;
 public abstract class AbstractService<Entity extends IEntity, DTO extends IDTO>
         implements IService<DTO> {
 
-    protected final IMapper<Entity, DTO> mapper;
+    public abstract IMapper<Entity, DTO> getMapper();
+    protected abstract IRepository<Entity> getRepository();
+    @Override
+    public abstract String getEntityName();
 
     @Override
     public DTO createEntity(final DTO dto) throws IllegalArgumentException {
-        Entity entity = mapper.toEntity(dto);
+        Entity entity = getMapper().toEntity(dto);
         if (!entity.isValidEntity()) {
-            throw throwIllegalArgument();
+            throwIllegalArgument(entity);
         }
-        return mapper.toDto(getRepository().save(entity));
+        return getMapper().toDto(getRepository().save(entity));
     }
 
     @Override
-    public DTO replaceEntity(final Long id, final DTO dto)
+    public DTO replaceEntity(final Integer uid, final DTO dto)
             throws IllegalArgumentException, EntityNotFoundException {
-        Entity replacedEntity = getRepository().findById(id).orElseThrow(this::throwNotFound);
-        Entity replacementEntity = mapper.toEntity(dto);
+        Entity replacedEntity = getRepository().findByUid(uid).orElseThrow(this::throwNotFound);
+        Entity replacementEntity = getMapper().toEntity(dto);
+        replacementEntity.setUid(replacedEntity.getUid());
         replacementEntity.setId(replacedEntity.getId());
         if(!replacementEntity.isValidEntity()) {
-            throw throwIllegalArgument();
+            throwIllegalArgument(replacedEntity);
         }
-        return mapper.toDto(getRepository().save(replacementEntity));
+        return getMapper().toDto(getRepository().save(replacementEntity));
+    }
+
+    @Override
+    public DTO updateEntity(final Integer uid, final DTO dto)
+            throws EntityNotFoundException, IllegalArgumentException {
+        Entity existingEntity = getRepository().findByUid(uid).orElseThrow(this::throwNotFound);
+        getMapper().updateEntityFromDto(dto, existingEntity);
+        if (!existingEntity.isValidEntity()) {
+            throwIllegalArgument(existingEntity);
+        }
+        return getMapper().toDto(getRepository().save(existingEntity));
+    }
+
+    @Override
+    public void deleteEntity(final Integer uid) throws EntityNotFoundException {
+        Entity entity = getRepository().findByUid(uid).orElseThrow(this::throwNotFound);
+        getRepository().deleteById(entity.getId());
     }
 
     @Override
     public Page<DTO> findAll(final Pageable pageable) {
         Page<Entity> entityPage = getRepository().findAll(pageable);
-        return entityPage.map(mapper::toDto);
+        return entityPage.map(getMapper()::toDto);
     }
 
     @Override
-    public DTO findById(final Long id) throws EntityNotFoundException {
-        Optional<Entity> optionalEntity = getRepository().findById(id);
-        return optionalEntity.map(mapper::toDto).orElseThrow(this::throwNotFound);
+    public DTO findByUid(final Integer uid) throws EntityNotFoundException {
+        Optional<Entity> optionalEntity = getRepository().findByUid(uid);
+        return optionalEntity.map(getMapper()::toDto).orElseThrow(this::throwNotFound);
     }
 
-    @Override
-    public DTO updateEntity(final Long id, final DTO dto)
-            throws EntityNotFoundException, IllegalArgumentException {
-        Entity existingEntity = getRepository().findById(id).orElseThrow(this::throwNotFound);
-        mapper.updateEntityFromDto(dto, existingEntity);
-        if (!existingEntity.isValidEntity()) {
-            throw throwIllegalArgument();
-        }
-        return mapper.toDto(getRepository().save(existingEntity));
-    }
-
-    @Override
-    public void deleteEntity(final Long id) throws EntityNotFoundException {
-        getRepository().findById(id).orElseThrow(this::throwNotFound);
-        getRepository().deleteById(id);
-    }
-
-    private IllegalArgumentException throwIllegalArgument() {
-        return new IllegalArgumentException(getEntityName() + " has invalid values");
+    private void throwIllegalArgument(Entity entity) {
+        throw new IllegalArgumentException(getEntityName() + " has invalid values: " + entity.toString());
     }
     private EntityNotFoundException throwNotFound() {
-        return new EntityNotFoundException(getEntityName() + " not found");
+        throw new EntityNotFoundException(getEntityName() + " not found");
     }
-
-    protected abstract IRepository<Entity> getRepository();
-    @Override
-    public abstract String getEntityName();
 }

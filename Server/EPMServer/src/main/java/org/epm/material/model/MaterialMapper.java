@@ -10,9 +10,11 @@ public interface MaterialMapper extends IMapper<MaterialEntity, MaterialDTO> {
     MaterialMapper INSTANCE = Mappers.getMapper(MaterialMapper.class);
 
     @Override
+    @Mapping(target = "action", ignore = true)
     MaterialDTO toDto(MaterialEntity materialEntity);
 
     @Override
+    @Mapping(target = "id", ignore = true)
     MaterialEntity toEntity(MaterialDTO materialDTO);
 
     @Override

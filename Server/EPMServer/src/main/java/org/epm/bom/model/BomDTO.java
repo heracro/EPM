@@ -2,32 +2,29 @@ package org.epm.bom.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.epm.common.model.IDTO;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @JsonTypeName("Bom")
 public class BomDTO extends BomData implements IDTO {
 
+    private Integer projectUid;
+
+    private Integer materialUid;
+
+    private String action;
+
     @JsonIgnore
     @Override
     public boolean isValidDTO() {
-        return super.isValidDTO() || getAction() != null;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString().substring(0, super.toString().length()-2)
-                + ", action: " + getAction();
-    }
-
-    @Override
-    public String getAction() {
-        return null;
+        return getStatus() != null || getQty() != null || getReservedQty() != null
+                || getProjectUid() != null || getMaterialUid() != null
+                || getAction() != null;
     }
 
 }

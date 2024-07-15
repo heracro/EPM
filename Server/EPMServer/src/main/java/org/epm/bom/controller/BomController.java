@@ -1,24 +1,24 @@
 package org.epm.bom.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.epm.bom.model.BomDTO;
 import org.epm.bom.service.BomService;
-import org.epm.common.controller.AbstractRestController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.epm.common.controller.AbstractDependantResourceRestController;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/projects/{projectId}/boms")
-public class BomController extends AbstractRestController<BomDTO> {
+@RequestMapping("/projects/{parentUid}/boms")
+@RequiredArgsConstructor
+public class BomController extends AbstractDependantResourceRestController<BomDTO> {
 
-    @Autowired
-    public BomController(BomService bomService) {
-        super(bomService);
-    }
+    private final BomService bomService;
 
+    private static final String DEFAULT_SORT_CATEGORY = "project.name";
 
     @Override
-    public String getMapping() {
-        return "/projects/{projectId}/boms";
+    public BomService getEntityService() {
+        return bomService;
     }
+
 }

@@ -1,24 +1,38 @@
 package org.epm.bom.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.epm.bom.enums.BomStatus;
 import org.epm.common.model.EntityListener;
-import org.epm.common.model.IEntity;
+import org.epm.common.model.IDependantEntity;
+import org.epm.material.model.MaterialEntity;
+import org.epm.project.model.ProjectEntity;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "boms")
+@TableGenerator(
+        name = "bom_gen",
+        table = "id_gen",
+        pkColumnName = "gen_name",
+        valueColumnName = "gen_val",
+        pkColumnValue = "bom_id",
+        allocationSize = 1)
 @NoArgsConstructor
 @EntityListeners(EntityListener.class)
-public class BomEntity extends BomData implements IEntity {
+public class BomEntity extends BomData implements IDependantEntity<ProjectEntity> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long privateId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_uid", referencedColumnName = "uid", nullable = false)
+    private ProjectEntity project;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "material_uid", referencedColumnName = "uid", nullable = false)
+    private MaterialEntity material;
 
     @PrePersist
     @PreUpdate
@@ -27,10 +41,30 @@ public class BomEntity extends BomData implements IEntity {
         if (getStatus() == null) setStatus(BomStatus.MISSING);
     }
 
+    @JsonIgnore
     @Override
-    public String toString() {
-        return super.toString().substring(0, super.toString().length()-2)
-                + ", privateId: " + getPrivateId();
+    public boolean isValidEntity() {
+        return getProject() != null && getMaterial() != null
+                && getStatus() != null && getQty() != null && getQty() > 0;
     }
 
+    @Override
+    public void setParent(ProjectEntity parent) {
+        setProject(parent);
+    }
+
+    @Override
+    public ProjectEntity getParent() {
+        return project;
+    }
+
+    @Override
+    public Integer getProjectUid() {
+        return project.getUid();
+    }
+
+    @Override
+    public Integer getMaterialUid() {
+        return material.getUid();
+    }
 }

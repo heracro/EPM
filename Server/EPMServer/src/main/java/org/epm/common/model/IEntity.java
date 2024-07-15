@@ -1,13 +1,25 @@
 package org.epm.common.model;
 
-public interface IEntity extends DataModel {
+public interface IEntity {
 
-    Long getPrivateId();
-    void setPrivateId(Long id);
+    Integer getUid();
+    void setUid(Integer id);
+    Long getId();
+    void setId(Long id);
+    boolean isValidEntity();
 
     default void initializeId() {
-        if (getId() == null || getId() == 0) {
-            setId((int)(Math.random() * 999999 + 1));
+        if (getUid() == null || getUid() == 0) {
+            setUid((int)(Math.random() * 999999 + 1));
         }
     }
+
+    private Long getAction() {
+        throw new UnsupportedOperationException("Action is not available in DTO");
+    }
+
+    private void setAction(String action) {
+        throw new UnsupportedOperationException("Action is not available in DTO");
+    }
+
 }

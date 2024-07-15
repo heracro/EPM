@@ -4,12 +4,11 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.epm.common.model.AbstractModuleData;
 import org.epm.common.model.IDTO;
-import org.epm.common.service.IService;
+import org.epm.common.service.IDependantService;
 import org.epm.common.utils.FontColor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +16,19 @@ import org.springframework.web.bind.annotation.*;
 import static org.epm.common.utils.ConsoleStringUtils.fontColor;
 
 @Slf4j
-public abstract class AbstractRestController<DTO extends AbstractModuleData & IDTO> {
+public abstract class AbstractDependantResourceRestController
+        <DTO extends AbstractModuleData & IDTO> {
 
-    public abstract IService<DTO> getEntityService();
+    public abstract IDependantService<DTO> getEntityService(); //dependant
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody final DTO dto) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Creating entity: {}", dto));
+    public ResponseEntity<?> create(
+            @PathVariable final Integer parentUid,
+            @RequestBody final DTO dto) {
+
+        //log.info(fontColor(FontColor.BRIGHT_GREEN, "Creating entity: {} under parent uid {}", dto, parentUid));
         try {
-            DTO createdDto = getEntityService().createEntity(dto);
+            DTO createdDto = getEntityService().createEntity(parentUid, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Failed to create "
@@ -35,12 +38,14 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
 
     @PutMapping("/{uid}")
     public ResponseEntity<?> replace(
+            @PathVariable final Integer parentUid,
             @PathVariable final Integer uid,
             @RequestBody final DTO dto) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Replacing {} uid {} with new entity: {}",
-                getEntityService().getEntityName(), uid, dto));
+
+        log.info(fontColor(FontColor.BRIGHT_GREEN, "Replacing {} uid {} under parentUid {} with new entity: {}",
+                getEntityService().getEntityName(), uid, parentUid, dto));
         try {
-            DTO replaced = getEntityService().replaceEntity(uid, dto);
+            DTO replaced = getEntityService().replaceEntity(parentUid, uid, dto);
             return ResponseEntity.ok(replaced);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -49,38 +54,19 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
         }
     }
 
-    @GetMapping
-    public ResponseEntity<Page<DTO>> findAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "name") String sort,
-            @RequestParam(defaultValue = "asc") String direction) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding all {}s", getEntityService().getEntityName()));
-        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
-        return ResponseEntity.ok(getEntityService().findAll(pageable));
-    }
-
-    @GetMapping("/{uid}")
-    public ResponseEntity<DTO> findByUid(@PathVariable Integer uid) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding {} by uid {}", getEntityService().getEntityName(), uid));
-        try {
-            return ResponseEntity.ok(getEntityService().findByUid(uid));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @PatchMapping("/{uid}")
     public ResponseEntity<?> updateMaterial(
-            @PathVariable Integer uid, @RequestBody DTO dto) {
+            @PathVariable final Integer parentUid,
+            @PathVariable final Integer uid,
+            @RequestBody final DTO dto) {
+
         log.info(fontColor(FontColor.BRIGHT_GREEN, "Updating {} uid {} with new entity: {}",
                 getEntityService().getEntityName(), uid, dto));
         if (!dto.isValidDTO()) {
             return ResponseEntity.badRequest().body("Invalid request body");
         }
         try {
-            DTO updatedEntity = getEntityService().updateEntity(uid, dto);
+            DTO updatedEntity = getEntityService().updateEntity(parentUid, uid, dto);
             return ResponseEntity.ok(updatedEntity);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -90,11 +76,37 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
     }
 
     @DeleteMapping("/{uid}")
-    public ResponseEntity<?> deleteMaterial(@PathVariable Integer uid) {
+    public ResponseEntity<?> deleteMaterial(
+            @PathVariable final Integer parentUid,
+            @PathVariable Integer uid) {
+
         log.info(fontColor(FontColor.BRIGHT_GREEN, "Deleting {} uid {}", getEntityService().getEntityName(), uid));
         try {
-            getEntityService().deleteEntity(uid);
+            getEntityService().deleteEntity(parentUid, uid);
             return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DTO>> findAll(
+            @PathVariable final Integer parentUid,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding all {}s", getEntityService().getEntityName()));
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(getEntityService().findAllByParentUid(parentUid, pageable));
+    }
+
+    @GetMapping("/{uid}")
+    public ResponseEntity<DTO> findByUid(
+            @PathVariable final Integer parentUid,
+            @PathVariable final Integer uid) {
+
+        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding {} by uid {}", getEntityService().getEntityName(), uid));
+        try {
+            return ResponseEntity.ok(getEntityService().findByUidAndParentUid(parentUid, uid));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
