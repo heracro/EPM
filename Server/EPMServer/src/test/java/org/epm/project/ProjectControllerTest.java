@@ -1,7 +1,6 @@
 package org.epm.project;
 
-import org.epm.GenericControllerTest;
-import org.epm.common.model.IMapper;
+import org.epm.GenericMainResourcesControllerTest;
 import org.epm.project.controller.ProjectController;
 import org.epm.project.model.ProjectDTO;
 import org.epm.project.model.ProjectEntity;
@@ -18,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProjectControllerTest
-        extends GenericControllerTest<ProjectEntity, ProjectDTO> {
+        extends GenericMainResourcesControllerTest<ProjectEntity, ProjectDTO> {
 
     @Autowired
     private ProjectController projectController;
@@ -32,27 +31,13 @@ public class ProjectControllerTest
     private ProjectMapper projectMapper;
 
     @Override
-    protected IMapper<ProjectEntity, ProjectDTO> getMapper() {
-        return projectMapper;
-    }
-
-    @Override
     protected ProjectTestParameterProvider getTestParameterProvider() {
         return projectTestParameterProvider;
     }
 
     @Override
-    protected ProjectController getController() {
-        return projectController;
+    protected String getMapping() {
+        return "/projects";
     }
 
-    @Override
-    protected ProjectService getService() {
-        return projectService;
-    }
-
-    @Override
-    protected ProjectRepository getRepository() {
-        return projectRepository;
-    }
 }

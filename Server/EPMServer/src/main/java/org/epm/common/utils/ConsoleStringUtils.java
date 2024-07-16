@@ -18,6 +18,7 @@ public class ConsoleStringUtils {
         return result.toString();
     }
 
+
     public static String bold(String template, Object... args) {
         return "\033[1m" + buildString(template, args) + "\033[22m";
     }

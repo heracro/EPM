@@ -1,21 +1,23 @@
 package org.epm.project;
 
 import jakarta.validation.constraints.NotNull;
-import org.epm.AbstractTestParameterProvider;
+import org.epm.AbstractMainTestParameterProvider;
 import org.epm.common.configuration.Config;
 import org.epm.common.utils.RandomUtils;
+import org.epm.project.enums.ProjectStatus;
 import org.epm.project.model.ProjectDTO;
 import org.epm.project.model.ProjectEntity;
 import org.epm.project.model.ProjectMapper;
-import org.epm.project.enums.ProjectStatus;
+import org.epm.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 @Component
 public class ProjectTestParameterProvider
-        extends AbstractTestParameterProvider<ProjectEntity, ProjectDTO> {
+        extends AbstractMainTestParameterProvider<ProjectEntity, ProjectDTO> {
 
     @Autowired
     private ProjectMapper mapper;
@@ -35,16 +37,45 @@ public class ProjectTestParameterProvider
     }
 
     @Override
-    protected ProjectEntity randomValidEntity() {
-        return randomizer.provideValidEntity();
+    protected ProjectRepository getRepository() {
+        return null;
     }
 
     @Override
-    protected ProjectDTO emptyDTO() {
-        return randomizer.provideEmptyDTO();
+    protected Integer provideUidOfExistingEntity() {
+        return 0;
     }
 
     @Override
+    protected Integer provideUidOfInvalidEntity() {
+        return 0;
+    }
+
+    @Override
+    protected Integer provideUidOfUnconstrainedEntity() {
+        return 0;
+    }
+
+    @Override
+    protected Stream<ProjectDTO> provideFewDTOsWhichAreValidEntity() {
+        return Stream.empty();
+    }
+
+    @Override
+    protected Stream<ProjectDTO> provideFewDTOsWhichAreInvalidEntity() {
+        return Stream.empty();
+    }
+
+    @Override
+    protected Stream<ProjectDTO> provideDTOsWithSingleValidAttribute() {
+        return Stream.empty();
+    }
+
+    @Override
+    protected Stream<ProjectDTO> provideDTOsWithSingleInvalidAttribute() {
+        return Stream.empty();
+    }
+
     protected ProjectDTO provideSingleAttribute(@NotNull ProjectDTO dto, int caseNumber) {
         ProjectRandomizer randomizer = new ProjectRandomizer();
         switch (caseNumber % getDTOAttrCount()) {
@@ -65,7 +96,6 @@ public class ProjectTestParameterProvider
         return dto;
     }
 
-    @Override
     protected ProjectDTO breakSingleAttribute(@NotNull ProjectDTO dto, int caseNumber) {
         switch (caseNumber % getDTOAttrCount()) {
             case 0 -> dto.setName("" + RandomUtils.randomInt(100));
@@ -94,7 +124,7 @@ public class ProjectTestParameterProvider
                 dto.setMaterialsReadyDate(Config.FAR_FAR_DATE);
                 dto.setStatus(ProjectStatus.ONGOING);
             }
-            case 9 -> dto.setProjectLocationUrl("." + RandomUtils.randomInt(10));
+            case 9 -> dto.setProjectLocation("." + RandomUtils.randomInt(10));
             case 10 -> dto.setLocationType(null);
             case 11 -> dto.setStatus(null);
         }

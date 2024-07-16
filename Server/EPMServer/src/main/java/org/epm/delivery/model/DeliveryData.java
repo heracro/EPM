@@ -53,19 +53,26 @@ public abstract class DeliveryData extends AbstractModuleData {
                 || getTotalPrice() != null || getQty() != null || getInvoice() != null;
     }
 
-    void setUnitPrice(Float unitPrice) {
+    public void setQty(Integer qty) {
+        this.qty = qty;
+        if (unitPrice != null && unitPrice > 0) totalPrice = unitPrice * qty;
+        else if (totalPrice != null && totalPrice > 0) unitPrice = totalPrice / qty;
+        else unitPrice = totalPrice = 0f;
+    }
+
+    public void setUnitPrice(Float unitPrice) {
         this.unitPrice = unitPrice;
         if (qty == null) qty = 0;
         this.totalPrice = unitPrice * qty;
     }
 
-    void setTotalPrice(Float totalPrice) {
+    public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
         if (qty == null) qty = 0;
         this.unitPrice = totalPrice / qty;
     }
 
-    private boolean isStatusOk() {
+    public boolean isStatusOk() {
         if (getStatus() == null) return false;
         switch (getStatus()) {
             case SHOPPING_LIST -> {
@@ -117,5 +124,6 @@ public abstract class DeliveryData extends AbstractModuleData {
     }
 
     public abstract MaterialData getMaterial();
+    public abstract void setMaterial(MaterialData material);
     public abstract InvoiceData getInvoice();
 }

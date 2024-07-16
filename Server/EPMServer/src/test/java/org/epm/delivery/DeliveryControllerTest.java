@@ -1,7 +1,6 @@
 package org.epm.delivery;
 
-import org.epm.GenericControllerTest;
-import org.epm.common.model.IMapper;
+import org.epm.GenericMainResourcesControllerTest;
 import org.epm.delivery.controller.DeliveryController;
 import org.epm.delivery.model.DeliveryDTO;
 import org.epm.delivery.model.DeliveryEntity;
@@ -10,7 +9,7 @@ import org.epm.delivery.repository.DeliveryRepository;
 import org.epm.delivery.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class DeliveryControllerTest extends GenericControllerTest<DeliveryEntity, DeliveryDTO> {
+public class DeliveryControllerTest extends GenericMainResourcesControllerTest<DeliveryEntity, DeliveryDTO> {
 
     @Autowired
     private DeliveryController deliveryController;
@@ -24,27 +23,12 @@ public class DeliveryControllerTest extends GenericControllerTest<DeliveryEntity
     private DeliveryMapper deliveryMapper;
 
     @Override
-    protected DeliveryController getController() {
-        return deliveryController;
-    }
-
-    @Override
-    protected DeliveryService getService() {
-        return deliveryService;
-    }
-
-    @Override
-    protected DeliveryRepository getRepository() {
-        return deliveryRepository;
-    }
-
-    @Override
-    protected IMapper<DeliveryEntity, DeliveryDTO> getMapper() {
-        return deliveryMapper;
-    }
-
-    @Override
     protected DeliveryTestParameterProvider getTestParameterProvider() {
         return deliveryTestParameterProvider;
+    }
+
+    @Override
+    protected String getMapping() {
+        return "/deliveries";
     }
 }

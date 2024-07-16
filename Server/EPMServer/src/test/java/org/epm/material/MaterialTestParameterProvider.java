@@ -1,27 +1,27 @@
 package org.epm.material;
 
-import org.epm.AbstractTestParameterProvider;
+import org.epm.AbstractMainTestParameterProvider;
+import org.epm.material.enums.Unit;
 import org.epm.material.model.MaterialDTO;
 import org.epm.material.model.MaterialEntity;
 import org.epm.material.model.MaterialMapper;
-import org.epm.material.enums.Unit;
+import org.epm.material.repository.MaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
+import java.util.stream.Stream;
 
 @Component
 public class MaterialTestParameterProvider
-        extends AbstractTestParameterProvider<MaterialEntity, MaterialDTO> {
+        extends AbstractMainTestParameterProvider<MaterialEntity, MaterialDTO> {
 
     @Autowired
     private MaterialMapper mapper;
 
-    public static int DTO_ATTR_COUNT = 7;
-
     @Override
     protected int getDTOAttrCount() {
-        return DTO_ATTR_COUNT;
+        return 7;
     }
 
     @Override
@@ -30,16 +30,45 @@ public class MaterialTestParameterProvider
     }
 
     @Override
-    protected MaterialEntity randomValidEntity() {
+    protected MaterialRepository getRepository() {
         return null;
     }
 
     @Override
-    protected MaterialDTO emptyDTO() {
-        return null;
+    protected Integer provideUidOfExistingEntity() {
+        return 0;
     }
 
     @Override
+    protected Integer provideUidOfInvalidEntity() {
+        return 0;
+    }
+
+    @Override
+    protected Integer provideUidOfUnconstrainedEntity() {
+        return 0;
+    }
+
+    @Override
+    protected Stream<MaterialDTO> provideFewDTOsWhichAreValidEntity() {
+        return Stream.empty();
+    }
+
+    @Override
+    protected Stream<MaterialDTO> provideFewDTOsWhichAreInvalidEntity() {
+        return Stream.empty();
+    }
+
+    @Override
+    protected Stream<MaterialDTO> provideDTOsWithSingleValidAttribute() {
+        return Stream.empty();
+    }
+
+    @Override
+    protected Stream<MaterialDTO> provideDTOsWithSingleInvalidAttribute() {
+        return Stream.empty();
+    }
+
     protected MaterialDTO provideSingleAttribute(MaterialDTO dto, final int caseNumber) {
         if (dto == null) {
             dto = new MaterialDTO();
@@ -57,7 +86,6 @@ public class MaterialTestParameterProvider
         return dto;
     }
 
-    @Override
     protected MaterialDTO breakSingleAttribute(MaterialDTO dto, int caseNumber) {
         if (dto == null) {
             dto = new MaterialDTO();

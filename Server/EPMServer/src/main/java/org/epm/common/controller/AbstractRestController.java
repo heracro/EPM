@@ -21,9 +21,13 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
 
     public abstract IService<DTO> getEntityService();
 
+    private void info(String format, Object... args) {
+        log.info(fontColor(FontColor.BRIGHT_BLUE, format, args));
+    }
+
     @PostMapping
     public ResponseEntity<?> create(@RequestBody final DTO dto) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Creating entity: {}", dto));
+        info("Creating entity: {}", dto);
         try {
             DTO createdDto = getEntityService().createEntity(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdDto);
@@ -37,8 +41,7 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
     public ResponseEntity<?> replace(
             @PathVariable final Integer uid,
             @RequestBody final DTO dto) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Replacing {} uid {} with new entity: {}",
-                getEntityService().getEntityName(), uid, dto));
+        info("Replacing {} uid {} with new entity: {}", getEntityService().getEntityName(), uid, dto);
         try {
             DTO replaced = getEntityService().replaceEntity(uid, dto);
             return ResponseEntity.ok(replaced);
@@ -53,9 +56,9 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
     public ResponseEntity<Page<DTO>> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "name") String sort,
+            @RequestParam(defaultValue = "uid") String sort,
             @RequestParam(defaultValue = "asc") String direction) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding all {}s", getEntityService().getEntityName()));
+        info("Finding all {}s", getEntityService().getEntityName());
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
         return ResponseEntity.ok(getEntityService().findAll(pageable));
@@ -63,7 +66,7 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
 
     @GetMapping("/{uid}")
     public ResponseEntity<DTO> findByUid(@PathVariable Integer uid) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding {} by uid {}", getEntityService().getEntityName(), uid));
+        info("Finding {} by uid {}", getEntityService().getEntityName(), uid);
         try {
             return ResponseEntity.ok(getEntityService().findByUid(uid));
         } catch (EntityNotFoundException e) {
@@ -74,8 +77,7 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
     @PatchMapping("/{uid}")
     public ResponseEntity<?> updateMaterial(
             @PathVariable Integer uid, @RequestBody DTO dto) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Updating {} uid {} with new entity: {}",
-                getEntityService().getEntityName(), uid, dto));
+        info("Updating {} uid {} with new entity: {}", getEntityService().getEntityName(), uid, dto);
         if (!dto.isValidDTO()) {
             return ResponseEntity.badRequest().body("Invalid request body");
         }
@@ -91,7 +93,7 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
 
     @DeleteMapping("/{uid}")
     public ResponseEntity<?> deleteMaterial(@PathVariable Integer uid) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Deleting {} uid {}", getEntityService().getEntityName(), uid));
+        info("Deleting {} uid {}", getEntityService().getEntityName(), uid);
         try {
             getEntityService().deleteEntity(uid);
             return ResponseEntity.noContent().build();
@@ -99,5 +101,6 @@ public abstract class AbstractRestController<DTO extends AbstractModuleData & ID
             return ResponseEntity.notFound().build();
         }
     }
+
 
 }

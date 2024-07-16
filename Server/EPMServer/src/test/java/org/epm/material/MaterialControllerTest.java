@@ -1,7 +1,6 @@
 package org.epm.material;
 
-import org.epm.GenericControllerTest;
-import org.epm.common.model.IMapper;
+import org.epm.GenericMainResourcesControllerTest;
 import org.epm.material.controller.MaterialController;
 import org.epm.material.model.MaterialDTO;
 import org.epm.material.model.MaterialEntity;
@@ -18,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MaterialControllerTest
-        extends GenericControllerTest<MaterialEntity, MaterialDTO> {
+        extends GenericMainResourcesControllerTest<MaterialEntity, MaterialDTO> {
 
     @Autowired
     private MaterialController materialController;
@@ -32,27 +31,13 @@ public class MaterialControllerTest
     private MaterialMapper materialMapper;
 
     @Override
-    protected IMapper<MaterialEntity, MaterialDTO> getMapper() {
-        return materialMapper;
-    }
-
-    @Override
     protected MaterialTestParameterProvider getTestParameterProvider() {
         return materialTestParameterProvider;
     }
 
     @Override
-    protected MaterialController getController() {
-        return materialController;
+    protected String getMapping() {
+        return "/materials";
     }
 
-    @Override
-    protected MaterialService getService() {
-        return materialService;
-    }
-
-    @Override
-    protected MaterialRepository getRepository() {
-        return materialRepository;
-    }
 }

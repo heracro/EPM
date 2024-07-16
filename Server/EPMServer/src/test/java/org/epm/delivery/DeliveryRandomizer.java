@@ -25,12 +25,12 @@ public class DeliveryRandomizer {
         return (DeliveryEntity) randomizeData(new DeliveryEntity());
     }
 
-    public DeliveryData<?> randomizeData(DeliveryData<?> data) {
+    public DeliveryData randomizeData(DeliveryData data) {
         return null;
     }
 
-    public void setRandomMaterial(DeliveryData<?> data) {
-        MaterialEntity material = data.getMaterial();
+    public void setRandomMaterial(DeliveryData data) {
+        MaterialEntity material = (MaterialEntity) data.getMaterial();
         do {
             data.setMaterial(materialRepository
                     .findTop10ByOrderByFreeQty()
@@ -38,7 +38,7 @@ public class DeliveryRandomizer {
         } while (material != null && material.equals(data.getMaterial()));
     }
 
-    public void setRandomStatus(DeliveryData<?> data) {
+    public void setRandomStatus(DeliveryData data) {
         do {
             data.setStatus(
                     DeliveryStatus.values()[RandomUtils.randomInt(DeliveryStatus.values().length)]
@@ -46,11 +46,11 @@ public class DeliveryRandomizer {
         } while (!data.isStatusOk());
     }
 
-    public void setRandomUnitPrice(DeliveryData<?> data) {
+    public void setRandomUnitPrice(DeliveryData data) {
         data.setUnitPrice((RandomUtils.randomInt(10000) + 1) / 100f);
     }
 
-    public void setRandomTotalPrice(DeliveryData<?> data) {
+    public void setRandomTotalPrice(DeliveryData data) {
         data.setTotalPrice((RandomUtils.randomInt(10000) + 1) / 100f);
     }
 }

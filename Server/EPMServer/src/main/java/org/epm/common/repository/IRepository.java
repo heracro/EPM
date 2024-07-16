@@ -8,7 +8,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import java.util.Optional;
 
 @NoRepositoryBean
-public interface IRepository<Entity extends IEntity> extends JpaRepository<Entity, Long> {
+public interface  IRepository<Entity extends IEntity> extends JpaRepository<Entity, Long> {
 
     Optional<Entity> findFirstByOrderByIdAsc();
 
@@ -17,4 +17,6 @@ public interface IRepository<Entity extends IEntity> extends JpaRepository<Entit
     Optional<Entity> findByUid(Integer uid);
 
     void deleteById(@NonNull Long id);
+
+    Optional<Entity> findFirstByOrderByUidAsc();
 }

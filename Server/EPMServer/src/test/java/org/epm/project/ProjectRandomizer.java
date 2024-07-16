@@ -1,6 +1,5 @@
 package org.epm.project;
 
-import lombok.extern.slf4j.Slf4j;
 import org.epm.common.configuration.Config;
 import org.epm.common.utils.RandomUtils;
 import org.epm.project.enums.LocationType;
@@ -14,7 +13,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Random;
 
-@Slf4j
 public class ProjectRandomizer {
 
     private static final int maxTries = 40;
@@ -43,7 +41,6 @@ public class ProjectRandomizer {
             setRandomStatus(data);
         } catch (RuntimeException e) {
             // This means there's a clash in dates, and there's little to no chance for setting something that fits.
-            log.warn("Failed to randomize data, trying again. ({} ...)", e.getMessage().substring(0,255));
             randomizeData(data);
         }
         return data;
@@ -53,7 +50,6 @@ public class ProjectRandomizer {
         String name = data.getName();
         do {
             data.setName("Project " + RandomUtils.randomInt(2000));
-            log.info("set random name: {}", data.getName());
         } while (name != null && name.equals(data.getName()));
     }
 
@@ -61,7 +57,6 @@ public class ProjectRandomizer {
         String body =data.getBody();
         do {
            data.setBody("Random body " + RandomUtils.randomInt(2000));
-            log.info("set random body: {}",data.getBody());
         } while (body != null && body.equals(data.getBody()));
     }
 
@@ -74,7 +69,6 @@ public class ProjectRandomizer {
             }
            data.setPlannedStartDate(RandomUtils
                     .randomDate(Config.BIG_BANG_DATE, LocalDate.now().plusDays(92)));
-            log.info("set random planned start date: {}",data.getPlannedStartDate());
         } while (plannedStartDate != null && plannedStartDate.equals(data.getPlannedStartDate())
             /*|| !data.areDatesOk()*/);
     }
@@ -91,7 +85,6 @@ public class ProjectRandomizer {
             }
            data.setPlannedEndDate(RandomUtils
                     .randomDate(data.getPlannedStartDate().plusDays(7), Config.FAR_FAR_DATE));
-            log.info("set random planned end date: {}",data.getPlannedEndDate());
         } while (plannedEndDate != null && plannedEndDate.equals(data.getPlannedEndDate())
             /*|| !data.areDatesOk()*/);
     }
@@ -105,7 +98,6 @@ public class ProjectRandomizer {
             }
            data.setRealStartDate(RandomUtils
                     .randomDate(LocalDate.now().minusDays(180), LocalDate.now()).minusDays(90));
-            log.info("set random real start date: {}",data.getRealStartDate());
         } while (realStartDate != null && realStartDate.equals(data.getRealStartDate())
             /*|| !data.areDatesOk()*/);
     }
@@ -122,7 +114,6 @@ public class ProjectRandomizer {
             }
            data.setRealEndDate(RandomUtils
                     .randomDate(rs, LocalDate.now()));
-            log.info("set random real end date: {}", data.getRealEndDate());
         } while (data.getRealStartDate() != null
                 && (realEndDate != null && realEndDate.equals(data.getRealEndDate())
                 /*|| !data.areDatesOk()*/));
@@ -132,7 +123,6 @@ public class ProjectRandomizer {
         Integer workingHoursCount =data.getWorkingHoursCount();
         do {
            data.setWorkingHoursCount(RandomUtils.randomInt(60));
-            log.info("set random work hours count: {}",data.getWorkingHoursCount());
         } while (workingHoursCount != null && !workingHoursCount.equals(data.getWorkingHoursCount()));
     }
 
@@ -140,7 +130,6 @@ public class ProjectRandomizer {
         ProjectCause cause =data.getCause();
         do {
            data.setCause(randomProjectCause());
-            log.info("set random cause: {}",data.getCause());
         } while (cause != null && !Objects.equals(cause,data.getCause()));
     }
 
@@ -158,24 +147,21 @@ public class ProjectRandomizer {
             }
            data.setMaterialsReadyDate(RandomUtils
                     .randomDate(Config.BIG_BANG_DATE, LocalDate.now().plusDays(14)));
-            log.info("set random materials ready date: {}",data.getMaterialsReadyDate());
         } while (materialsReadyDate != null && materialsReadyDate.equals(data.getMaterialsReadyDate())
                 /*|| !data.areDatesOk()*/);
     }
 
     public void setRandomProjectLocationUrl(ProjectData data) {
-        String projectLocationUrl = data.getProjectLocationUrl();
+        String projectLocationUrl = data.getProjectLocation();
         do {
-           data.setProjectLocationUrl("https://www.myprojects.com/" + RandomUtils.randomInt(2000));
-            log.info("set random project location url: {}",data.getProjectLocationUrl());
-        } while (projectLocationUrl != null && projectLocationUrl.equals(data.getProjectLocationUrl()));
+           data.setProjectLocation("https://www.myprojects.com/" + RandomUtils.randomInt(2000));
+        } while (projectLocationUrl != null && projectLocationUrl.equals(data.getProjectLocation()));
     }
 
     public void setRandomLocationType(ProjectData data) {
         LocationType locationType = data.getLocationType();
         do {
            data.setLocationType(randomLocationType());
-            log.info("set random location type: {}",data.getLocationType());
         } while (locationType != null && locationType.equals(data.getLocationType()));
     }
 
@@ -187,7 +173,6 @@ public class ProjectRandomizer {
     public void setRandomStatus(ProjectData data) {
         do {
            data.setStatus(randomProjectStatus());
-            log.info("set random status: {}",data.getStatus());
         } while (!data.isStatusOk());
     }
 

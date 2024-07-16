@@ -4,12 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletContext;
-import org.epm.common.controller.AbstractRestController;
+import org.epm.common.model.AbstractModuleData;
 import org.epm.common.model.IDTO;
 import org.epm.common.model.IEntity;
-import org.epm.common.model.IMapper;
-import org.epm.common.repository.IRepository;
-import org.epm.common.service.AbstractService;
 import org.epm.material.controller.MaterialController;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
-public abstract class GenericControllerTest<Entity extends IEntity, DTO extends IDTO> {
+public abstract class GenericMainResourcesControllerTest<Entity extends IEntity, DTO extends AbstractModuleData & IDTO> {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -48,11 +45,8 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     @Autowired
     private DatabaseSeeder databaseSeeder;
 
-    protected abstract IMapper<Entity, DTO> getMapper();
-    protected abstract AbstractTestParameterProvider<Entity, DTO> getTestParameterProvider();
-    protected abstract AbstractRestController<DTO> getController();
-    protected abstract AbstractService<Entity, DTO> getService();
-    protected abstract IRepository<Entity> getRepository();
+    protected abstract AbstractMainTestParameterProvider<Entity, DTO> getTestParameterProvider();
+    protected abstract String getMapping();
 
     private Stream<DTO> provideFewDTOsWhichAreValidEntity() {
         return getTestParameterProvider().provideFewDTOsWhichAreValidEntity();
@@ -68,6 +62,18 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
 
     private Stream<DTO> provideDTOsWithSingleInvalidAttribute() {
         return getTestParameterProvider().provideDTOsWithSingleInvalidAttribute();
+    }
+
+    private Integer provideUidOfExistingEntity() {
+        return getTestParameterProvider().provideUidOfExistingEntity();
+    }
+
+    private Integer provideUidOfInvalidEntity() {
+        return getTestParameterProvider().provideUidOfInvalidEntity();
+    }
+
+    private Integer provideUidOfUnconstrainedEntity() {
+        return getTestParameterProvider().provideUidOfUnconstrainedEntity();
     }
 
     @BeforeAll
@@ -102,7 +108,7 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     void testCreateValidEntity(DTO dto) throws Exception {
         assertNotNull(dto, "ParameterProvider delivered invalid dto (null)");
         String json = objectMapper.writeValueAsString(dto);
-        String response = mockMvc.perform(post(getController().getMapping())
+        String response = mockMvc.perform(post(getMapping())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isCreated())
@@ -119,7 +125,7 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     void testCreateInvalidEntityAndFail(DTO dto) throws Exception {
         assertNotNull(dto, "ParameterProvider delivered invalid dto (null)");
         String json = objectMapper.writeValueAsString(dto);
-        mockMvc.perform(post(getController().getMapping())
+        mockMvc.perform(post(getMapping())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isBadRequest());
@@ -129,14 +135,14 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     @MethodSource("provideDTOsWithSingleValidAttribute")
     @Order(2)
     void testUpdateEntityWithSingleValidParameter(DTO dto) {
-        assertNotNull(dto);
+        assertNull(dto, "Test not yet implemented");
     }
 
     @ParameterizedTest
     @MethodSource("provideDTOsWithSingleInvalidAttribute")
     @Order(2)
     void testUpdateEntityWithSingleInvalidParameter(DTO dto) {
-        assertNotNull(dto);
+        assertNull(dto, "Test not yet implemented");
     }
 
     @ParameterizedTest
@@ -145,8 +151,8 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     void testReplaceWithValidEntity(DTO dto) throws Exception {
         assertNotNull(dto, "ParameterProvider delivered invalid dto (null)");
         String json = objectMapper.writeValueAsString(dto);
-        Integer firstId = getRepository().findFirstByOrderByIdAsc().getId();
-        String response = mockMvc.perform(put(getController().getMapping() + "/" + firstId)
+        Integer existingUid = provideUidOfExistingEntity();
+        String response = mockMvc.perform(put(getMapping() + "/" + existingUid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -163,8 +169,8 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     void testReplaceWithInvalidEntity(DTO dto) throws Exception {
         assertNotNull(dto, "ParameterProvider delivered invalid dto (null)");
         String json = objectMapper.writeValueAsString(dto);
-        Integer firstId = getRepository().findFirstByOrderByIdAsc().getId();
-        mockMvc.perform(put(getController().getMapping() + "/" + firstId)
+        Integer existingUid = provideUidOfExistingEntity();
+        mockMvc.perform(put(getMapping() + "/" + existingUid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest());
@@ -173,45 +179,39 @@ public abstract class GenericControllerTest<Entity extends IEntity, DTO extends 
     @Test
     @Order(3)
     void testFindAll() throws Exception {
-        mockMvc.perform(get(getController().getMapping()))
+        mockMvc.perform(get(getMapping()))
                 .andExpect(status().isOk());
     }
 
     @Test
     @Order(3)
-    void testFindByIdExistingEntity() throws Exception {
-        long firstId = getRepository().findFirstByOrderByIdAsc().getId();
-        mockMvc.perform(get(getController().getMapping() + "/" + firstId))
+    void testFindByUidExistingEntity() throws Exception {
+        Integer existingUid = provideUidOfExistingEntity();
+        mockMvc.perform(get(getMapping() + "/" + existingUid))
                 .andExpect(status().isOk());
     }
 
     @Test
     @Order(3)
     void testFindByIdNonExistingEntity() throws Exception {
-        long afterLastId = getRepository().findFirstByOrderByIdDesc().getId() + 1;
-        mockMvc.perform(get(getController().getMapping() + "/" + afterLastId))
+        Integer nonExistingUid = provideUidOfInvalidEntity();
+        mockMvc.perform(get(getMapping() + "/" + nonExistingUid))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @Order(4)
     void testDeleteExistingEntity() throws Exception {
-        // to have unconstrained entity in DB (i.e. material which does not occur in any Bom nor Delivery), create:
-        DTO dto = provideFewDTOsWhichAreValidEntity()
-                .findFirst()
-                .orElseThrow(NullPointerException::new);
-        Entity entity = getMapper().toEntity(dto);
-        entity = getRepository().save(entity);
-        // and now we are sure we can delete this.
-        mockMvc.perform(delete(getController().getMapping() + "/" + entity.getId()))
+        Integer unconstrainedUid = provideUidOfUnconstrainedEntity();
+        mockMvc.perform(delete(getMapping() + "/" + unconstrainedUid))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     @Order(4)
     void testDeleteNonExistingEntity() throws Exception {
-        long afterLastId = getRepository().findFirstByOrderByIdDesc().getId() + 1;
-        mockMvc.perform(delete(getController().getMapping() + "/" + afterLastId))
+        Integer nonExistingUid = provideUidOfInvalidEntity();
+        mockMvc.perform(delete(getMapping() + "/" + nonExistingUid))
                 .andExpect(status().isNotFound());
     }
 }

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.epm.common.model.IDTO;
 import org.epm.invoice.model.InvoiceDTO;
 import org.epm.material.model.MaterialDTO;
+import org.epm.material.model.MaterialData;
 
 @Slf4j
 @Getter
@@ -20,4 +21,8 @@ public class DeliveryDTO extends DeliveryData implements IDTO {
     private InvoiceDTO invoice;
     private String action;
 
+    @Override
+    public void setMaterial(MaterialData material) {
+        this.material = (MaterialDTO) material;
+    }
 }

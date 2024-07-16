@@ -19,6 +19,10 @@ import static org.epm.common.utils.ConsoleStringUtils.fontColor;
 public abstract class AbstractDependantResourceRestController
         <DTO extends AbstractModuleData & IDTO> {
 
+    void info(String format, Object... args) {
+        log.info(fontColor(FontColor.BRIGHT_GREEN, format, args));
+    }
+
     public abstract IDependantService<DTO> getEntityService(); //dependant
 
     @PostMapping
@@ -26,7 +30,7 @@ public abstract class AbstractDependantResourceRestController
             @PathVariable final Integer parentUid,
             @RequestBody final DTO dto) {
 
-        //log.info(fontColor(FontColor.BRIGHT_GREEN, "Creating entity: {} under parent uid {}", dto, parentUid));
+        info("Creating entity: {} under parent uid {}", dto, parentUid);
         try {
             DTO createdDto = getEntityService().createEntity(parentUid, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdDto);
@@ -42,8 +46,8 @@ public abstract class AbstractDependantResourceRestController
             @PathVariable final Integer uid,
             @RequestBody final DTO dto) {
 
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Replacing {} uid {} under parentUid {} with new entity: {}",
-                getEntityService().getEntityName(), uid, parentUid, dto));
+        info("Replacing {} uid {} under parentUid {} with new entity: {}",
+                getEntityService().getEntityName(), uid, parentUid, dto);
         try {
             DTO replaced = getEntityService().replaceEntity(parentUid, uid, dto);
             return ResponseEntity.ok(replaced);
@@ -60,8 +64,8 @@ public abstract class AbstractDependantResourceRestController
             @PathVariable final Integer uid,
             @RequestBody final DTO dto) {
 
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Updating {} uid {} with new entity: {}",
-                getEntityService().getEntityName(), uid, dto));
+        info("Updating {} uid {} with new entity: {}",
+                getEntityService().getEntityName(), uid, dto);
         if (!dto.isValidDTO()) {
             return ResponseEntity.badRequest().body("Invalid request body");
         }
@@ -80,7 +84,7 @@ public abstract class AbstractDependantResourceRestController
             @PathVariable final Integer parentUid,
             @PathVariable Integer uid) {
 
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Deleting {} uid {}", getEntityService().getEntityName(), uid));
+        info("Deleting {} uid {}", getEntityService().getEntityName(), uid);
         try {
             getEntityService().deleteEntity(parentUid, uid);
             return ResponseEntity.noContent().build();
@@ -94,7 +98,8 @@ public abstract class AbstractDependantResourceRestController
             @PathVariable final Integer parentUid,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding all {}s", getEntityService().getEntityName()));
+
+        info("Finding all {}s", getEntityService().getEntityName());
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(getEntityService().findAllByParentUid(parentUid, pageable));
     }
@@ -104,7 +109,7 @@ public abstract class AbstractDependantResourceRestController
             @PathVariable final Integer parentUid,
             @PathVariable final Integer uid) {
 
-        log.info(fontColor(FontColor.BRIGHT_GREEN, "Finding {} by uid {}", getEntityService().getEntityName(), uid));
+        info("Finding {} by uid {}", getEntityService().getEntityName(), uid);
         try {
             return ResponseEntity.ok(getEntityService().findByUidAndParentUid(parentUid, uid));
         } catch (EntityNotFoundException e) {
