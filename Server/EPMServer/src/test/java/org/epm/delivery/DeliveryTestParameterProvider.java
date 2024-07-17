@@ -1,7 +1,6 @@
 package org.epm.delivery;
 
 import org.epm.AbstractMainTestParameterProvider;
-import org.epm.common.repository.IRepository;
 import org.epm.delivery.model.DeliveryDTO;
 import org.epm.delivery.model.DeliveryEntity;
 import org.epm.delivery.model.DeliveryMapper;
@@ -22,19 +21,8 @@ public class DeliveryTestParameterProvider
     @Autowired
     private DeliveryRandomizer randomizer;
 
-    @Override
     protected int getDTOAttrCount() {
         return 8;
-    }
-
-    @Override
-    protected DeliveryMapper getMapper() {
-        return mapper;
-    }
-
-    @Override
-    protected IRepository<DeliveryEntity> getRepository() {
-        return null;
     }
 
     @Override

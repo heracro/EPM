@@ -40,4 +40,9 @@ public class ProjectControllerTest
         return "/projects";
     }
 
+    @Override
+    protected ProjectDTO deserializeDTO(String json) throws Exception {
+        return objectMapper.readValue(json, ProjectDTO.class);
+    }
+
 }

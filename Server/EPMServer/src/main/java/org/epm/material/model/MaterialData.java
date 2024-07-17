@@ -1,19 +1,27 @@
 package org.epm.material.model;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.epm.common.model.AbstractModuleData;
 import org.epm.material.enums.Unit;
 
+@Slf4j
 @Getter
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @MappedSuperclass
+@EqualsAndHashCode(callSuper = false)
 public abstract class MaterialData extends AbstractModuleData {
 
     @Column(nullable = false, unique = true)
+    @EqualsAndHashCode.Exclude
     private Integer uid;
 
     @Column(nullable = false)
@@ -43,7 +51,8 @@ public abstract class MaterialData extends AbstractModuleData {
     private Unit unit;
 
     public boolean isValidEntity() {
-        return getName() != null && getName().length() > 3
+        log.info("isValidEntity({})", this);
+        boolean valid = getName() != null && getName().length() > 3
                 && (getNorm() == null || getNorm().length() > 3)
                 && (getDatasheet() == null || getDatasheet().length() > 4)
                 && getDimensions() != null && getDimensions().length() > 1
@@ -51,6 +60,8 @@ public abstract class MaterialData extends AbstractModuleData {
                 && getTotalQty() != null && getTotalQty() >= 0
                 && getFreeQty() != null && getFreeQty() >= 0
                 && getFreeQty() <= getTotalQty() && getUnit() != null;
+        log.info("isValidEntity() ---> {}", valid);
+        return valid;
     }
 
     public String toString() {

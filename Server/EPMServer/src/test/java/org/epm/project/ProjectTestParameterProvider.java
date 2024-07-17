@@ -8,7 +8,6 @@ import org.epm.project.enums.ProjectStatus;
 import org.epm.project.model.ProjectDTO;
 import org.epm.project.model.ProjectEntity;
 import org.epm.project.model.ProjectMapper;
-import org.epm.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,22 +23,7 @@ public class ProjectTestParameterProvider
 
     private final ProjectRandomizer randomizer = new ProjectRandomizer();
 
-    public static int DTO_ATTR_COUNT = 12;
-
-    @Override
-    protected int getDTOAttrCount() {
-        return DTO_ATTR_COUNT;
-    }
-
-    @Override
-    protected ProjectMapper getMapper() {
-        return mapper;
-    }
-
-    @Override
-    protected ProjectRepository getRepository() {
-        return null;
-    }
+    public int ATTR_COUNT = 12;
 
     @Override
     protected Integer provideUidOfExistingEntity() {
@@ -78,7 +62,7 @@ public class ProjectTestParameterProvider
 
     protected ProjectDTO provideSingleAttribute(@NotNull ProjectDTO dto, int caseNumber) {
         ProjectRandomizer randomizer = new ProjectRandomizer();
-        switch (caseNumber % getDTOAttrCount()) {
+        switch (caseNumber % ATTR_COUNT) {
             case 0 -> randomizer.setRandomName(dto);
             case 1 -> randomizer.setRandomBody(dto);
             case 2 -> randomizer.setRandomPlannedStartDate(dto);
@@ -97,7 +81,7 @@ public class ProjectTestParameterProvider
     }
 
     protected ProjectDTO breakSingleAttribute(@NotNull ProjectDTO dto, int caseNumber) {
-        switch (caseNumber % getDTOAttrCount()) {
+        switch (caseNumber % ATTR_COUNT) {
             case 0 -> dto.setName("" + RandomUtils.randomInt(100));
             case 1 -> dto.setBody("" + RandomUtils.randomInt(100));
             case 2 -> {

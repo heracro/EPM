@@ -31,4 +31,11 @@ public class DeliveryControllerTest extends GenericMainResourcesControllerTest<D
     protected String getMapping() {
         return "/deliveries";
     }
+
+    @Override
+    protected DeliveryDTO deserializeDTO(String json) throws Exception {
+        return objectMapper.readValue(json, DeliveryDTO.class);
+    }
+
+
 }

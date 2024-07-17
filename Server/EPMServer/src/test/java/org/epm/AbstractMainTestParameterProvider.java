@@ -2,19 +2,13 @@ package org.epm;
 
 import org.epm.common.model.IDTO;
 import org.epm.common.model.IEntity;
-import org.epm.common.model.IMapper;
-import org.epm.common.repository.IRepository;
 
 import java.util.stream.Stream;
 
 public abstract class AbstractMainTestParameterProvider
         <Entity extends IEntity, DTO extends IDTO> {
 
-    protected abstract int getDTOAttrCount();
-
-    protected abstract IMapper<Entity, DTO> getMapper();
-
-    protected abstract IRepository<Entity> getRepository();
+    protected final int RUN_COUNT = 10;
 
     protected abstract Integer provideUidOfExistingEntity();
 

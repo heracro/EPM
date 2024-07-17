@@ -34,7 +34,7 @@ dependencies {
     testImplementation 'org.slf4j:slf4j-api:2.0.12'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.mockito:mockito-junit-jupiter'
@@ -43,4 +43,11 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'spring.profiles.active', 'test'
+    jvmArgs += [
+            '-Xshare:off',
+            '-XX:ParallelGCThreads=8',
+            '-XX:ConcGCThreads=8',
+            '-XX:CICompilerCount=8'
+    ]
+    maxParallelForks = 8
 }
