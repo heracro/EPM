@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.epm.common.model.EntityListener;
 import org.epm.common.model.IDependantEntity;
 import org.epm.project.model.ProjectEntity;
 
@@ -15,7 +14,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "changeLogs")
 @NoArgsConstructor
-@EntityListeners(EntityListener.class)
 public class ChangeLogEntity extends ChangeLogData implements IDependantEntity<ProjectEntity> {
 
     @ManyToOne(fetch = FetchType.LAZY)

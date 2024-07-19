@@ -15,4 +15,10 @@ public class DateUtils {
         return date.format(DATE_FORMATTER);
     }
 
+    public static LocalDate earlierOf(LocalDate date1, LocalDate date2) {
+        return date1.isBefore(date2) ? date1 : date2;
+    }
+    public static LocalDate laterOf(LocalDate date1, LocalDate date2) {
+        return date1.isAfter(date2) ? date1 : date2;
+    }
 }

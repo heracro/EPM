@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.epm.common.model.EntityListener;
 import org.epm.common.model.IDependantEntity;
 import org.epm.project.model.ProjectEntity;
 
@@ -20,7 +19,6 @@ import org.epm.project.model.ProjectEntity;
         pkColumnValue = "task_id",
         allocationSize = 1)
 @NoArgsConstructor
-@EntityListeners(EntityListener.class)
 public class TaskEntity extends TaskData implements IDependantEntity<ProjectEntity> {
 
     @ManyToOne

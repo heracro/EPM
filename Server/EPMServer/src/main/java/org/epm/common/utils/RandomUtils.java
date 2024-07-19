@@ -9,10 +9,7 @@ public class RandomUtils {
 
     public static LocalDate randomDate(LocalDate from, LocalDate to) {
         if (!from.isBefore(to)) return from;
-        long startEpochDay = from.toEpochDay();
-        long endEpochDay = to.toEpochDay();
-        long randomEpochDay = startEpochDay + random.nextInt((int) (endEpochDay - startEpochDay));
-        return LocalDate.ofEpochDay(randomEpochDay);
+        return LocalDate.ofEpochDay(random.nextInt((int)from.toEpochDay(), (int)to.toEpochDay()));
     }
 
     public static int randomInt(int bound) {

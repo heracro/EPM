@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.epm.bom.model.BomDTO;
 import org.epm.common.model.IDTO;
 
@@ -13,11 +14,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@SuperBuilder
 @JsonTypeName("Project")
 public class ProjectDTO extends ProjectData implements IDTO {
 
     private String action;
 
+    @JsonIgnore
     private List<BomDTO> boms;
 
     @JsonIgnore

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 import org.epm.project.model.ProjectEntity;
 
@@ -23,7 +22,6 @@ import java.util.Set;
         pkColumnValue = "tag_id",
         allocationSize = 1)
 @NoArgsConstructor
-@EntityListeners(EntityListener.class)
 public class TagEntity extends TagData implements IEntity {
 
     @ManyToMany(mappedBy = "tags")

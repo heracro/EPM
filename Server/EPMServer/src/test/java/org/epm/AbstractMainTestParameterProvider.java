@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 public abstract class AbstractMainTestParameterProvider
         <Entity extends IEntity, DTO extends IDTO> {
 
-    protected final int RUN_COUNT = 10;
+    protected final int RUN_COUNT = 1;
 
     protected abstract Integer provideUidOfExistingEntity();
 

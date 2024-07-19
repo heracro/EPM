@@ -1,12 +1,11 @@
 package org.epm.project.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.epm.bom.model.BomEntity;
-import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 import org.epm.tag.model.TagEntity;
 
@@ -26,13 +25,12 @@ import java.util.Set;
         pkColumnValue = "project_id",
         allocationSize = 1)
 @NoArgsConstructor
-@EntityListeners(EntityListener.class)
+@SuperBuilder
 public class ProjectEntity extends ProjectData implements IEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<TagEntity> tags = new HashSet<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BomEntity> boms;
 

@@ -19,4 +19,6 @@ public interface  IRepository<Entity extends IEntity> extends JpaRepository<Enti
     void deleteById(@NonNull Long id);
 
     Optional<Entity> findFirstByOrderByUidAsc();
+
+    boolean existsByUid(int uid);
 }

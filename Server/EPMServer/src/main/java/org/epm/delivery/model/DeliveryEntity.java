@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 import org.epm.invoice.model.InvoiceEntity;
 import org.epm.material.model.MaterialData;
@@ -24,7 +23,6 @@ import org.epm.material.model.MaterialEntity;
         pkColumnValue = "delivery_id",
         allocationSize = 1)
 @NoArgsConstructor
-@EntityListeners(EntityListener.class)
 public class DeliveryEntity extends DeliveryData implements IEntity {
 
     @ManyToOne

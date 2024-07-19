@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 import org.epm.invoice.model.InvoiceEntity;
 
@@ -23,7 +22,6 @@ import java.util.Set;
         pkColumnValue = "shop_id",
         allocationSize = 1)
 @NoArgsConstructor
-@EntityListeners(EntityListener.class)
 public class ShopEntity extends ShopData implements IEntity {
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)

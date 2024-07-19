@@ -43,7 +43,7 @@ public class MaterialTestParameterProvider
     @Override
     protected Integer provideUidOfExistingEntity() {
         info("provideUidOfExistingEntity()");
-        MaterialEntity material = repository.findFirstByOrderByIdAsc().orElseThrow(
+        MaterialEntity material = repository.findFirstByOrderByUidAsc().orElseThrow(
                 () -> new IllegalStateException("Material database is empty!")
         );
         info("provideUidOfExistingEntity() --> getting ID from: {}", material);
@@ -132,7 +132,7 @@ public class MaterialTestParameterProvider
         return mapper.toDto(setSingleValidAttribute(new MaterialEntity(), caseNumber));
     }
 
-    protected MaterialEntity provideValidEntity() {
+    public MaterialEntity provideValidEntity() {
         info("provideValidEntity()");
         MaterialEntity material = new MaterialEntity();
         for (int i = 0; i < ALL_ATTR_COUNT; i++) {
@@ -142,7 +142,7 @@ public class MaterialTestParameterProvider
         return material;
     }
 
-    protected MaterialDTO provideDTOWhichIsValidEntity() {
+    public MaterialDTO provideDTOWhichIsValidEntity() {
         info("provideDTOWhichIsValidEntity()");
         return mapper.toDto(provideValidEntity());
     }

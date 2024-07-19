@@ -8,7 +8,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.epm.bom.model.BomData;
 import org.epm.common.model.AbstractModuleData;
 import org.epm.project.enums.LocationType;
@@ -23,6 +25,8 @@ import java.util.List;
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @MappedSuperclass
+@NoArgsConstructor
+@SuperBuilder
 public abstract class ProjectData extends AbstractModuleData {
 
     @Column(nullable = false, unique = true)
@@ -46,11 +50,14 @@ public abstract class ProjectData extends AbstractModuleData {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate realEndDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate materialsReadyDate;
+
     @Column(nullable = false)
     private Integer workingHoursCount;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate materialsReadyDate;
+    @Column(nullable = false)
+    private Integer workingHoursPlanned;
 
     @Column(nullable = false)
     private String projectLocation;
@@ -69,15 +76,14 @@ public abstract class ProjectData extends AbstractModuleData {
 
     @JsonIgnore
     public boolean isValidEntity() {
-        return getName() != null && getName().length() > 5
+        return getName() != null && getName().length() > 10
                 && (getBody() == null || getBody().length() > 20)
                 && (getProjectLocation() == null || getProjectLocation().length() > 13)
                 && (getWorkingHoursCount() == null || getWorkingHoursCount() > 0)
-                && getLocationType() != null && getCause() != null && getStatus() != null
+                && (getWorkingHoursPlanned() == null || getWorkingHoursPlanned() > 0)
+                && getLocationType() != null && getCause() != null
                 && areDatesOk() && isStatusOk();
     }
-
-
 
     private boolean areDatesOk() {
         return arePlannedDatesOk() && areRealDatesOk() && isMaterialsReadyDateOk();
@@ -121,6 +127,9 @@ public abstract class ProjectData extends AbstractModuleData {
                 return getRealStartDate() != null && getRealEndDate() != null
                         && getRealEndDate().isAfter(getRealStartDate()) && getMaterialsReadyDate() != null
                         && getMaterialsReadyDate().isBefore(LocalDate.now().plusDays(1));
+            }
+            case CANCELLED -> {
+                return areDatesOk();
             }
         }
         return false;

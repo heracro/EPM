@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.epm.bom.enums.BomStatus;
-import org.epm.common.model.EntityListener;
 import org.epm.common.model.IDependantEntity;
 import org.epm.material.model.MaterialEntity;
 import org.epm.project.model.ProjectEntity;
@@ -23,7 +22,6 @@ import org.epm.project.model.ProjectEntity;
         pkColumnValue = "bom_id",
         allocationSize = 1)
 @NoArgsConstructor
-@EntityListeners(EntityListener.class)
 public class BomEntity extends BomData implements IDependantEntity<ProjectEntity> {
 
     @ManyToOne(fetch = FetchType.LAZY)

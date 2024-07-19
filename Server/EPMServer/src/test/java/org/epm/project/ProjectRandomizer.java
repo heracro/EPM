@@ -1,184 +1,146 @@
 package org.epm.project;
 
+import org.epm.EntityNotEligibleForUpdateException;
 import org.epm.common.configuration.Config;
 import org.epm.common.utils.RandomUtils;
 import org.epm.project.enums.LocationType;
 import org.epm.project.enums.ProjectCause;
 import org.epm.project.enums.ProjectStatus;
-import org.epm.project.model.ProjectDTO;
-import org.epm.project.model.ProjectData;
 import org.epm.project.model.ProjectEntity;
 
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.List;
 import java.util.Random;
+
+import static org.epm.project.enums.ProjectStatus.*;
 
 public class ProjectRandomizer {
 
-    private static final int maxTries = 40;
+    private static final int GENERATION_TRIALS_COUNT = 500;
 
-    public ProjectDTO provideEmptyDTO() {
-        return new ProjectDTO();
-    }
+    public ProjectEntity setRandomValidStatusAndDates(ProjectEntity project) {
+        int trials = GENERATION_TRIALS_COUNT;
+        boolean success = false;
+        while (!success && trials > 0) {
+            try {
+                project.setStatus(randomProjectStatus());
+                project.setPlannedStartDate(getRandomInvalidPlannedStartDate(project));
+                project.setPlannedEndDate(getRandomInvalidPlannedEndDate(project));
+                success = true;
+            } catch (Exception e) {
 
-    public ProjectEntity provideValidEntity() {
-        return (ProjectEntity) randomizeData(new ProjectEntity());
-    }
-
-    public ProjectData randomizeData(ProjectData data) {
-        try {
-            setRandomName(data);
-            setRandomBody(data);
-            setRandomPlannedStartDate(data);
-            setRandomPlannedEndDate(data);
-            setRandomRealStartDate(data);
-            setRandomRealEndDate(data);
-            setRandomWorkHoursCount(data);
-            setRandomCause(data);
-            setRandomMaterialsReadyDate(data);
-            setRandomProjectLocationUrl(data);
-            setRandomLocationType(data);
-            setRandomStatus(data);
-        } catch (RuntimeException e) {
-            // This means there's a clash in dates, and there's little to no chance for setting something that fits.
-            randomizeData(data);
+            }
         }
-        return data;
+        return project;
     }
 
-    public void setRandomName(ProjectData data) {
-        String name = data.getName();
+    public String getRandomValidName(ProjectEntity project) {
+        String name;
         do {
-            data.setName("Project " + RandomUtils.randomInt(2000));
-        } while (name != null && name.equals(data.getName()));
+            name = "Project " + (RandomUtils.randomInt(2000) + 99);
+        } while (project.getName() != null && name.equals(project.getName()));
+        return name;
     }
-
-    public void setRandomBody(ProjectData data) {
-        String body =data.getBody();
+    public String getRandomInvalidName(ProjectEntity project) {
+        String name;
         do {
-           data.setBody("Random body " + RandomUtils.randomInt(2000));
-        } while (body != null && body.equals(data.getBody()));
+            name = "P." + RandomUtils.randomInt(100);
+        } while (project.getName() != null && name.equals(project.getName()));
+        return name;
     }
 
-    public void setRandomPlannedStartDate(ProjectData data) {
-        LocalDate plannedStartDate =data.getPlannedStartDate();
-        int wrongHitCounter = 0;
+    public String getRandomValidBody(ProjectEntity project) {
+        String body;
         do {
-            if (++wrongHitCounter > maxTries) {
-                throw new RuntimeException("Failed to hit right planned start date. Object: " + this);
-            }
-           data.setPlannedStartDate(RandomUtils
-                    .randomDate(Config.BIG_BANG_DATE, LocalDate.now().plusDays(92)));
-        } while (plannedStartDate != null && plannedStartDate.equals(data.getPlannedStartDate())
-            /*|| !data.areDatesOk()*/);
+           body = "This is project's random body " + RandomUtils.randomInt(2000) + ". And that's all, folks!";
+        } while (project.getBody() != null && body.equals(project.getBody()));
+        return body;
+    }
+    public String getRandomInvalidBody(ProjectEntity project) {
+        String body;
+        do {
+            body = "Too short body " + RandomUtils.randomInt(100);
+        } while (project.getBody() != null && body.equals(project.getBody()));
+        return body;
     }
 
-    public void setRandomPlannedEndDate(ProjectData data) {
-        LocalDate plannedEndDate =data.getPlannedEndDate();
-        if (data.getPlannedStartDate() == null) {
-            data.setPlannedStartDate(LocalDate.now().minusDays(180));
+    public LocalDate getRandomValidPlannedStartDate(ProjectEntity project) {
+        return RandomUtils.randomDate(LocalDate.now(), Config.FAR_FAR_DATE);
+    }
+    public LocalDate getRandomInvalidPlannedStartDate(ProjectEntity project) {
+        return RandomUtils.randomDate(Config.BIG_BANG_DATE, LocalDate.now());
+    }
+
+    public LocalDate getRandomValidPlannedEndDate(ProjectEntity project) throws EntityNotEligibleForUpdateException {
+        if (List.of(PLANNED, AWAITING_MATERIALS, READY).contains(project.getStatus())
+                || project.getPlannedStartDate() == null) {
+            throw new EntityNotEligibleForUpdateException("Not possible to set valid PlannedEndDate in " + project);
+        } else {
+            return RandomUtils.randomDate(project.getPlannedStartDate().plusDays(1), Config.FAR_FAR_DATE);
         }
-        int wrongHitCounter = 0;
+    }
+    public LocalDate getRandomInvalidPlannedEndDate(ProjectEntity project) {
+        return RandomUtils.randomDate(Config.BIG_BANG_DATE,
+                project.getPlannedStartDate() != null ? project.getPlannedStartDate() : Config.FAR_FAR_DATE);
+    }
+
+    public void setRandomValidRealStartDate(ProjectEntity project) {}
+    public void setRandomInvalidRealStartDate(ProjectEntity project) {}
+
+    public void setRandomValidRealEndDate(ProjectEntity project) {}
+    public void setRandomInvalidRealEndDate(ProjectEntity project) {}
+
+    public void setRandomValidMaterialsReadyDate(ProjectEntity project) {}
+    public void setRandomInvalidMaterialsReadyDate(ProjectEntity project) {}
+
+    public void setRandomValidWorkHoursCount(ProjectEntity project) {
+        Integer workingHoursCount =project.getWorkingHoursCount();
         do {
-            if (++wrongHitCounter > maxTries) {
-                throw new RuntimeException("Failed to hit right planned end date. Object: " + this);
-            }
-           data.setPlannedEndDate(RandomUtils
-                    .randomDate(data.getPlannedStartDate().plusDays(7), Config.FAR_FAR_DATE));
-        } while (plannedEndDate != null && plannedEndDate.equals(data.getPlannedEndDate())
-            /*|| !data.areDatesOk()*/);
+           project.setWorkingHoursCount(RandomUtils.randomInt(60));
+        } while (workingHoursCount != null && !workingHoursCount.equals(project.getWorkingHoursCount()));
     }
+    public void setRandomInvalidWorkHoursCount(ProjectEntity project) {}
 
-    public void setRandomRealStartDate(ProjectData data) {
-        LocalDate realStartDate =data.getRealStartDate();
-        int wrongHitCounter = 0;
+    public void setRandomValidWorkHoursPlanned(ProjectEntity project) {
+        Integer workingHoursCount =project.getWorkingHoursPlanned();
         do {
-            if (++wrongHitCounter > maxTries) {
-                throw new RuntimeException("Failed to hit right real start date. Object: " + this);
-            }
-           data.setRealStartDate(RandomUtils
-                    .randomDate(LocalDate.now().minusDays(180), LocalDate.now()).minusDays(90));
-        } while (realStartDate != null && realStartDate.equals(data.getRealStartDate())
-            /*|| !data.areDatesOk()*/);
+            project.setWorkingHoursPlanned(RandomUtils.randomInt(60));
+        } while (workingHoursCount != null && !workingHoursCount.equals(project.getWorkingHoursPlanned()));
     }
+    public void setRandomInvalidWorkHoursPlanned(ProjectEntity project) {}
 
-    public void setRandomRealEndDate(ProjectData data) {
-        LocalDate realEndDate = data.getRealEndDate();
-        LocalDate rs = (data.getPlannedStartDate() == null
-                || data.getPlannedStartDate().isAfter(LocalDate.now().minusDays(7))
-                ? LocalDate.now().minusDays(365) : data.getPlannedStartDate());
-        int wrongHitCounter = 0;
+    public void setRandomValidProjectLocationUrl(ProjectEntity project) {
+        String projectLocationUrl = project.getProjectLocation();
         do {
-            if (++wrongHitCounter > maxTries) {
-                throw new RuntimeException("Failed to hit right real end date. Object: " + this);
-            }
-           data.setRealEndDate(RandomUtils
-                    .randomDate(rs, LocalDate.now()));
-        } while (data.getRealStartDate() != null
-                && (realEndDate != null && realEndDate.equals(data.getRealEndDate())
-                /*|| !data.areDatesOk()*/));
+            project.setProjectLocation("https://www.myprojects.com/" + RandomUtils.randomInt(2000));
+        } while (projectLocationUrl != null && projectLocationUrl.equals(project.getProjectLocation()));
     }
+    public void setRandomInvalidProjectLocationUrl(ProjectEntity project) {}
 
-    public void setRandomWorkHoursCount(ProjectData data) {
-        Integer workingHoursCount =data.getWorkingHoursCount();
+    public void setRandomValidLocationType(ProjectEntity project) {
+        LocationType locationType = project.getLocationType();
         do {
-           data.setWorkingHoursCount(RandomUtils.randomInt(60));
-        } while (workingHoursCount != null && !workingHoursCount.equals(data.getWorkingHoursCount()));
+            project.setLocationType(randomLocationType());
+        } while (locationType != null && locationType.equals(project.getLocationType()));
     }
-
-    public void setRandomCause(ProjectData data) {
-        ProjectCause cause =data.getCause();
+    public void setRandomValidStatus(ProjectEntity project) {
         do {
-           data.setCause(randomProjectCause());
-        } while (cause != null && !Objects.equals(cause,data.getCause()));
+            project.setStatus(randomProjectStatus());
+        } while (!project.isStatusOk());
+    }
+    public void setRandomValidCause(ProjectEntity project) {
     }
 
-    public static ProjectCause randomProjectCause() {
-        Random random = new Random();
-        return ProjectCause.values()[random.nextInt(ProjectCause.values().length)];
+    private static ProjectCause randomProjectCause() {
+        return ProjectCause.values()[new Random().nextInt(ProjectCause.values().length)];
     }
-
-    public void setRandomMaterialsReadyDate(ProjectData data) {
-        LocalDate materialsReadyDate = data.getMaterialsReadyDate();
-        int wrongHitCounter = 0;
-        do {
-            if (++wrongHitCounter > maxTries) {
-                throw new RuntimeException("Failed to hit right materials ready date. Object: " + this);
-            }
-           data.setMaterialsReadyDate(RandomUtils
-                    .randomDate(Config.BIG_BANG_DATE, LocalDate.now().plusDays(14)));
-        } while (materialsReadyDate != null && materialsReadyDate.equals(data.getMaterialsReadyDate())
-                /*|| !data.areDatesOk()*/);
+    private static LocationType randomLocationType() {
+        return LocationType.values()[new Random().nextInt(LocationType.values().length)];
     }
-
-    public void setRandomProjectLocationUrl(ProjectData data) {
-        String projectLocationUrl = data.getProjectLocation();
-        do {
-           data.setProjectLocation("https://www.myprojects.com/" + RandomUtils.randomInt(2000));
-        } while (projectLocationUrl != null && projectLocationUrl.equals(data.getProjectLocation()));
+    private static ProjectStatus randomProjectStatus() {
+        return ProjectStatus.values()[new Random().nextInt(ProjectStatus.values().length)];
     }
-
-    public void setRandomLocationType(ProjectData data) {
-        LocationType locationType = data.getLocationType();
-        do {
-           data.setLocationType(randomLocationType());
-        } while (locationType != null && locationType.equals(data.getLocationType()));
+    public static ProjectStatus randomProjectStatus(List<ProjectStatus> list) {
+        return list.get(new Random().nextInt(list.size()));
     }
-
-    public static LocationType randomLocationType() {
-        Random random = new Random();
-        return LocationType.values()[random.nextInt(LocationType.values().length)];
-    }
-
-    public void setRandomStatus(ProjectData data) {
-        do {
-           data.setStatus(randomProjectStatus());
-        } while (!data.isStatusOk());
-    }
-
-    public static ProjectStatus randomProjectStatus() {
-        Random random = new Random();
-        return ProjectStatus.values()[random.nextInt(ProjectStatus.values().length)];
-    }
-
 }

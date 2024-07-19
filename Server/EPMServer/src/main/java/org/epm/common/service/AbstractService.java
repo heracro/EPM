@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
+import java.util.Random;
 
 @RequiredArgsConstructor
 public abstract class AbstractService<Entity extends IEntity, DTO extends IDTO>
@@ -26,7 +27,7 @@ public abstract class AbstractService<Entity extends IEntity, DTO extends IDTO>
         if (!entity.isValidEntity()) {
             throwIllegalArgument(entity);
         }
-        return getMapper().toDto(getRepository().save(entity));
+        return getMapper().toDto(save(entity));
     }
 
     @Override
@@ -39,7 +40,7 @@ public abstract class AbstractService<Entity extends IEntity, DTO extends IDTO>
         if(!replacementEntity.isValidEntity()) {
             throwIllegalArgument(replacedEntity);
         }
-        return getMapper().toDto(getRepository().save(replacementEntity));
+        return getMapper().toDto(save(replacementEntity));
     }
 
     @Override
@@ -50,7 +51,7 @@ public abstract class AbstractService<Entity extends IEntity, DTO extends IDTO>
         if (!existingEntity.isValidEntity()) {
             throwIllegalArgument(existingEntity);
         }
-        return getMapper().toDto(getRepository().save(existingEntity));
+        return getMapper().toDto(save(existingEntity));
     }
 
     @Override
@@ -80,5 +81,21 @@ public abstract class AbstractService<Entity extends IEntity, DTO extends IDTO>
 
     public Entity findEntityByUid(Integer uid) {
         return getRepository().findByUid(uid).orElseThrow(this::throwNotFound);
+    }
+
+    protected Entity save(Entity entity) {
+        if (entity.getUid() == null) {
+            entity.setUid(generateUniqueUid());
+        }
+        return getRepository().save(entity);
+    }
+
+    protected int generateUniqueUid() {
+        Random random = new Random();
+        int uid;
+        do {
+            uid = random.nextInt(1, 1000000);
+        } while (getRepository().existsByUid(uid));
+        return uid;
     }
 }

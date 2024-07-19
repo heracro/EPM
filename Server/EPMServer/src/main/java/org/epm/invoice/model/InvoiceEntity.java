@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.epm.common.model.EntityListener;
 import org.epm.common.model.IEntity;
 import org.epm.delivery.model.DeliveryEntity;
 import org.epm.shop.model.ShopEntity;
@@ -19,7 +18,6 @@ import java.util.List;
 @Entity
 @Table(name = "invoices")
 @NoArgsConstructor
-@EntityListeners(EntityListener.class)
 public class InvoiceEntity extends InvoiceData implements IEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
