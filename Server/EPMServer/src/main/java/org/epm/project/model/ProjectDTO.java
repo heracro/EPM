@@ -8,8 +8,11 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.epm.bom.model.BomDTO;
 import org.epm.common.model.IDTO;
+import org.epm.tag.model.TagEntity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,6 +25,8 @@ public class ProjectDTO extends ProjectData implements IDTO {
 
     @JsonIgnore
     private List<BomDTO> boms;
+
+    private Set<TagEntity> tags = new HashSet<>();
 
     @JsonIgnore
     public boolean isValidDTO() {

@@ -1,6 +1,7 @@
 package org.epm.project.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +30,7 @@ import java.util.Set;
 public class ProjectEntity extends ProjectData implements IEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @Builder.Default
     private Set<TagEntity> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

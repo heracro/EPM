@@ -30,7 +30,7 @@ public class ConnectionTestMenuListener implements MenuActionListener {
     }
 
     public boolean testConnection() {
-        String url = GuiConfig.API_URL + "api/cause?lang=pl";
+        String url = GuiConfig.API_URL + "/projects";
         HttpClient client = newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
         log.info("ConnectionTestMenuListener::testConnection(): request = {}", request.toString());

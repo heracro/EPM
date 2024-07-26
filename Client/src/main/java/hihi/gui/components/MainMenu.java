@@ -13,7 +13,7 @@ public class MainMenu extends MenuBar {
     public MainMenu(MainWindow mainWindow) {
         createConnectionMenu(mainWindow);
         createThemeMenu(mainWindow);
-        this.setVisible(false);
+        this.setVisible(true);
     }
 
     private void createConnectionMenu(MainWindow mainWindow) {

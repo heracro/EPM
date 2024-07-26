@@ -1,21 +1,27 @@
 package hihi.gui.components;
 
+import hihi.application.MainWindow;
 import hihi.application.config.GuiConfig;
+import hihi.application.config.ModuleButtonConfig;
+import hihi.gui.event.SidePanelButtonListener;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 public class SidePanel extends VBox {
 
+    private final MainWindow mainWindow;
     private Label connectionStatusLabel;
 
-    public SidePanel(double spacing) {
+    public SidePanel(MainWindow mainWindow, double spacing) {
         super(spacing);
+        this.mainWindow = mainWindow;
         this.getStyleClass().add("side-panel");
         createModuleButtons();
         createSpacer();
@@ -23,12 +29,13 @@ public class SidePanel extends VBox {
     }
 
     private void createModuleButtons() {
-        List<String> moduleButtonLabels = GuiConfig.MODULE_BUTTONS;
+        List<ModuleButtonConfig> moduleButtonConfigs = GuiConfig.MODULE_BUTTONS_CONFIG;
         ToggleGroup moduleButtons = new ToggleGroup();
-        for (String label : moduleButtonLabels) {
-            ToggleButton toggleButton = new ToggleButton(label);
+        for (ModuleButtonConfig buttonConfig : moduleButtonConfigs) {
+            ToggleButton toggleButton = new ToggleButton(buttonConfig.label());
             toggleButton.setMaxWidth(GuiConfig.LEFT_PANEL_BUTTON_WIDTH);
             toggleButton.setToggleGroup(moduleButtons);
+            toggleButton.setOnAction(new SidePanelButtonListener(mainWindow, buttonConfig.layoutClass()));
             this.getChildren().add(toggleButton);
         }
     }
