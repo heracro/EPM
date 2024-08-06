@@ -1,5 +1,6 @@
 package org.epm.material.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -50,6 +51,7 @@ public abstract class MaterialData extends AbstractModuleData {
     @Enumerated(EnumType.STRING)
     private Unit unit;
 
+    @JsonIgnore
     public boolean isValidEntity() {
         log.info("isValidEntity({})", this);
         boolean valid = getName() != null && getName().length() > 3
@@ -64,6 +66,7 @@ public abstract class MaterialData extends AbstractModuleData {
         return valid;
     }
 
+    @JsonIgnore
     public String toString() {
         return "Material {"
                 + " uid: " + getUid()

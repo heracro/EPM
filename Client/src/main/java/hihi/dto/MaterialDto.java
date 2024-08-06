@@ -1,25 +1,25 @@
 package hihi.dto;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import hihi.dto.enums.Unit;
+import lombok.*;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
-@JsonTypeName("Material")
-public class MaterialDto {
+//@JsonTypeName("Material")
+public class MaterialDto extends AbstractDto {
 
     private String name;
     private String norm;
-    private String dimension;
+    private String datasheet;
+    private String dimensions;
+    private String description;
     private Float weight;
     private Integer totalQty;
     private Integer freeQty;
     private String store;
-    private String datasheet;
+    private Unit unit;
 
 }

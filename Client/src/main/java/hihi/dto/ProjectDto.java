@@ -11,9 +11,10 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@ToString(callSuper = true)
+
 @Getter
 @Setter
+@ToString(callSuper = true)
 @NoArgsConstructor
 //@JsonTypeName("Project")
 public class ProjectDto extends AbstractDto {

@@ -28,6 +28,9 @@ public abstract class InvoiceData extends AbstractModuleData {
     private LocalDate orderDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate plannedDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate deliveryDate;
 
     @Column(nullable = false)

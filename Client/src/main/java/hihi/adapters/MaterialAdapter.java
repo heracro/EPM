@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hihi.application.config.GuiConfig;
-import hihi.dto.ProjectDto;
+import hihi.dto.MaterialDto;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -21,46 +21,46 @@ import java.util.List;
 @Slf4j
 @Service
 @NoArgsConstructor
-public class ProjectAdapter {
+public class MaterialAdapter {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final static String PROJECTS_URL = GuiConfig.API_URL + "/projects";
+    private final static String MATERIALS_URL = GuiConfig.API_URL + "/materials";
 
-    public List<ProjectDto> getProjects() throws IOException {
-        String url = PROJECTS_URL + "?page=0&size=" + getProjectsCount();
+    public List<MaterialDto> getMaterials() throws IOException {
+        String url = MATERIALS_URL + "?page=0&size=" + getMaterialsCount();
         String response = restTemplate.getForObject(url, String.class);
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode content = mapper.readTree(response).get("content");
-        return mapper.convertValue(content, new TypeReference<List<ProjectDto>>() {});
+        JsonNode node = mapper.readTree(response).get("content");
+        return mapper.convertValue(node, new TypeReference<List<MaterialDto>>() {});
     }
 
-    public int getProjectsCount() throws IOException {
-        String response = restTemplate.getForObject(PROJECTS_URL + "?page=0&size=1", String.class);
+    public int getMaterialsCount() throws IOException {
+        String response = restTemplate.getForObject(MATERIALS_URL + "?page=0&size=1", String.class);
         JsonNode root = new ObjectMapper().readTree(response);
         return root.get("page").get("totalElements").asInt();
     }
 
-    public ProjectDto getProjectByUid(Integer uid) {
-        return restTemplate.getForObject(PROJECTS_URL + "/" + uid, ProjectDto.class);
+    public MaterialDto getMaterialByUid(Integer uid) {
+        return restTemplate.getForObject(MATERIALS_URL + "/" + uid, MaterialDto.class);
     }
 
-    public ProjectDto createProject(ProjectDto project) {
-        return restTemplate.postForObject(PROJECTS_URL, project, ProjectDto.class);
+    public MaterialDto createMaterial(MaterialDto material) {
+        return restTemplate.postForObject(MATERIALS_URL, material, MaterialDto.class);
     }
 
-    public ProjectDto updateProject(ProjectDto project) {
-        return restTemplate.patchForObject(PROJECTS_URL + "/" + project.getUid(), project, ProjectDto.class);
+    public MaterialDto updateMaterial(MaterialDto material) {
+        return restTemplate.patchForObject(MATERIALS_URL + "/" + material.getUid(), material, MaterialDto.class);
     }
 
-    public boolean deleteProject(Integer uid) {
-        String url = PROJECTS_URL + "/" + uid;
+    public boolean deleteMaterial(Integer uid) {
+        String url = MATERIALS_URL + "/" + uid;
         try {
             ResponseEntity<Void> response = restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
             return response.getStatusCode() == HttpStatus.NO_CONTENT;
         } catch (HttpClientErrorException.NotFound e) {
-            log.info("Project with id {} not found", uid);
+            log.info("Material with id {} not found", uid);
         } catch (RestClientException e) {
-            log.error("Error while deleting Project", e);
+            log.error("Error while deleting Material", e);
         }
         return false;
     }

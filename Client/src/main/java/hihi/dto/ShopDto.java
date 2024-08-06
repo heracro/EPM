@@ -11,5 +11,11 @@ import lombok.Setter;
 @JsonTypeName("Shop")
 public class ShopDto {
 
+    private String name;
+    private String webpage;
+    private String address;
+    private String email;
+    private String phone;
+    private String memo;
 
 }

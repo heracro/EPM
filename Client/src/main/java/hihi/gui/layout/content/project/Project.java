@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 public class Project {
+
     private final BooleanProperty selected = new SimpleBooleanProperty(false);
     private final IntegerProperty uid = new SimpleIntegerProperty();
     private final StringProperty name = new SimpleStringProperty();
