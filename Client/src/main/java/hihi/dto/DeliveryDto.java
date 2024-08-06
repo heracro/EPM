@@ -1,6 +1,8 @@
 package hihi.dto;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import hihi.dto.enums.DeliveryStatus;
+import hihi.dto.enums.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,15 +15,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonTypeName("Delivery")
-public class DeliveryDto {
+public class DeliveryDto extends AbstractDto {
 
-    private Integer materialId;
-    private LocalDate orderedDate;
-    private LocalDate plannedDate;
-    private LocalDate deliveredDate;
-    private Integer qty;
-    private Float price;
+    private MaterialDto material;
+    private InvoiceDto invoice;
+    private DeliveryStatus status;
+    private Float unitPrice;
     private Float totalPrice;
-    private String status;
-    private String store;
+    private Integer qty;
+    private Unit unit;
+
 }
