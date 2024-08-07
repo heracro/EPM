@@ -37,7 +37,7 @@ public abstract class DeliveryData extends AbstractModuleData {
     private Float totalPrice;
 
     @Column(nullable = false)
-    private Integer qty;
+    private Float qty;
 
     @Column(nullable = false)
     private Unit unit;
@@ -53,7 +53,7 @@ public abstract class DeliveryData extends AbstractModuleData {
                 || getTotalPrice() != null || getQty() != null || getInvoice() != null;
     }
 
-    public void setQty(Integer qty) {
+    public void setQty(Float qty) {
         this.qty = qty;
         if (unitPrice != null && unitPrice > 0) totalPrice = unitPrice * qty;
         else if (totalPrice != null && totalPrice > 0) unitPrice = totalPrice / qty;
@@ -62,13 +62,13 @@ public abstract class DeliveryData extends AbstractModuleData {
 
     public void setUnitPrice(Float unitPrice) {
         this.unitPrice = unitPrice;
-        if (qty == null) qty = 0;
+        if (qty == null) qty = 0f;
         this.totalPrice = unitPrice * qty;
     }
 
     public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
-        if (qty == null) qty = 0;
+        if (qty == null) qty = 0f;
         this.unitPrice = totalPrice / qty;
     }
 

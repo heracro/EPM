@@ -24,7 +24,7 @@ public abstract class BomData extends AbstractModuleData {
     private BomStatus status;
 
     @Column(nullable = false)
-    private Integer qty;
+    private Float qty;
 
     private Integer reservedQty;
 
