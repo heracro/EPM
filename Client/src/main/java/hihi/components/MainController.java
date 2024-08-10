@@ -51,7 +51,7 @@ public class MainController {
             Controller controller = loader.getController();
             controller.setMainController(this);
             contentPane.setCenter(node);
-            log.info("\033[31m contentView's parent: {}", node.getParent());
+            log.info("\033[31m contentView's parent: {}\033[m", node.getParent());
         } catch (IOException e) {
             log.error("Failed to load content view", e);
         }

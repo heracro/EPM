@@ -1,5 +1,6 @@
 package hihi.content.project;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import hihi.content.bom.BomDto;
 import hihi.content.common.dataModel.AbstractDto;
 import hihi.content.enums.LocationType;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-//@JsonTypeName("Project")
+@JsonTypeName("Project")
 public class ProjectDto extends AbstractDto {
 
     private String name;

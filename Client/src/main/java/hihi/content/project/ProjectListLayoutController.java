@@ -1,6 +1,7 @@
 package hihi.content.project;
 
 import hihi.adapters.ProjectAdapter;
+import hihi.application.config.GuiConfig;
 import hihi.content.common.contentList.ContentListLayoutController;
 import hihi.content.enums.ProjectCause;
 import hihi.content.enums.ProjectStatus;
@@ -10,8 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
-import static hihi.application.config.GuiConfig.PROJECT_LIST_COL_WIDTHS;
 
 @Slf4j
 @Component
@@ -37,12 +40,25 @@ public class ProjectListLayoutController
 
     @Override
     protected Project mapInstance(ProjectDto dto) {
+        log.info("\033[93m mapInstance() \033[0m");
         return new Project(dto);
+    }
+
+    @Override
+    protected Class<Project> getContentClass() {
+        log.info("\033[93m getContentClass() \033[0m");
+        return Project.class;
+    }
+
+    @Override
+    protected List<Double> getColumnWidthsMultipliers() {
+        return Stream.concat(super.getColumnWidthsMultipliers().stream(),
+                Arrays.stream(GuiConfig.PROJECT_LIST_COL_WIDTH).boxed()).toList();
     }
 
     public ProjectListLayoutController() {
         super(new ProjectAdapter(), "Project");
-        log.info("\033[93mProjectListLayoutController()\033[0m");
+        log.info("\033[93m ProjectListLayoutController() \033[0m");
     }
 
     @FXML
@@ -50,62 +66,7 @@ public class ProjectListLayoutController
     public void initialize() {
         log.info("\033[93m initialize() \033[0m");
         super.initialize();
-        addNameColumn(PROJECT_LIST_COL_WIDTHS[2]);
-        addPlannedStartColumn(PROJECT_LIST_COL_WIDTHS[3]);
-        addPlannedEndColumn(PROJECT_LIST_COL_WIDTHS[4]);
-        addRealStartColumn(PROJECT_LIST_COL_WIDTHS[5]);
-        addRealEndColumn(PROJECT_LIST_COL_WIDTHS[6]);
-        addStatusColumn(PROJECT_LIST_COL_WIDTHS[7]);
-        addCauseColumn(PROJECT_LIST_COL_WIDTHS[8]);
-        addProjectLocationColumn(PROJECT_LIST_COL_WIDTHS[9]);
-    }
-
-    private void addNameColumn(double width) {
-        log.info("\033[93m addNameColumn({}) \033[0m", width);
-        nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        nameColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addPlannedStartColumn(double width) {
-        log.info("\033[93m addPlannedStartColumn({}) \033[0m", width);
-        plannedStartDateColumn.setCellValueFactory(cellData -> cellData.getValue().plannedStartDateProperty());
-        plannedStartDateColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addPlannedEndColumn(double width) {
-        log.info("\033[93m addPlannedEndColumn({}) \033[0m", width);
-        plannedEndDateColumn.setCellValueFactory(cellData -> cellData.getValue().plannedEndDateProperty());
-        plannedEndDateColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addRealStartColumn(double width) {
-        log.info("\033[93m addRealStartColumn({}) \033[0m", width);
-        realStartDateColumn.setCellValueFactory(cellData -> cellData.getValue().realStartDateProperty());
-        realStartDateColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addRealEndColumn(double width) {
-        log.info("\033[93m addRealEndColumn({}) \033[0m", width);
-        realEndDateColumn.setCellValueFactory(cellData -> cellData.getValue().realEndDateProperty());
-        realEndDateColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addStatusColumn(double width) {
-        log.info("\033[93m addStatusColumn({}) \033[0m", width);
-        statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
-        statusColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addCauseColumn(double width) {
-        log.info("\033[93m addCauseColumn({}) \033[0m", width);
-        causeColumn.setCellValueFactory(cellData -> cellData.getValue().causeProperty());
-        causeColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addProjectLocationColumn(double width) {
-        log.info("\033[93m addProjectLocationColumn({}) \033[0m", width);
-        projectLocationColumn.setCellValueFactory(cellData -> cellData.getValue().projectLocationProperty());
-        projectLocationColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
+        setupColumns();
     }
 
 }

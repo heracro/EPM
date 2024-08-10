@@ -58,14 +58,13 @@ public class ProjectDetailsLayoutController
     }
 
     public void initialize() {
+        super.initialize();
         log.info("\033[92m initialize() \033[0m");
-        grid.getStyleClass().add("single-project-view");
     }
 
     @Override
     public void setContent(Project project) {
-        log.info("\033[92m setContent({})\033[0m", project.uidProperty());
-        log.info("\033[92m Project: {}\033[m", project);
+        log.info("\033[92m setContent({})\033[0m", project);
         uidField.textProperty().bind(project.uidProperty().asString());
         nameField.textProperty().bindBidirectional(project.nameProperty());
         bodyField.textProperty().bindBidirectional(project.bodyProperty());
@@ -85,7 +84,6 @@ public class ProjectDetailsLayoutController
         statusComboBox.valueProperty().bindBidirectional(project.statusProperty());
         causeComboBox.setItems(FXCollections.observableArrayList(ProjectCause.values()));
         causeComboBox.valueProperty().bindBidirectional(project.causeProperty());
-        log.info("\033[92m Project controller: {}\033[m", project);
     }
 
 }

@@ -1,19 +1,14 @@
 package hihi.content.common.contentDetails;
 
 import hihi.adapters.MainResourceAbstractAdapter;
-import hihi.components.MainController;
 import hihi.content.common.ContentLayoutController;
 import hihi.content.common.dataModel.AbstractContent;
 import hihi.content.common.dataModel.AbstractDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @ToString(callSuper = true)

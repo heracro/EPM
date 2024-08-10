@@ -1,7 +1,7 @@
 package hihi.content.common.contentDetails;
 
 import hihi.content.common.BottomPanelConfiguration;
-import hihi.content.common.ButtonConfig;
+import hihi.content.common.dataModel.BottomPanelButtonConfig;
 
 public abstract class ContentDetailsBottomPanelConfiguration
         extends BottomPanelConfiguration {
@@ -11,9 +11,9 @@ public abstract class ContentDetailsBottomPanelConfiguration
     }
 
     private void addCommonButtonsConfiguration() {
-        buttonConfigs.add(new ButtonConfig("Save to DB", event -> storeEntry()));
-        buttonConfigs.add(new ButtonConfig("Cancel", event -> cancelEdit()));
-        buttonConfigs.add(new ButtonConfig("Export to file", event -> exportEntry()));
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("Save to DB", event -> storeEntry()));
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("Cancel", event -> cancelEdit()));
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("Export to file", event -> exportEntry()));
     }
 
     protected abstract void storeEntry();

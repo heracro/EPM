@@ -1,7 +1,7 @@
 package hihi.content.common.contentList;
 
 import hihi.content.common.BottomPanelConfiguration;
-import hihi.content.common.ButtonConfig;
+import hihi.content.common.dataModel.BottomPanelButtonConfig;
 
 public abstract class ContentListBottomPanelConfiguration
         extends BottomPanelConfiguration {
@@ -11,9 +11,9 @@ public abstract class ContentListBottomPanelConfiguration
     }
 
     private void addCommonButtonsConfiguration() {
-        buttonConfigs.add(new ButtonConfig("Refresh list", event -> refreshList()));
-        buttonConfigs.add(new ButtonConfig("New...", event -> createNewEntry()));
-        buttonConfigs.add(new ButtonConfig("Delete selected", event -> deleteSelectedEntries()));
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("Refresh list", event -> refreshList()));
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("New...", event -> createNewEntry()));
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("Delete selected", event -> deleteSelectedEntries()));
     }
 
     protected abstract void refreshList();

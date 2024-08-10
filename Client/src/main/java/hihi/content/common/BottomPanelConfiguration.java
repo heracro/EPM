@@ -1,5 +1,6 @@
 package hihi.content.common;
 
+import hihi.content.common.dataModel.BottomPanelButtonConfig;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -11,15 +12,15 @@ public class BottomPanelConfiguration {
 
     @FXML
     protected HBox bottomPanel;
-    protected List<ButtonConfig> buttonConfigs;
+    protected List<BottomPanelButtonConfig> bottomPanelButtonConfigs;
     private static final String BOTTOM_BUTTON_STYLE_CLASS = "bottom-panel-button";
 
     protected BottomPanelConfiguration() {
-        buttonConfigs = new ArrayList<>();
+        bottomPanelButtonConfigs = new ArrayList<>();
     }
 
     protected void loadButtons() {
-        for (ButtonConfig config : buttonConfigs) {
+        for (BottomPanelButtonConfig config : bottomPanelButtonConfigs) {
             Button button = new Button(config.label());
             button.getStyleClass().add(BOTTOM_BUTTON_STYLE_CLASS);
             button.setOnAction(config.eventHandler());

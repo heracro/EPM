@@ -14,10 +14,16 @@ import java.util.Set;
 @Getter
 @RequiredArgsConstructor
 public enum Unit {
-    G   ("[g]"),
-    PCS ("szt."),
-    MM  ("[mm]"),
-    VOL ("[cm^3]");
+    PCS     ("szt."),
+    PKG     ("p."),
+    MASS_G  ("[g]"),
+    MASS_KG ("[kg]"),
+    LEN_MM  ("[mm]"),
+    LEN_M   ("[m]"),
+    AREA_MM ("[mm^2]"),
+    AREA_M  ("[m^2]"),
+    VOL_ML  ("[cm^3]"),
+    VOL_L   ("[dm^3]");
 
     private final String unit;
 

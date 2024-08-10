@@ -1,6 +1,7 @@
 package hihi.content.delivery;
 
 import hihi.adapters.DeliveryAdapter;
+import hihi.application.config.GuiConfig;
 import hihi.content.common.contentList.ContentListLayoutController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -8,6 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static hihi.application.config.GuiConfig.DELIVERY_LIST_COL_WIDTH;
 
@@ -34,6 +39,17 @@ public class DeliveryListLayoutController
         return new Delivery(dto);
     }
 
+    @Override
+    protected Class<Delivery> getContentClass() {
+        return Delivery.class;
+    }
+
+    @Override
+    protected List<Double> getColumnWidthsMultipliers() {
+        return Stream.concat(super.getColumnWidthsMultipliers().stream(),
+                        Arrays.stream(GuiConfig.DELIVERY_LIST_COL_WIDTH).boxed()).toList();
+    }
+
     public DeliveryListLayoutController() {
         super(new DeliveryAdapter(), "Delivery");
         log.info("\033[93mDeliveryListLayoutController()\033[0m");
@@ -44,48 +60,7 @@ public class DeliveryListLayoutController
     public void initialize() {
         log.info("\033[93m initialize() \033[0m");
         super.initialize();
-        addMaterialColumn(DELIVERY_LIST_COL_WIDTH[2]);
-        addQtyColumn(DELIVERY_LIST_COL_WIDTH[3]);
-        addUnitColumn(DELIVERY_LIST_COL_WIDTH[4]);
-        addUnitPriceColumn(DELIVERY_LIST_COL_WIDTH[5]);
-        addTotalPriceColumn(DELIVERY_LIST_COL_WIDTH[6]);
-        addPlannedDateColumn(DELIVERY_LIST_COL_WIDTH[7]);
-    }
-
-    private void addMaterialColumn(double width) {
-        log.info("\033[93m addMaterialColumn({}) \033[0m", width);
-        materialColumn.setCellValueFactory(cellData -> cellData.getValue().materialNameProperty());
-        materialColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addQtyColumn(double width) {
-        log.info("\033[93m addQtyColumn({}) \033[0m", width);
-        qtyColumn.setCellValueFactory(cellData -> cellData.getValue().qtyProperty().asObject());
-        qtyColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addUnitColumn(double width) {
-        log.info("\033[93m addUnitColumn({}) \033[0m", width);
-        unitColumn.setCellValueFactory(cellData -> cellData.getValue().unitProperty());
-        unitColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addUnitPriceColumn(double width) {
-        log.info("\033[93m addUnitPriceColumn({}) \033[0m", width);
-        unitPriceColumn.setCellValueFactory(cellData -> cellData.getValue().unitPriceProperty().asObject());
-        unitPriceColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addTotalPriceColumn(double width) {
-        log.info("\033[93m addTotalPriceColumn({}) \033[0m", width);
-        totalPriceColumn.setCellValueFactory(cellData -> cellData.getValue().totalPriceProperty().asObject());
-        totalPriceColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
-    }
-
-    private void addPlannedDateColumn(double width) {
-        log.info("\033[93m addPlannedDateColumn({}) \033[0m", width);
-        plannedDateColumn.setCellValueFactory(cellData -> cellData.getValue().plannedDateProperty());
-        plannedDateColumn.prefWidthProperty().bind(table.widthProperty().multiply(width));
+        setupColumns();
     }
 
 }
