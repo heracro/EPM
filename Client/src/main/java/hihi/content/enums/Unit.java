@@ -28,7 +28,7 @@ public enum Unit {
 
     @JsonCreator
     public static Unit of(String value) throws IllegalArgumentException {
-        log.info("Unit.of(value = {})", value);
+        //log.info("Unit.of(value = {})", value);
         for (Unit unit : values()) {
             if (unit.name().equalsIgnoreCase(value) || unit.getUnit().equalsIgnoreCase(value)) {
                 return unit;

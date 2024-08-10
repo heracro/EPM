@@ -1,6 +1,7 @@
 package hihi.content.project;
 
-import hihi.content.common.AbstractDto;
+import hihi.content.bom.BomDto;
+import hihi.content.common.dataModel.AbstractDto;
 import hihi.content.enums.LocationType;
 import hihi.content.enums.ProjectStatus;
 import hihi.content.tag.TagDto;
@@ -8,6 +9,7 @@ import hihi.content.enums.ProjectCause;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,24 +34,25 @@ public class ProjectDto extends AbstractDto {
     private LocationType locationType;
     private ProjectStatus status;
     private ProjectCause cause;
+    private List<BomDto> boms;
     private Set<TagDto> tags;
 
     public ProjectDto(Project project) {
-        name = project.getName().getValue();
-        body = project.getBody().getValue();
-        plannedStartDate = project.getPlannedStartDate().getValue();
-        plannedEndDate = project.getPlannedEndDate().getValue();
-        realStartDate = project.getRealStartDate().getValue();
-        realEndDate = project.getRealEndDate().getValue();
-        materialsReadyDate = project.getMaterialsReadyDate().getValue();
-        workingHoursCount = project.getWorkingHoursCount().getValue();
-        workingHoursPlanned = project.getWorkingHoursPlanned().getValue();
-        projectLocation = project.getProjectLocation().getValue();
-        locationType = project.getLocationType().getValue();
-        status = project.getStatus().getValue();
-        cause = project.getCause().getValue();
-        if (project.getTags().get() != null) {
-            tags = project.getTags().get().stream().map(TagDto::new).collect(Collectors.toSet());
+        name = project.nameProperty().getValue();
+        body = project.bodyProperty().getValue();
+        plannedStartDate = project.plannedStartDateProperty().getValue();
+        plannedEndDate = project.plannedEndDateProperty().getValue();
+        realStartDate = project.realStartDateProperty().getValue();
+        realEndDate = project.realEndDateProperty().getValue();
+        materialsReadyDate = project.materialsReadyDateProperty().getValue();
+        workingHoursCount = project.workingHoursCountProperty().getValue();
+        workingHoursPlanned = project.workingHoursPlannedProperty().getValue();
+        projectLocation = project.projectLocationProperty().getValue();
+        locationType = project.locationTypeProperty().getValue();
+        status = project.statusProperty().getValue();
+        cause = project.causeProperty().getValue();
+        if (project.tagsProperty().get() != null) {
+            tags = project.tagsProperty().get().stream().map(TagDto::new).collect(Collectors.toSet());
         }
     }
 

@@ -1,7 +1,7 @@
 package hihi.content.shop;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import hihi.content.common.AbstractDto;
+import hihi.content.common.dataModel.AbstractDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="contentView"
+            fx:controller="hihi.content.material.MaterialListLayoutController">
+    <center>
+        <TableView fx:id="table">
+            <columns>
+                <TableColumn fx:id="selectedColumn" text="Selected"/>
+                <TableColumn fx:id="uidColumn" text="Uid"/>
+                <TableColumn fx:id="nameColumn" text="Name"/>
+                <TableColumn fx:id="normColumn" text="Norm"/>
+                <TableColumn fx:id="dimensionsColumn" text="Dimensions"/>
+                <TableColumn fx:id="unitColumn" text="Unit"/>
+                <TableColumn fx:id="weightColumn" text="Weight"/>
+                <TableColumn fx:id="totalQtyColumn" text="Total Qty"/>
+                <TableColumn fx:id="freeQtyColumn" text="Free Qty"/>
+                <TableColumn fx:id="datasheetColumn" text="Datasheet"/>
+            </columns>
+        </TableView>
+    </center>
+    <bottom>
+        <HBox fx:id="bottomPanel" />
+    </bottom>
+</BorderPane>

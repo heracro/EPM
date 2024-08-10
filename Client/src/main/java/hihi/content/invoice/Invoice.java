@@ -1,6 +1,6 @@
 package hihi.content.invoice;
 
-import hihi.content.common.AbstractContent;
+import hihi.content.common.dataModel.AbstractContent;
 import hihi.content.shop.Shop;
 import hihi.content.enums.InvoiceStatus;
 import javafx.beans.property.FloatProperty;

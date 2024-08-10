@@ -1,0 +1,70 @@
+.button-container {
+    -fx-alignment: center;
+    -fx-spacing: 20px;
+    -fx-pref-width: 200px;
+}
+
+.side-panel {
+    -fx-border-width: 0 2px 2px 2px; /* Góra, prawo, dół, lewo */
+    -fx-pref-width: 200px;
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+}
+
+.connection-status {
+    -fx-pref-width: 200px;
+    -fx-alignment: center;
+}
+
+.content-view {
+    -fx-border-width: 0 2px 2px 0;
+    -fx-border-color: chartreuse;
+}
+
+.content-grid {
+    -fx-border-width: 4px;
+    -fx-border-color: purple;
+}
+
+.bottom-panel {
+    -fx-border-width: 0 2px 2px 0;
+    -fx-border-color: dodgerblue;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+    -fx-pref-width: 100%;
+}
+
+.connected {
+    -fx-alignment: center;
+    -fx-font-family: 'Arial';
+    -fx-font-size: 18px;
+    -fx-font-weight: normal;
+    -fx-text-fill: green;
+}
+
+.disconnected {
+    -fx-alignment: center;
+    -fx-font-family: 'Arial';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: red;
+}
+
+.single-project-view {
+    -fx-grid-lines-visible: true;
+    -fx-border-color: darkgrey;
+    -fx-border-width: 1px;
+}
+
+.bottom-panel-button {
+    -fx-background-color: #0073e6;
+    -fx-text-fill: white;
+    -fx-pref-height: 20px;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.bottom-panel-button:hover {
+    -fx-background-color: #005bb5;
+}

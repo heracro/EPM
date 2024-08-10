@@ -1,6 +1,6 @@
 package hihi.content.material;
 
-import hihi.content.common.AbstractContent;
+import hihi.content.common.dataModel.AbstractContent;
 import javafx.beans.property.*;
 import lombok.NoArgsConstructor;
 

@@ -3,7 +3,7 @@ package hihi.adapters;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hihi.content.common.AbstractDto;
+import hihi.content.common.dataModel.AbstractDto;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;

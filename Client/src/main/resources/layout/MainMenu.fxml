@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+
+<MenuBar xmlns:fx="http://javafx.com/fxml" fx:id="mainMenu" fx:controller="hihi.components.MainMenuController">
+    <Menu text="Connection">
+        <MenuItem text="Test connection" onAction="#testConnection" accelerator="Ctrl+Shift+T"/>
+    </Menu>
+    <Menu text="Theme">
+        <MenuItem text="Light theme" onAction="#loadLightTheme"/>
+        <MenuItem text="Dark theme" onAction="#loadDarkTheme"/>
+    </Menu>
+</MenuBar>

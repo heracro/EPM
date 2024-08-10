@@ -1,6 +1,6 @@
 package hihi.content.changelog;
 
-import hihi.content.common.AbstractDto;
+import hihi.content.common.dataModel.AbstractDto;
 import hihi.content.project.ProjectDto;
 import hihi.content.enums.ChangeLogSource;
 import hihi.content.enums.ChangeType;

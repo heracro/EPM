@@ -1,6 +1,6 @@
 package hihi.content.bom;
 
-import hihi.content.common.AbstractContent;
+import hihi.content.common.dataModel.AbstractContent;
 import javafx.beans.property.*;
 
 public class Bom extends AbstractContent {

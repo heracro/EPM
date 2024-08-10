@@ -1,7 +1,7 @@
 package hihi.content.delivery;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import hihi.content.common.AbstractDto;
+import hihi.content.common.dataModel.AbstractDto;
 import hihi.content.enums.DeliveryStatus;
 import hihi.content.enums.Unit;
 import hihi.content.invoice.InvoiceDto;
@@ -18,6 +18,7 @@ import lombok.Setter;
 @JsonTypeName("Delivery")
 public class DeliveryDto extends AbstractDto {
 
+    private String type;
     private MaterialDto material;
     private InvoiceDto invoice;
     private DeliveryStatus status;

@@ -1,6 +1,6 @@
 package hihi.content.changelog;
 
-import hihi.content.common.AbstractContent;
+import hihi.content.common.dataModel.AbstractContent;
 import hihi.content.enums.ChangeLogSource;
 import hihi.content.enums.ChangeType;
 import javafx.beans.property.*;

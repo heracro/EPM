@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.epm.common.model.IEntity;
 import org.epm.invoice.model.InvoiceEntity;
-import org.epm.material.model.MaterialData;
 import org.epm.material.model.MaterialEntity;
 
 @Slf4j
@@ -40,8 +39,4 @@ public class DeliveryEntity extends DeliveryData implements IEntity {
         if (getTotalPrice() == null) setTotalPrice(0f);
     }
 
-    @Override
-    public void setMaterial(MaterialData material) {
-        this.material = (MaterialEntity) material;
-    }
 }

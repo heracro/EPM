@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:id="sidePanel"
+      fx:controller="hihi.components.SidePanelController" styleClass="side-panel">
+    <Region fx:id="topSpacer" />
+    <VBox fx:id="buttonContainer" />
+    <Region VBox.vgrow="ALWAYS" />
+    <Label fx:id="connectionStatusLabel" />
+    <Region fx:id="bottomSpacer" />
+</VBox>

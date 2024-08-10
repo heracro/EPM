@@ -1,6 +1,6 @@
 package hihi.content.delivery;
 
-import hihi.content.common.AbstractContent;
+import hihi.content.common.dataModel.AbstractContent;
 import javafx.beans.property.*;
 import lombok.NoArgsConstructor;
 
@@ -25,11 +25,13 @@ public class Delivery extends AbstractContent {
         uid.set(dto.getUid());
         materialId.set(dto.getMaterial().getUid());
         materialName.set(dto.getMaterial().getName());
-        store.set(dto.getInvoice().getShop().getName());
-        invoiceNumber.set(dto.getInvoice().getInvoiceNumber());
-        orderDate.set(dto.getInvoice().getOrderDate());
-        plannedDate.set(dto.getInvoice().getPlannedDate());
-        deliveryDate.set(dto.getInvoice().getDeliveryDate());
+        if (dto.getInvoice() != null) {
+            store.set(dto.getInvoice().getShop().getName());
+            invoiceNumber.set(dto.getInvoice().getInvoiceNumber());
+            orderDate.set(dto.getInvoice().getOrderDate());
+            plannedDate.set(dto.getInvoice().getPlannedDate());
+            deliveryDate.set(dto.getInvoice().getDeliveryDate());
+        }
         qty.set(dto.getQty());
         unit.set(dto.getUnit().toValue());
         unitPrice.set(dto.getUnitPrice());

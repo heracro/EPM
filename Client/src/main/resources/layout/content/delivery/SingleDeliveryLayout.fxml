@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="contentView"
+            fx:controller="hihi.content.delivery.DeliveryDetailsLayoutController">
+
+    <GridPane fx:id="grid">
+
+    </GridPane>
+
+    <HBox fx:id="bottomPanel" />
+
+</BorderPane>

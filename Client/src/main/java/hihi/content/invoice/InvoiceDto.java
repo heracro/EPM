@@ -1,6 +1,6 @@
 package hihi.content.invoice;
 
-import hihi.content.common.AbstractDto;
+import hihi.content.common.dataModel.AbstractDto;
 import hihi.content.shop.ShopDto;
 import hihi.content.enums.InvoiceStatus;
 import lombok.Getter;

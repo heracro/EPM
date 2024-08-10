@@ -1,7 +1,7 @@
 package hihi.content.bom;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import hihi.content.common.AbstractDto;
+import hihi.content.common.dataModel.AbstractDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

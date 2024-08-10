@@ -1,7 +1,7 @@
 package hihi.content.tag;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import hihi.content.common.AbstractDto;
+import hihi.content.common.dataModel.AbstractDto;
 import hihi.content.enums.TagType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

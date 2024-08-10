@@ -3,15 +3,17 @@ package hihi.content.project;
 import hihi.content.enums.LocationType;
 import hihi.content.enums.ProjectStatus;
 import hihi.content.enums.ProjectCause;
-import hihi.content.common.AbstractContent;
+import hihi.content.common.dataModel.AbstractContent;
 import hihi.content.tag.Tag;
 import javafx.beans.property.*;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class Project extends AbstractContent {
 

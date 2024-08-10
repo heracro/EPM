@@ -1,0 +1,29 @@
+.root {
+    -fx-text-fill: black;
+}
+
+.dark-area {
+    -fx-border-color: grey;
+    -fx-background-color: darkgrey;
+}
+
+.bright-area {
+    -fx-border-color: grey;
+    -fx-background-color: white;
+}
+
+.side-panel {
+
+}
+
+.content-view {
+
+}
+
+.bottom-panel {
+
+}
+
+
+
+

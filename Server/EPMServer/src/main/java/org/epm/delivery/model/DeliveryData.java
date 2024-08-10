@@ -40,6 +40,7 @@ public abstract class DeliveryData extends AbstractModuleData {
     private Float qty;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Unit unit;
 
     @JsonIgnore
@@ -72,6 +73,7 @@ public abstract class DeliveryData extends AbstractModuleData {
         this.unitPrice = totalPrice / qty;
     }
 
+    @JsonIgnore
     public boolean isStatusOk() {
         if (getStatus() == null) return false;
         switch (getStatus()) {
@@ -93,10 +95,12 @@ public abstract class DeliveryData extends AbstractModuleData {
         return false;
     }
 
+    @JsonIgnore
     private boolean isQtyOk() {
         return getQty() != null && getQty() > 0;
     }
 
+    @JsonIgnore
     private boolean arePricesOk() {
         boolean bothNull = getUnitPrice() == null && getTotalPrice() == null;
         boolean noneNull = getUnitPrice() != null && getTotalPrice() != null;
@@ -124,6 +128,5 @@ public abstract class DeliveryData extends AbstractModuleData {
     }
 
     public abstract MaterialData getMaterial();
-    public abstract void setMaterial(MaterialData material);
     public abstract InvoiceData getInvoice();
 }

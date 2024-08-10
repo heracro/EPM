@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:id="mainWindow"
+            fx:controller="hihi.components.MainController">
+    <top>
+        <fx:include source="MainMenu.fxml" fx:id="mainMenu"/>
+    </top>
+    <left>
+        <fx:include source="SidePanel.fxml" fx:id="sidePanel"/>
+    </left>
+    <center>
+        <BorderPane fx:id="contentPane" styleClass="content-view"
+                    style="-fx-border-width: 3px; -fx-border-color: green;"/>
+    </center>
+</BorderPane>
