@@ -26,4 +26,8 @@ public class InvoiceDto extends AbstractDto {
     private InvoiceStatus status;
     private ShopDto shop;
 
+    public InvoiceDto(Invoice invoice) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

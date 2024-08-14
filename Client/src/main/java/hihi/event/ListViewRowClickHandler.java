@@ -14,11 +14,12 @@ import java.util.Map;
 @Slf4j
 public class ListViewRowClickHandler<Content extends AbstractContent> implements EventHandler<MouseEvent> {
 
-    private final MainController mainController;
-    private final Map.Entry<String, ModuleConfig> moduleConfig;
 
-    public ListViewRowClickHandler(MainController mainController, Map.Entry<String, ModuleConfig> moduleConfig) {
-        this.moduleConfig = moduleConfig;
+    private final MainController mainController;
+    private final String moduleName;
+
+    public ListViewRowClickHandler(MainController mainController, String moduleName) {
+        this.moduleName = moduleName;
         this.mainController = mainController;
         if (mainController == null) log.info("\033[91m Reference to MainController = NULL !");
     }
@@ -44,7 +45,7 @@ public class ListViewRowClickHandler<Content extends AbstractContent> implements
         TableRow<Content> tableRow = getClickedRow(event);
         if (tableRow != null && !tableRow.isEmpty() && event.getClickCount() > 1) {
             Content clickedItem = tableRow.getItem();
-            mainController.setContentObjectView(moduleConfig, clickedItem);
+            mainController.setContentDetailsView(moduleName, clickedItem);
         }
     }
 

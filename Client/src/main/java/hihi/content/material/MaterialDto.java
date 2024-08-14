@@ -24,4 +24,7 @@ public class MaterialDto extends AbstractDto {
     private String store;
     private Unit unit;
 
+    public MaterialDto(Material material) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

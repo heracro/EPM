@@ -1,7 +1,8 @@
 package hihi.content.project;
 
-import hihi.adapters.ProjectAdapter;
+import hihi.adapter.AdapterBuilder;
 import hihi.application.config.GuiConfig;
+import hihi.application.config.ModuleConfig;
 import hihi.content.common.contentList.ContentListLayoutController;
 import hihi.content.enums.ProjectCause;
 import hihi.content.enums.ProjectStatus;
@@ -18,8 +19,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Component
-public class ProjectListLayoutController
-        extends ContentListLayoutController<Project, ProjectDto, ProjectAdapter> {
+public class ProjectListLayoutController extends ContentListLayoutController<Project> {
 
     @FXML
     private TableColumn<Project, String> nameColumn;
@@ -38,27 +38,15 @@ public class ProjectListLayoutController
     @FXML
     private TableColumn<Project, String> projectLocationColumn;
 
-    @Override
-    protected Project mapInstance(ProjectDto dto) {
-        log.info("\033[93m mapInstance() \033[0m");
-        return new Project(dto);
-    }
-
-    @Override
-    protected Class<Project> getContentClass() {
-        log.info("\033[93m getContentClass() \033[0m");
-        return Project.class;
+    public ProjectListLayoutController() {
+        super("Project");
+        log.info("\033[93m ProjectListLayoutController() \033[0m");
     }
 
     @Override
     protected List<Double> getColumnWidthsMultipliers() {
         return Stream.concat(super.getColumnWidthsMultipliers().stream(),
                 Arrays.stream(GuiConfig.PROJECT_LIST_COL_WIDTH).boxed()).toList();
-    }
-
-    public ProjectListLayoutController() {
-        super(new ProjectAdapter(), "Project");
-        log.info("\033[93m ProjectListLayoutController() \033[0m");
     }
 
     @FXML

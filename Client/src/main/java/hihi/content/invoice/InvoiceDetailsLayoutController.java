@@ -1,6 +1,5 @@
 package hihi.content.invoice;
 
-import hihi.adapters.InvoiceAdapter;
 import hihi.content.common.contentDetails.ContentDetailsLayoutController;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +9,10 @@ import org.springframework.stereotype.Component;
 @ToString(callSuper = true)
 @Component
 public class InvoiceDetailsLayoutController
-        extends ContentDetailsLayoutController<Invoice, InvoiceDto, InvoiceAdapter> {
+        extends ContentDetailsLayoutController<Invoice> {
 
     public InvoiceDetailsLayoutController() {
-        super(new InvoiceAdapter(), "Invoice");
+        super("Invoice");
         log.warn("\033[92m UNSUPPORTED! InvoiceDetailsLayoutController() \033[m");
     }
 

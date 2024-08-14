@@ -52,7 +52,7 @@ public class MainMenuController {
         Scene scene = mainMenu.getScene();
         if (scene == null) throw new IllegalStateException("Scene is null");
         scene.getStylesheets().clear();
-        scene.getStylesheets().addAll("/styles/scene.css", "/styles/themes/dark-theme.css");
+        scene.getStylesheets().addAll("/styles/style.css", "/styles/themes/dark-theme.css");
     }
 
     @FXML
@@ -61,7 +61,7 @@ public class MainMenuController {
         Scene scene = mainMenu.getScene();
         if (scene == null) throw new IllegalStateException("Scene is null");
         scene.getStylesheets().clear();
-        scene.getStylesheets().addAll("/styles/scene.css", "/styles/themes/light-theme.css");
+        scene.getStylesheets().addAll("/styles/style.css", "/styles/themes/light-theme.css");
     }
 
 }

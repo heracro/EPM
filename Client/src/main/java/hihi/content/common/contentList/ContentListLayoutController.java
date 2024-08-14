@@ -1,11 +1,10 @@
 package hihi.content.common.contentList;
 
-import hihi.adapters.MainResourceAbstractAdapter;
 import hihi.application.config.GuiConfig;
+import hihi.application.config.ModuleConfig;
 import hihi.components.MainController;
 import hihi.content.common.ContentLayoutController;
 import hihi.content.common.dataModel.AbstractContent;
-import hihi.content.common.dataModel.AbstractDto;
 import hihi.event.ListViewRowClickHandler;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,10 +28,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @ToString(callSuper = true)
 public abstract class ContentListLayoutController<
-        Content extends AbstractContent,
-        DTO extends AbstractDto,
-        Adapter extends MainResourceAbstractAdapter<DTO>>
-        extends ContentLayoutController<Adapter> {
+        Content extends AbstractContent>
+        extends ContentLayoutController {
 
     @FXML
     protected TableView<Content> table;
@@ -42,9 +38,9 @@ public abstract class ContentListLayoutController<
     @FXML
     protected TableColumn<Content, Integer> uidColumn;
 
-    protected ContentListLayoutController(Adapter adapter, String contentName) {
-        super(adapter, contentName);
-        log.info("\033[96m ContentListLayoutController({}, {}) \033[m", adapter, contentName);
+    protected ContentListLayoutController(String contentName) {
+        super(contentName);
+        log.info("\033[96m ContentListLayoutController({}) \033[m", contentName);
     }
 
     public void initialize() {
@@ -56,31 +52,30 @@ public abstract class ContentListLayoutController<
         selectedColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectedColumn));
     }
 
+    @SuppressWarnings("unchecked")
     protected void loadContentToTable() {
         log.info("\033[96m ({}) loadContentList() \033[m",this.getClass().getSimpleName());
+        List<Content> contentList = (List<Content>) getAdapter().getAll();
+        log.info(contentList.toString());
         try {
-            List<DTO> dtos = adapter.getAll();
             ObservableList<Content> content = FXCollections.observableArrayList();
-            for (DTO dto : dtos) {
-                content.add(mapInstance(dto));
+            for (AbstractContent contentObject : contentList) {
+                content.add((Content) contentObject);
             }
-            log.info("\033[96m Fetched {} Objects \033[m", content.size());
             table.setItems(content);
         } catch (Exception e) {
             log.error("\033[96m Error fetching contents list: {} \033[m", e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
         }
     }
 
-    /**
-     * TODO: listeners only to rows with content.
-     */
     protected void attachRowClickHandlers() {
         log.info("\033[96m ({}) attachRowClickHandlers() \033[m", this.getClass().getSimpleName());
         log.info("\033[96m Reference to MainController = {} \033[m", mainController == null ? "null" : mainController);
         table.setRowFactory(t -> {
             TableRow<Content> row = new TableRow<>();
             row.setOnMouseClicked(
-                    new ListViewRowClickHandler<Content>(mainController, GuiConfig.getConfigForModule(contentName))
+                    new ListViewRowClickHandler<Content>(mainController, moduleName)
             );
             return row;
         });
@@ -117,6 +112,22 @@ public abstract class ContentListLayoutController<
         }
     }
 
+    private double calculateColumnWidth(double contentViewWidth, double widthMultiplier) {
+        log.info("\033[96m calculateColumnWidth({}, {}) \033[m", contentViewWidth, widthMultiplier);
+        if (contentViewWidth < GuiConfig.MIN_DYNAMIC_CONTENT_WIDTH) {
+            return GuiConfig.MIN_DYNAMIC_CONTENT_WIDTH * widthMultiplier;
+        } else if (contentViewWidth <= GuiConfig.MAX_DYNAMIC_CONTENT_WIDTH) {
+            return contentViewWidth * widthMultiplier;
+        }
+        return GuiConfig.MAX_DYNAMIC_CONTENT_WIDTH * widthMultiplier;
+    }
+
+    protected List<Double> getColumnWidthsMultipliers() {
+        return Arrays.stream(GuiConfig.BASE_COL_WIDTH)
+                .boxed()
+                .collect(Collectors.toList());
+    }
+
     @SuppressWarnings("unchecked")
     private void bindColumnsToProperties() {
         log.info("\033[96m bindColumnsToProperties() \033[m");
@@ -125,13 +136,13 @@ public abstract class ContentListLayoutController<
             String propertyName = field.getName().replace("Column", "Property");
             try {
                 field.setAccessible(true);
-                Method propertyMethod = getContentClass().getMethod(propertyName);
+                Method propertyMethod = ModuleConfig.getInstance(moduleName).getContentClass().getMethod(propertyName);
                 log.info("\033[96m Binding column {} to {} \033[m", field.getName(), propertyName);
                 TableColumn<Content, ?> column = (TableColumn<Content, ?>) field.get(this);
                 column.setCellValueFactory(getColumnBindingCallback(propertyMethod));
             } catch (NoSuchMethodException | IllegalAccessException e) {
                 log.error("\033[96m No such method or access issue: {}.{}() \033[m",
-                        getContentClass().getSimpleName(), propertyName);
+                        moduleName, propertyName);
             } finally {
                 field.setAccessible(false);
             }
@@ -150,41 +161,11 @@ public abstract class ContentListLayoutController<
         });
     }
 
-    private List<Field> getAllFields() {
-        List<Field> fields = new ArrayList<>();
-        Class<?> superclass = this.getClass().getSuperclass();
-        if (superclass != null) {
-            fields.addAll(Arrays.asList(superclass.getDeclaredFields()));
-        }
-        fields.addAll(Arrays.asList(this.getClass().getDeclaredFields()));
-        return fields;
-    }
-
-    private List<Field> getEligibleColumnFields() {
+    protected List<Field> getEligibleColumnFields() {
         return getAllFields().stream()
                 .filter(field -> field.getName().endsWith("Column"))
                 .filter(field -> TableColumn.class.isAssignableFrom(field.getType()))
                 .collect(Collectors.toList());
     }
-
-    protected double calculateColumnWidth(double contentViewWidth, double widthMultiplier) {
-        log.info("\033[96m calculateColumnWidth({}, {}) \033[m", contentViewWidth, widthMultiplier);
-        if (contentViewWidth < GuiConfig.MIN_DYNAMIC_CONTENT_WIDTH) {
-            return GuiConfig.MIN_DYNAMIC_CONTENT_WIDTH * widthMultiplier;
-        } else if (contentViewWidth <= GuiConfig.MAX_DYNAMIC_CONTENT_WIDTH) {
-            return contentViewWidth * widthMultiplier;
-        }
-        return GuiConfig.MAX_DYNAMIC_CONTENT_WIDTH * widthMultiplier;
-    }
-
-    protected List<Double> getColumnWidthsMultipliers() {
-        return Arrays.stream(GuiConfig.BASE_COL_WIDTH)
-                .boxed()
-                .collect(Collectors.toList());
-    }
-
-    protected abstract Content mapInstance(DTO dto);
-
-    protected abstract Class<Content> getContentClass();
 
 }

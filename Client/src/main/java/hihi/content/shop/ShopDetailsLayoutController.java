@@ -1,19 +1,17 @@
 package hihi.content.shop;
 
-import hihi.adapters.ShopAdapter;
 import hihi.content.common.contentDetails.ContentDetailsLayoutController;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import javafx.scene.control.TextField;
 
 @Slf4j
 @ToString(callSuper = true)
 @Component
 public class ShopDetailsLayoutController
-        extends ContentDetailsLayoutController<Shop, ShopDto, ShopAdapter>  {
+        extends ContentDetailsLayoutController<Shop>  {
 
     @FXML
     private TextField nameField;
@@ -29,7 +27,7 @@ public class ShopDetailsLayoutController
     private TextField memoField;
 
     public ShopDetailsLayoutController() {
-        super(new ShopAdapter(), "Shop");
+        super("Shop");
         log.info("\033[92m ProjectDetailsLayoutController() \033[m");
     }
 

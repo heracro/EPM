@@ -21,7 +21,7 @@ public class Invoice extends AbstractContent {
     private StringProperty parcelTrackingNumber;
     private FloatProperty totalAmount;
     private ObjectProperty<InvoiceStatus> status;
-    private ObjectProperty<Shop> shop;
+    private StringProperty shopName;
 
     public Invoice(InvoiceDto dto) {
         orderDate.set(dto.getOrderDate());
@@ -34,7 +34,7 @@ public class Invoice extends AbstractContent {
         parcelTrackingNumber.set(dto.getParcelTrackingNumber());
         totalAmount.set(dto.getTotalAmount());
         status.set(dto.getStatus());
-        shop.set(new Shop(dto.getShop()));
+        shopName.set(dto.getShop().getName());
     }
 
     public ObjectProperty<LocalDate> orderDateProperty() { return orderDate; }
@@ -47,6 +47,6 @@ public class Invoice extends AbstractContent {
     public StringProperty parcelTrackingNumberProperty() { return parcelTrackingNumber; }
     public FloatProperty totalAmountProperty() { return totalAmount; }
     public ObjectProperty<InvoiceStatus> statusProperty() { return status; }
-    public ObjectProperty<Shop> shopProperty() { return shop; }
+    public StringProperty shopNameProperty() { return shopName; }
 
 }

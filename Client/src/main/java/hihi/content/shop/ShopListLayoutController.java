@@ -1,6 +1,5 @@
 package hihi.content.shop;
 
-import hihi.adapters.ShopAdapter;
 import hihi.application.config.GuiConfig;
 import hihi.content.common.contentList.ContentListLayoutController;
 import javafx.fxml.FXML;
@@ -15,7 +14,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Component
 public class ShopListLayoutController
-        extends ContentListLayoutController<Shop, ShopDto, ShopAdapter> {
+        extends ContentListLayoutController<Shop> {
 
     @FXML
     private TableColumn<Shop, String> nameColumn;
@@ -30,13 +29,6 @@ public class ShopListLayoutController
     @FXML
     private TableColumn<Shop, String> memoColumn;
 
-    @Override
-    protected Shop mapInstance(ShopDto dto) { return new Shop(dto); }
-
-    @Override
-    protected Class<Shop> getContentClass() {
-        return Shop.class;
-    }
 
     @Override
     protected List<Double> getColumnWidthsMultipliers() {
@@ -45,7 +37,7 @@ public class ShopListLayoutController
     }
 
     public ShopListLayoutController() {
-        super(new ShopAdapter(), "Shop");
+        super("Shop");
         log.info("\033[93m ShopListLayoutController() \033[0m");
     }
 

@@ -3,9 +3,13 @@ package hihi.content.delivery;
 import hihi.content.common.dataModel.AbstractContent;
 import javafx.beans.property.*;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 
+@Slf4j
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class Delivery extends AbstractContent {
 
@@ -36,6 +40,7 @@ public class Delivery extends AbstractContent {
         unit.set(dto.getUnit().toValue());
         unitPrice.set(dto.getUnitPrice());
         totalPrice.set(dto.getTotalPrice());
+        log.info("\033[95m Constructed Delivery: {} \033[m", this);
     }
 
     public IntegerProperty materialIdProperty() { return materialId; }

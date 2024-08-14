@@ -2,6 +2,7 @@ package hihi.content.project;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import hihi.content.bom.BomDto;
+import hihi.content.common.dataModel.AbstractContent;
 import hihi.content.common.dataModel.AbstractDto;
 import hihi.content.enums.LocationType;
 import hihi.content.enums.ProjectStatus;

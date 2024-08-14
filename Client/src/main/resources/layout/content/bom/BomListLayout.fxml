@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="bomList"
+            fx:controller="hihi.content.bom.BomListLayoutController">
+    <center>
+        <TableView fx:id="table">
+            <columns>
+                <TableColumn fx:id="selectedColumn" text="Selected"/>
+                <TableColumn fx:id="materialIdColumn" text="Material UID"/>
+                <TableColumn fx:id="materialNameColumn" text="Material name"/>
+                <TableColumn fx:id="qtyColumn" text="Quantity"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

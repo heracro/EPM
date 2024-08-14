@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum ProjectCause implements DeserializableEnum<ProjectCause> {
     HOBBY                   ("Hobby"),
     HOME_IMPROVEMENT        ("Usprawnienia domu"),

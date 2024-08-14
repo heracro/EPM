@@ -22,7 +22,13 @@ public class AppStarter extends Application {
     private ConfigurableApplicationContext context;
 
     public static void main(String[] args) {
-        Application.launch(AppStarter.class, args);
+        try {
+            AppConfig.testModulesConfiguration();
+            Application.launch(AppStarter.class, args);
+        } catch (Exception e) {
+            log.error("Modules configuration is failing", e);
+            System.exit(1);
+        }
     }
 
     @Override
@@ -38,7 +44,7 @@ public class AppStarter extends Application {
         fxmlLoader.setControllerFactory(context::getBean);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, BASE_WIDTH, BASE_HEIGHT);
-        scene.getStylesheets().setAll("/styles/scene.css", "/styles/themes/dark-theme.css");
+        scene.getStylesheets().setAll("/styles/style.css", "/styles/themes/dark-theme.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("EPM by Limonek");
         primaryStage.show();

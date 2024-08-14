@@ -2,10 +2,10 @@
 <configuration>
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}|%highlight(%-5level)|%X{log-trace-id}|[%blue(%t)]|%yellow(%logger{36})|%method|%msg%n</Pattern>
+            <Pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}|%highlight(%-5level)|%yellow(%logger{36})|%method|%msg%n</Pattern>
         </layout>
     </appender>
-    <root level="debug">
+    <root level="INFO">
         <appender-ref ref="Console"/>
     </root>
 </configuration>

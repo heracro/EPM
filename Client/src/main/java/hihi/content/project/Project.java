@@ -1,5 +1,6 @@
 package hihi.content.project;
 
+import hihi.content.common.dataModel.AbstractDto;
 import hihi.content.enums.LocationType;
 import hihi.content.enums.ProjectStatus;
 import hihi.content.enums.ProjectCause;

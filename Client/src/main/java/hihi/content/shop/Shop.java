@@ -1,6 +1,7 @@
 package hihi.content.shop;
 
 import hihi.content.common.dataModel.AbstractContent;
+import hihi.content.common.dataModel.AbstractDto;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.NoArgsConstructor;

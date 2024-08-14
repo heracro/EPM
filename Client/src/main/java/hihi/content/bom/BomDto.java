@@ -19,4 +19,7 @@ public class BomDto extends AbstractDto {
     private String materialName;
     private Float qty;
 
+    public BomDto(Bom content) {
+
+    }
 }

@@ -11,7 +11,7 @@
             <columns>
                 <TableColumn fx:id="selectedColumn" text="Selected"/>
                 <TableColumn fx:id="uidColumn" text="Uid"/>
-                <TableColumn fx:id="materialColumn" text="Material"/>
+                <TableColumn fx:id="materialNameColumn" text="Material"/>
                 <TableColumn fx:id="qtyColumn" text="Qty"/>
                 <TableColumn fx:id="unitColumn" text="Unit"/>
                 <TableColumn fx:id="unitPriceColumn" text="Unit price"/>

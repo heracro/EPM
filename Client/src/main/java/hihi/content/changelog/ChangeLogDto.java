@@ -22,4 +22,8 @@ public class ChangeLogDto extends AbstractDto {
     private String description;
     private String author;
 
+    public ChangeLogDto(ChangeLog content) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

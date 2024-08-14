@@ -2,8 +2,10 @@ package hihi.components;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import hihi.application.config.AppConfig;
 import hihi.application.config.ModuleConfig;
 import hihi.event.ConnectionTestEvent;
+import hihi.event.SidePanelButtonEventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -52,16 +54,12 @@ public class SidePanelController {
 
     private void createModuleButtons() {
         ToggleGroup moduleButtons = new ToggleGroup();
-        for (Map.Entry<String, ModuleConfig> buttonConfig : MODULES_CONFIG.entrySet()) {
-            ToggleButton toggleButton = new ToggleButton(buttonConfig.getKey());
+        for (ModuleConfig moduleConfig : AppConfig.MODULES_CONFIG) {
+            ToggleButton toggleButton = new ToggleButton(moduleConfig.getModuleName());
             toggleButton.setPrefWidth(LEFT_PANEL_BUTTON_WIDTH);
             toggleButton.setPrefHeight(LEFT_PANEL_BUTTON_HEIGHT);
             toggleButton.setToggleGroup(moduleButtons);
-            toggleButton.setOnAction(e -> {
-                log.info("Side Panel button pressed: {} -> {}",
-                        buttonConfig.getKey(), buttonConfig.getValue().layoutClass().getSimpleName());
-                mainController.setContentListView(buttonConfig);
-            });
+            toggleButton.setOnAction(new SidePanelButtonEventHandler(mainController, moduleConfig.getModuleName()));
             buttonContainer.getChildren().add(toggleButton);
         }
         buttonContainer.getStyleClass().setAll("button-container");

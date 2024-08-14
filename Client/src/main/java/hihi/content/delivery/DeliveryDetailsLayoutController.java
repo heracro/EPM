@@ -1,6 +1,5 @@
 package hihi.content.delivery;
 
-import hihi.adapters.DeliveryAdapter;
 import hihi.content.common.contentDetails.ContentDetailsLayoutController;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +9,10 @@ import org.springframework.stereotype.Component;
 @ToString(callSuper = true)
 @Component
 public class DeliveryDetailsLayoutController
-        extends ContentDetailsLayoutController<Delivery, DeliveryDto, DeliveryAdapter> {
+        extends ContentDetailsLayoutController<Delivery> {
 
     public DeliveryDetailsLayoutController() {
-        super(new DeliveryAdapter(), "Delivery");
+        super("Delivery");
         log.info("\033[92m DeliveryDetailsLayoutController() \033[m");
     }
 

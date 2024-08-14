@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.Double?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="contentView"
+            fx:controller="hihi.content.project.ProjectDetailsLayoutController">
+    <fx:define>
+        <Insets fx:id="defaultInsets" top="4" right="10" bottom="4" left="10"/>
+        <Double fx:id="defaultSpacing" fx:value="20"/>
+        <Double fx:id="minTextFieldHeight" fx:value="40"/>
+        <Double fx:id="minTableHeight" fx:value="180"/>
+        <Double fx:id="minDatePickerWidth" fx:value="150"/>
+    </fx:define>
+    <center>
+        <VBox spacing="$defaultSpacing" fx:id="contentBox">
+            <HBox padding="$defaultInsets"><!-- Name + Uid -->
+                <TextField fx:id="nameField" style="-fx-font-weight: bold"
+                           minWidth="400" maxWidth="Infinity" minHeight="$minTextFieldHeight" HBox.hgrow="ALWAYS"/>
+                <Region maxWidth="60"/>
+                <Label text="UID:" contentDisplay="RIGHT" minWidth="60" maxHeight="Infinity" maxWidth="Infinity"/>
+                <Label fx:id="uidField" maxHeight="Infinity" minWidth="60" maxWidth="Infinity"/>
+            </HBox>
+            <TextArea fx:id="bodyField" minHeight="$minTableHeight" padding="$defaultInsets" wrapText="true"/>
+            <HBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <HBox padding="$defaultInsets">
+                        <Label text="Location:"/>
+                        <Region minWidth="$defaultSpacing" maxWidth="$defaultSpacing"/>
+                        <ComboBox fx:id="locationTypeField" />
+                        <TextField fx:id="projectLocationField" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <GridPane>
+                        <Label text="Planned start:"/>
+                        <DatePicker fx:id="plannedStartDateField" minWidth="$minDatePickerWidth"/>
+                        <Label text="Real start:" HBox.hgrow="ALWAYS"/>
+                        <DatePicker fx:id="realStartDateField" minWidth="$minDatePickerWidth"/>
+                        <Label text="Planned end:" HBox.hgrow="ALWAYS"/>
+                        <DatePicker fx:id="plannedEndDateField" minWidth="$minDatePickerWidth"/>
+                        <Label text="Real end:" HBox.hgrow="ALWAYS"/>
+                        <DatePicker fx:id="realEndDateField" minWidth="$minDatePickerWidth"/>
+                        <Label text="Materials ready:" minWidth="110" HBox.hgrow="ALWAYS"/>
+                        <DatePicker fx:id="materialsReadyDateField" minWidth="$minDatePickerWidth"/>
+                        <Label text="Status:"/>
+                        <ComboBox fx:id="statusField"/>
+                        <Label text="Cause:"/>
+                        <ComboBox fx:id="causeField"/>
+                        <Label text="Hours planned:"/>
+                        <TextField fx:id="workingHoursPlannedField" alignment="CENTER"/>
+                        <Label text="Hours worked:"/>
+                        <TextField fx:id="workingHoursCountField" alignment="CENTER"/>
+                    </GridPane>
+                </VBox>
+                <ListView fx:id="tagListField"/>
+            </HBox>
+            <BorderPane fx:id="tablePlaceholder" prefWidth="400" maxWidth="Infinity">
+<!--                <VBox>-->
+<!--                    <Label fx:id="bomTableLabel" text="Bill of materials" alignment="BOTTOM_CENTER"/>-->
+<!--                    <TableView fx:id="bomTable" minHeight="$minTableHeight"/>-->
+<!--                </VBox>-->
+<!--                <VBox>-->
+<!--                    <Label fx:id="taskTableLabel" text="Tasks" alignment="BOTTOM_CENTER"/>-->
+<!--                    <TableView fx:id="taskTable" minHeight="$minTableHeight"/>-->
+<!--                </VBox>-->
+            </BorderPane>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox fx:id="bottomPanel" />
+    </bottom>
+</BorderPane>

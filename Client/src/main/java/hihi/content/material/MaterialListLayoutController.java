@@ -1,6 +1,5 @@
 package hihi.content.material;
 
-import hihi.adapters.MaterialAdapter;
 import hihi.application.config.GuiConfig;
 import hihi.content.common.contentList.ContentListLayoutController;
 import javafx.fxml.FXML;
@@ -14,7 +13,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Component
-public class MaterialListLayoutController extends ContentListLayoutController<Material, MaterialDto, MaterialAdapter> {
+public class MaterialListLayoutController extends ContentListLayoutController<Material> {
 
     @FXML
     private TableColumn<Material, String> nameColumn;
@@ -33,17 +32,6 @@ public class MaterialListLayoutController extends ContentListLayoutController<Ma
     @FXML
     private TableColumn<Material, String> datasheetColumn;
 
-
-    @Override
-    protected Material mapInstance(MaterialDto dto) {
-        return new Material(dto);
-    }
-
-    @Override
-    protected Class<Material> getContentClass() {
-        return Material.class;
-    }
-
     @Override
     protected List<Double> getColumnWidthsMultipliers() {
         return Stream.concat(super.getColumnWidthsMultipliers().stream(),
@@ -51,7 +39,7 @@ public class MaterialListLayoutController extends ContentListLayoutController<Ma
     }
 
     public MaterialListLayoutController() {
-        super(new MaterialAdapter(), "Material");
+        super("Material");
         log.info("\033[93mMaterialListLayoutController()\033[0m");
     }
 
