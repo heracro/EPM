@@ -24,6 +24,7 @@ public class AppStarter extends Application {
     public static void main(String[] args) {
         try {
             AppConfig.testModulesConfiguration();
+            log.info("Modules configuration is OK!");
             Application.launch(AppStarter.class, args);
         } catch (Exception e) {
             log.error("Modules configuration is failing", e);

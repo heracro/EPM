@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:id="mainWindow"
             fx:controller="hihi.components.MainController">
@@ -11,7 +12,9 @@
         <fx:include source="SidePanel.fxml" fx:id="sidePanel"/>
     </left>
     <center>
-        <BorderPane fx:id="contentPane" styleClass="content-view"
-                    style="-fx-border-width: 3px; -fx-border-color: green;"/>
+        <VBox>
+            <BorderPane fx:id="contentPane" styleClass="content-view"/>
+            <BorderPane fx:id="bottomPane" styleClass="bottom-panel"/>
+        </VBox>
     </center>
 </BorderPane>

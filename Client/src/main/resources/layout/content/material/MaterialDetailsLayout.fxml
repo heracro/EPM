@@ -8,9 +8,9 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="contentView"
             fx:controller="hihi.content.material.MaterialDetailsLayoutController">
 
-    <GridPane fx:id="grid">
+    <center>
 
-    </GridPane>
+    </center>
 
     <HBox fx:id="bottomPanel" />
 
