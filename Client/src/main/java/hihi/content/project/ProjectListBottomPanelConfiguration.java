@@ -1,21 +1,31 @@
 package hihi.content.project;
 
 import hihi.content.common.contentList.ContentListBottomPanelConfiguration;
+import hihi.content.common.dataModel.BottomPanelButtonConfig;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProjectListBottomPanelConfiguration extends ContentListBottomPanelConfiguration {
 
-    @Override
-    protected void refreshList() {
-
+    public ProjectListBottomPanelConfiguration(ProjectListLayoutController layoutController) {
+        this.layoutController = layoutController;
+        addCommonButtonsConfiguration();
     }
 
-    @Override
-    protected void createNewEntry() {
-
+    private void addCommonButtonsConfiguration() {
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig(
+                "Check materials",
+                event -> checkMaterialsForSelectedProjects()
+        ));
     }
 
     @Override
     protected void deleteSelectedEntries() {
 
     }
+
+    protected void checkMaterialsForSelectedProjects() {
+
+    }
+
 }

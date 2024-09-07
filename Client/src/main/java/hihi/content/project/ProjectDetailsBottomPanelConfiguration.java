@@ -1,8 +1,10 @@
 package hihi.content.project;
 
 import hihi.content.common.contentDetails.ContentDetailsBottomPanelConfiguration;
+import javafx.scene.layout.HBox;
 
 public class ProjectDetailsBottomPanelConfiguration extends ContentDetailsBottomPanelConfiguration {
+
     @Override
     protected void storeEntry() {
 
@@ -17,4 +19,6 @@ public class ProjectDetailsBottomPanelConfiguration extends ContentDetailsBottom
     protected void exportEntry() {
 
     }
+
+
 }

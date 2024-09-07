@@ -3,7 +3,6 @@ package hihi.application.config;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.eventbus.EventBus;
-import com.sun.jdi.request.InvalidRequestStateException;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;

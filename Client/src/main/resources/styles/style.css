@@ -1,27 +1,27 @@
 BorderPane {
     -fx-border-color: purple;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
 }
 HBox {
     -fx-border-color: greenyellow;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
 }
 VBox {
     -fx-border-color: coral;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
 }
 Region {
     -fx-border-color: greenyellow;
-    -fx-border-width: 4px;
+    -fx-border-width: 1px;
 }
 ListView {
     -fx-border-color: black;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
     -fx-background-color: yellow;
 }
 Label {
     -fx-border-color: black;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
 }
 DatePicker {
 }
@@ -34,18 +34,18 @@ TextField {
 TableView {
     -fx-background-color: forestgreen;
     -fx-border-color: red;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
 }
 
 
 .button-container {
     -fx-alignment: center;
-    -fx-spacing: 20px;
+    -fx-spacing: 25px;
     -fx-pref-width: 200px;
 }
 
 .side-panel {
-    -fx-border-width: 0 2px 2px 2px; /* Góra, prawo, dół, lewo */
+    /*-fx-border-width: 0 2px 2px 2px; !* Góra, prawo, dół, lewo *!*/
     -fx-pref-width: 200px;
     -fx-spacing: 20px;
     -fx-alignment: center;
@@ -57,8 +57,8 @@ TableView {
 }
 
 .content-view {
-    -fx-border-width: 0 2px 2px 0;
-    -fx-border-color: darkgrey;
+    /*-fx-border-width: 0 2px 2px 0;*/
+    /*-fx-border-color: darkgrey;*/
 }
 
 .content-grid {
@@ -66,10 +66,8 @@ TableView {
 }
 
 .bottom-panel {
-    -fx-border-width: 0 2px 2px 0;
-    -fx-border-color: darkgrey;
-    -fx-min-height: 30px;
-    -fx-max-height: 30px;
+    /*-fx-border-width: 0 2px 2px 0;*/
+    /*-fx-border-color: darkgrey;*/
     -fx-pref-width: 100%;
 }
 
@@ -91,17 +89,14 @@ TableView {
 
 .single-project-view {
     -fx-grid-lines-visible: true;
-    -fx-border-color: darkgrey;
-    -fx-border-width: 1px;
+    /*-fx-border-color: darkgrey;*/
+    /*-fx-border-width: 1px;*/
 }
 
 .bottom-panel-button {
     -fx-background-color: #0073e6;
     -fx-text-fill: white;
-    -fx-pref-height: 20px;
     -fx-font-size: 14px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
 }
 
 .bottom-panel-button:hover {

@@ -54,7 +54,7 @@ public class SidePanelController {
 
     private void createModuleButtons() {
         ToggleGroup moduleButtons = new ToggleGroup();
-        for (ModuleConfig moduleConfig : AppConfig.MODULES_CONFIG) {
+        for (ModuleConfig moduleConfig : AppConfig.MODULES_CONFIG.stream().filter(ModuleConfig::isPrimary).toList()) {
             ToggleButton toggleButton = new ToggleButton(moduleConfig.getModuleName());
             toggleButton.setPrefWidth(LEFT_PANEL_BUTTON_WIDTH);
             toggleButton.setPrefHeight(LEFT_PANEL_BUTTON_HEIGHT);

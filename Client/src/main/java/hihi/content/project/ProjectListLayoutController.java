@@ -1,13 +1,12 @@
 package hihi.content.project;
 
-import hihi.adapter.AdapterBuilder;
 import hihi.application.config.GuiConfig;
-import hihi.application.config.ModuleConfig;
 import hihi.content.common.contentList.ContentListLayoutController;
 import hihi.content.enums.ProjectCause;
 import hihi.content.enums.ProjectStatus;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +53,7 @@ public class ProjectListLayoutController extends ContentListLayoutController<Pro
     public void initialize() {
         log.info("\033[93m initialize() \033[0m");
         super.initialize();
+        new ProjectListBottomPanelConfiguration(this).setupBottomPanel(bottomPanel);
         setupColumns();
     }
 

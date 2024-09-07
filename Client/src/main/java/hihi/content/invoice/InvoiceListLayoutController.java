@@ -18,17 +18,27 @@ public class InvoiceListLayoutController
         extends ContentListLayoutController<Invoice> {
 
     @FXML
-    TableColumn<Invoice, String> invoiceNumberColumn;
+    private TableColumn<Invoice, LocalDate> invoiceDateColumn;
     @FXML
-    TableColumn<Invoice, String> statusColumn;
+    private TableColumn<Invoice, String> invoiceNumberColumn;
     @FXML
-    TableColumn<Invoice, String> shopNameColumn;
+    private TableColumn<Invoice, String> shopNameColumn;
     @FXML
-    TableColumn<Invoice, String> parcelTrackingNumberColumn;
+    private TableColumn<Invoice, Float> totalAmountColumn;
     @FXML
-    TableColumn<Invoice, LocalDate> paymentDueDateColumn;
+    private TableColumn<Invoice, String> statusColumn;
     @FXML
-    TableColumn<Invoice, LocalDate> paymentDateColumn;
+    private TableColumn<Invoice, LocalDate> orderDateColumn;
+    @FXML
+    private TableColumn<Invoice, LocalDate> paymentDateColumn;
+    @FXML
+    private TableColumn<Invoice, LocalDate> paymentDueDateColumn;
+    @FXML
+    private TableColumn<Invoice, LocalDate> deliveryDateColumn;
+    @FXML
+    private TableColumn<Invoice, LocalDate> plannedDateColumn;
+    @FXML
+    private TableColumn<Invoice, String> parcelTrackingNumberColumn;
 
     public InvoiceListLayoutController() {
         super("Invoice");
@@ -46,6 +56,7 @@ public class InvoiceListLayoutController
         log.info("\033[93m initialize() \033[0m");
         super.initialize();
         setupColumns();
+        log.info("\033[93m END OF initialize() \033[0m");
     }
 
 }

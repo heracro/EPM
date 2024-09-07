@@ -7,6 +7,8 @@ import hihi.application.config.GuiConfig;
 import hihi.application.config.ModuleConfig;
 import hihi.content.common.dataModel.AbstractContent;
 import hihi.content.common.dataModel.AbstractDto;
+import hihi.event.ErrorMessageBox;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
+@ToString
 public final class WarehouseAdapter {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ModuleConfig moduleConfig;
@@ -39,35 +43,47 @@ public final class WarehouseAdapter {
         return mapDtoToContent(restTemplate.postForObject(getEndpoint(), content, moduleConfig.getDtoClass()));
     }
 
-    public List<? extends AbstractContent> getAll() {
+    public <Content extends AbstractContent> List<Content> getAll() {
         String url = getEndpoint() + "?page=0&size=" + getCount();
         log.info("\033[34m Request: GET, url={}", url);
-        String response = restTemplate.getForObject(url, String.class);
-        return parseJsonPageToContentList(response);
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        if (response.getStatusCode() == HttpStatus.NO_CONTENT ||
+                response.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) return null;
+        List<Content> result = parseJsonPageToContentList(response.getBody());
+        return result;
     }
 
-    public List<? extends AbstractContent> getPage(final int page, final int size) {
-        String url = getEndpoint() + "?page=" + page + "&size=" + size;
+    public <Content extends AbstractContent> List<Content> getPage(final int page, final int size) {
+        String url = getEndpoint() + "?page=" + page + "&size=" + (size > 0 ? size : 1);
         log.info("\033[34m Request: GET, url={}", url);
-        String response = restTemplate.getForObject(url, String.class);
-        return parseJsonPageToContentList(response);
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        if (response.getStatusCode() == HttpStatus.NO_CONTENT ||
+                response.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) return null;
+        List<Content> result = parseJsonPageToContentList(response.getBody());
+        log.info("Content: {}", result);
+        return result;
     }
 
     public <Content extends AbstractContent> Content getByUid(final Integer uid) {
         String url = getEndpoint() + "/" + uid;
-        log.info("\033[34m Request: GET, url={}", url);
+        log.info("\033[34m Request: GET, url={}\033[m", url);
         return mapDtoToContent(restTemplate.getForObject(url, moduleConfig.getDtoClass()));
     }
 
-    public int getCount() {
+    public int getCount(){
         String url = getEndpoint() + "?page=0&size=1";
         log.info("\033[34m Request: GET, url={}", url);
-        String response = restTemplate.getForObject(url, String.class);
         try {
+            String response = restTemplate.getForObject(url, String.class);
             JsonNode json = new ObjectMapper().readTree(response);
-            return json.get("page").get("totalElements").asInt();
-        } catch (JsonProcessingException e) {
+            return Math.max(json.get("page").get("totalElements").asInt(), 1);
+        } catch (RestClientException e) {
+            ErrorMessageBox.showError("Connection to server failed. Check server state and connection and restart " +
+                    "application.");
             return 0;
+        } catch (JsonProcessingException e) {
+            log.error("Failed to parse response: {}", e.getMessage());
+            return 1;
         }
     }
 
@@ -134,12 +150,18 @@ public final class WarehouseAdapter {
         return contentList;
     }
 
-    private List<? extends AbstractContent> parseJsonPageToContentList(final String response) {
+    private <Content extends AbstractContent> List<Content> parseJsonPageToContentList(final String response) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            JsonNode content = mapper.readTree(response).get("content");
-            return mapDtoListToContentList(mapper.convertValue(content,
-                    mapper.getTypeFactory().constructCollectionType(List.class, moduleConfig.getDtoClass())));
+            List<Content> result = mapDtoListToContentList(
+                    mapper.convertValue(
+                            mapper.readTree(response).get("content"),
+                            mapper.getTypeFactory().constructCollectionType(
+                                    List.class, moduleConfig.getDtoClass()
+                            )
+                    )
+            );
+            return result;
         } catch (JsonProcessingException e) {
             log.error("Failed to parse json response: {}", e.getMessage());
             return new ArrayList<>();

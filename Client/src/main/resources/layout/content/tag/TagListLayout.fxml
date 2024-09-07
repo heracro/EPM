@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="contentView"
             fx:controller="hihi.content.tag.TagListLayoutController">
-
+    <center>
+        <TableView fx:id="table">
+            <columns>
+                <TableColumn fx:id="selectedColumn" text="Selected"/>
+                <TableColumn fx:id="uidColumn" text="Uid"/>
+                <TableColumn fx:id="tagNameColumn" text="Tag"/>
+                <TableColumn fx:id="tagTypeColumn" text="Type"/>
+            </columns>
+        </TableView>
+    </center>
 </BorderPane>

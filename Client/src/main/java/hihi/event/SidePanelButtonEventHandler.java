@@ -18,7 +18,6 @@ public class SidePanelButtonEventHandler implements EventHandler<ActionEvent> {
     public void handle(ActionEvent event) {
         log.info("\033[35mSide Panel button pressed: {} -> {}\033[m",
                 moduleName, ModuleConfig.getInstance(moduleName).getListControllerClass().getSimpleName());
-        log.info("\033[35mModule configuration used: {}", ModuleConfig.getInstance(moduleName));
         mainController.setContentListView(moduleName);
     }
 

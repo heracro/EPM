@@ -88,15 +88,9 @@ public class ProjectDetailsLayoutController extends ContentDetailsLayoutControll
         log.info("\033[92m ProjectDetailsLayoutController() \033[m");
     }
 
-    @Override
-    protected void setAdapter() {
-        adapter = new AdapterBuilder().setModuleConfig(ModuleConfig.getInstance(moduleName)).build();
-    }
-
     public void initialize() {
-        log.info("\033[92m super.initialize() \033[0m");
-        super.initialize();
         log.info("\033[92m initialize() \033[0m");
+        super.initialize();
         tablePlaceholder.widthProperty().addListener((observable, oldValue, newValue) -> {
             log.info("\033[92m Table Placeholder {} width change: {} --> {}\nWidth = [min={}, pref={}, max={}, current={}]\033[m",
                     tablePlaceholder, oldValue, newValue, tablePlaceholder.getMinWidth(), tablePlaceholder.getPrefWidth(),
@@ -104,6 +98,7 @@ public class ProjectDetailsLayoutController extends ContentDetailsLayoutControll
             adjustLayout(oldValue.doubleValue(), newValue.doubleValue());
         });
         tablePlaceholder.setMinWidth(200);
+        log.info("\033[92m END OF initialize() \033[0m");
     }
 
     @Override

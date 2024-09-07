@@ -13,7 +13,8 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Component
-public class MaterialListLayoutController extends ContentListLayoutController<Material> {
+public class MaterialListLayoutController
+        extends ContentListLayoutController<Material> {
 
     @FXML
     private TableColumn<Material, String> nameColumn;

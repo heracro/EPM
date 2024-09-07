@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +33,7 @@ public abstract class ContentLayoutController {
     protected BorderPane contentView;
     @FXML
     protected HBox bottomPanel;
-    @Autowired
+    @Autowired @Getter
     protected MainController mainController;
     @Getter
     protected WarehouseAdapter adapter;
@@ -47,21 +49,26 @@ public abstract class ContentLayoutController {
 
     protected void setAdapter() {
         ModuleConfig config = ModuleConfig.getInstance(moduleName);
+        log.info("\033[96m setAdapter() for ContentLayoutController in module {} \033[m", moduleName);
         if (config.isPrimary()) {
+            log.info("\033[96m PRIMARY module \033[m");
             adapter = new AdapterBuilder()
                     .setModuleConfig(ModuleConfig.getInstance(moduleName))
                     .build();
         } else if (config.isDependant() && parentUid != null) {
+            log.info("\033[96m DEPENDANT module \033[m");
             adapter = new AdapterBuilder()
                     .setModuleConfig(ModuleConfig.getInstance(moduleName))
                     .setParentUid(parentUid)
                     .build();
         }
+        //log.info("\033[96m Adapter set to: {} \033[m",adapter);
     }
 
     public void initialize() {
+        log.info("\033[96m initialize()\033[m");
         contentView.getStyleClass().addAll("content-view", "content-grid");
-        bottomPanel.getStyleClass().add("bottom-panel");
+        if (bottomPanel != null) bottomPanel.getStyleClass().add("bottom-panel");
         bindFontSize();
     }
 

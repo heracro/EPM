@@ -12,9 +12,6 @@
         <fx:include source="SidePanel.fxml" fx:id="sidePanel"/>
     </left>
     <center>
-        <VBox>
-            <BorderPane fx:id="contentPane" styleClass="content-view"/>
-            <BorderPane fx:id="bottomPane" styleClass="bottom-panel"/>
-        </VBox>
+        <BorderPane fx:id="contentPane" styleClass="content-view"/>
     </center>
 </BorderPane>

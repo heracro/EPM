@@ -1,10 +1,18 @@
 package hihi.content.common.contentList;
 
+import hihi.application.config.ModuleConfig;
 import hihi.content.common.BottomPanelConfiguration;
+import hihi.content.common.dataModel.AbstractContent;
 import hihi.content.common.dataModel.BottomPanelButtonConfig;
+import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.InvocationTargetException;
+
+@Slf4j
 public abstract class ContentListBottomPanelConfiguration
         extends BottomPanelConfiguration {
+
+    protected ContentListLayoutController<? extends AbstractContent> layoutController;
 
     protected ContentListBottomPanelConfiguration() {
         addCommonButtonsConfiguration();
@@ -16,8 +24,20 @@ public abstract class ContentListBottomPanelConfiguration
         bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("Delete selected", event -> deleteSelectedEntries()));
     }
 
-    protected abstract void refreshList();
-    protected abstract void createNewEntry();
+    protected void refreshList() {
+        layoutController.loadContentToTable();
+    }
+
+    protected void createNewEntry() {
+        try {
+            ModuleConfig config = ModuleConfig.getInstance(layoutController.getModuleName());
+            AbstractContent content = config.getContentClass().getDeclaredConstructor().newInstance();
+            layoutController.getMainController().setContentDetailsView(layoutController.getModuleName(), content);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            log.error("Failed to create new entry: {}", e.getMessage());
+        }
+    }
+
     protected abstract void deleteSelectedEntries();
 
 }

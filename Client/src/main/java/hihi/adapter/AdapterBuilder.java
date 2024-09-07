@@ -12,11 +12,13 @@ public class AdapterBuilder {
     private Integer parentUid;
 
     public AdapterBuilder setModuleConfig(ModuleConfig moduleConfig) {
+        log.info("\033[95m setModuleConfig: {}\033[0m", moduleConfig.getModuleName());
         this.moduleConfig = moduleConfig;
         return this;
     }
 
     public AdapterBuilder setParentUid(Integer parentUid) {
+        log.info("\033[95m setParentUid: {}\033[0m", parentUid);
         this.parentUid = parentUid;
         return this;
     }

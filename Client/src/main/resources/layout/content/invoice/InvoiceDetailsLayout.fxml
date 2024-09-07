@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-
-<?import javafx.scene.layout.BorderPane?>
+<?import java.lang.Double?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="contentView"
             fx:controller="hihi.content.invoice.InvoiceDetailsLayoutController">
+    <fx:define>
+        <Insets fx:id="defaultInsets" top="4" right="10" bottom="4" left="10"/>
+        <Double fx:id="defaultSpacing" fx:value="20"/>
+        <Double fx:id="minTextFieldHeight" fx:value="40"/>
+        <Double fx:id="minTableHeight" fx:value="180"/>
+        <Double fx:id="minDatePickerWidth" fx:value="150"/>
+    </fx:define>
+    <center>
+        <GridPane fx:id="grid">
 
-    <GridPane fx:id="grid">
-
-    </GridPane>
-
-    <HBox fx:id="bottomPanel" />
-
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox fx:id="bottomPanel" />
+    </bottom>
 </BorderPane>

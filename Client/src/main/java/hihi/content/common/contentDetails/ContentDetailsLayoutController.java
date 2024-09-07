@@ -32,9 +32,14 @@ public abstract class ContentDetailsLayoutController<
     public abstract void setContent(Content content);
 
     public void initialize() {
+        log.info("\033[96m initialize()\033[m");
         super.initialize();
+        log.info("\033[96m END OF initialize()\033[m");
     }
 
+    /**
+     * TODO: add auto-binding with Field class. to use in setContent in details layout controller.
+     */
     @SuppressWarnings("unchecked")
     protected <T> void bindFieldToProperty(Object field, Object property) {
         if (field instanceof TextField && property instanceof StringProperty) {
@@ -48,7 +53,9 @@ public abstract class ContentDetailsLayoutController<
 
     @SuppressWarnings("unchecked")
     protected <T> void bindComboBoxToProperty(ComboBox<T> comboBox, ObjectProperty<T> property) {
-        comboBox.setItems((ObservableList<T>) FXCollections.observableArrayList(property.getBean().getClass().getEnumConstants()));
+        comboBox.setItems(
+                (ObservableList<T>) FXCollections.observableArrayList(property.getBean().getClass().getEnumConstants())
+        );
         comboBox.valueProperty().bindBidirectional(property);
     }
 

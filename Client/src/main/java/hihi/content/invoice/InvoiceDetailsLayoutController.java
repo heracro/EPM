@@ -13,11 +13,12 @@ public class InvoiceDetailsLayoutController
 
     public InvoiceDetailsLayoutController() {
         super("Invoice");
-        log.warn("\033[92m UNSUPPORTED! InvoiceDetailsLayoutController() \033[m");
     }
 
     public void initialize() {
-        log.warn("\033[92m UNSUPPORTED! initialize() \033[0m");
+        log.info("\033[92m super.initialize() \033[0m");
+        super.initialize();
+        log.info("\033[92m initialize() \033[0m");
     }
 
     @Override

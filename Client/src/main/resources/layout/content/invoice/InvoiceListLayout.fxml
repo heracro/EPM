@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="contentView"
             fx:controller="hihi.content.invoice.InvoiceListLayoutController">
-
+    <center>
+        <TableView fx:id="table">
+            <columns>
+                <TableColumn fx:id="selectedColumn" text="Selected"/>
+                <TableColumn fx:id="uidColumn" text="Uid"/>
+                <TableColumn fx:id="invoiceDateColumn" text="Invoice date"/>
+                <TableColumn fx:id="invoiceNumberColumn" text="Invoice number"/>
+                <TableColumn fx:id="shopNameColumn" text="Shop"/>
+                <TableColumn fx:id="totalAmountColumn" text="Amount"/>
+                <TableColumn fx:id="statusColumn" text="Status"/>
+                <TableColumn fx:id="orderDateColumn" text="Order date"/>
+                <TableColumn fx:id="paymentDateColumn" text="Paid"/>
+                <TableColumn fx:id="paymentDueDateColumn" text="Due date"/>
+                <TableColumn fx:id="deliveryDateColumn" text="Delivery date"/>
+                <TableColumn fx:id="plannedDateColumn" text="Planned delivery date" />
+                <TableColumn fx:id="parcelTrackingNumberColumn" text="Parcel"/>
+            </columns>
+        </TableView>
+    </center>
 </BorderPane>

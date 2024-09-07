@@ -14,6 +14,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -50,18 +52,17 @@ public abstract class ContentListLayoutController<
         attachRowClickHandlers();
         contentView.widthProperty().addListener((obs, oldWidth, newWidth) -> adjustColumnWidths(newWidth.doubleValue()));
         selectedColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectedColumn));
+        VBox.setVgrow(table, Priority.ALWAYS);
+        log.info("\033[96m END OF initialize() \033[m");
     }
 
-    @SuppressWarnings("unchecked")
-    protected void loadContentToTable() {
+    public void loadContentToTable() {
         log.info("\033[96m ({}) loadContentList() \033[m",this.getClass().getSimpleName());
-        List<Content> contentList = (List<Content>) getAdapter().getAll();
-        log.info(contentList.toString());
+        List<Content> contentList = getAdapter().getAll();
+        if (contentList == null) return;
         try {
             ObservableList<Content> content = FXCollections.observableArrayList();
-            for (AbstractContent contentObject : contentList) {
-                content.add((Content) contentObject);
-            }
+            content.addAll(contentList);
             table.setItems(content);
         } catch (Exception e) {
             log.error("\033[96m Error fetching contents list: {} \033[m", e.getMessage());
@@ -71,7 +72,6 @@ public abstract class ContentListLayoutController<
 
     protected void attachRowClickHandlers() {
         log.info("\033[96m ({}) attachRowClickHandlers() \033[m", this.getClass().getSimpleName());
-        log.info("\033[96m Reference to MainController = {} \033[m", mainController == null ? "null" : mainController);
         table.setRowFactory(t -> {
             TableRow<Content> row = new TableRow<>();
             row.setOnMouseClicked(
@@ -94,7 +94,6 @@ public abstract class ContentListLayoutController<
 
     @SuppressWarnings("unchecked")
     protected void adjustColumnWidths(double contentViewWidth) {
-        log.info("\033[96m adjustColumnWidths({}) \033[m", contentViewWidth);
         int i = 0;
         List<Field> fields = getEligibleColumnFields();
         List<Double> multipliers = getColumnWidthsMultipliers();
@@ -104,7 +103,6 @@ public abstract class ContentListLayoutController<
                 field.setAccessible(true);
                 double multiplier = getColumnWidthsMultipliers().get(i++);
                 double prefWidth = calculateColumnWidth(contentViewWidth, multiplier);
-                log.info("\033[96m {}.setPrefWidth({}) [multiplier={}] \033[m", field.getName(), prefWidth, multiplier);
                 ((TableColumn<Content, ?>) field.get(this)).setPrefWidth(prefWidth);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
@@ -113,7 +111,6 @@ public abstract class ContentListLayoutController<
     }
 
     private double calculateColumnWidth(double contentViewWidth, double widthMultiplier) {
-        log.info("\033[96m calculateColumnWidth({}, {}) \033[m", contentViewWidth, widthMultiplier);
         if (contentViewWidth < GuiConfig.MIN_DYNAMIC_CONTENT_WIDTH) {
             return GuiConfig.MIN_DYNAMIC_CONTENT_WIDTH * widthMultiplier;
         } else if (contentViewWidth <= GuiConfig.MAX_DYNAMIC_CONTENT_WIDTH) {
@@ -137,7 +134,7 @@ public abstract class ContentListLayoutController<
             try {
                 field.setAccessible(true);
                 Method propertyMethod = ModuleConfig.getInstance(moduleName).getContentClass().getMethod(propertyName);
-                log.info("\033[96m Binding column {} to {} \033[m", field.getName(), propertyName);
+                //log.info("\033[96m Binding column {} to {} \033[m", field.getName(), propertyName);
                 TableColumn<Content, ?> column = (TableColumn<Content, ?>) field.get(this);
                 column.setCellValueFactory(getColumnBindingCallback(propertyMethod));
             } catch (NoSuchMethodException | IllegalAccessException e) {

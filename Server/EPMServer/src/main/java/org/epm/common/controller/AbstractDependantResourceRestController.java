@@ -100,6 +100,7 @@ public abstract class AbstractDependantResourceRestController
             @RequestParam(defaultValue = "10") int size) {
 
         info("Finding all {}s", getEntityService().getEntityName());
+        if (size == 0) return ResponseEntity.noContent().build();
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(getEntityService().findAllByParentUid(parentUid, pageable));
     }

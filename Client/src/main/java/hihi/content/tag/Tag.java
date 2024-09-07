@@ -1,5 +1,6 @@
 package hihi.content.tag;
 
+import hihi.content.common.dataModel.AbstractContent;
 import hihi.content.enums.TagType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Tag {
+public class Tag extends AbstractContent {
 
     private final ObjectProperty<TagType> tagType = new SimpleObjectProperty<>();
     private final StringProperty name = new SimpleStringProperty();
