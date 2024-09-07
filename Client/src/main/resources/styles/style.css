@@ -102,3 +102,13 @@ TableView {
 .bottom-panel-button:hover {
     -fx-background-color: #005bb5;
 }
+
+.vspacer {
+    -fx-pref-height: 20px;
+    -fx-background-color: #d1d1d1;
+}
+
+.hspacer {
+    -fx-pref-width: 20px;
+    -fx-background-color: #d1d1d1;
+}

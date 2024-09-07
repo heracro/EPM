@@ -68,6 +68,7 @@ public abstract class ContentLayoutController {
     public void initialize() {
         log.info("\033[96m initialize()\033[m");
         contentView.getStyleClass().addAll("content-view", "content-grid");
+        log.info("initialize(): bottomPanel = {}", bottomPanel);
         if (bottomPanel != null) bottomPanel.getStyleClass().add("bottom-panel");
         bindFontSize();
     }

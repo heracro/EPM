@@ -52,9 +52,10 @@ public abstract class BottomPanelConfiguration {
             button.setOnAction(buttonConfig.eventHandler());
             button.setPrefHeight(GuiConfig.BOTTOM_PANEL_BUTTON_HEIGHT);
             button.getStyleClass().addAll(BOTTOM_BUTTON_STYLE_CLASS);
+            if (buttonConfig.visibilityCondition() != null) {
+                button.setVisible(buttonConfig.visibilityCondition().getAsBoolean());
+            }
             bottomPanel.getChildren().add(button);
-            log.info("\033[93m Button created and added to panel: {}, prefHeight: {}, height: {}, heightProperty: {} \033[m",
-                    button, button.getPrefHeight(), button.getHeight(), button.heightProperty().doubleValue());
         }
     }
 

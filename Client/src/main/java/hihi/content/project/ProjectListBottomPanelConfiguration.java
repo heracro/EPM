@@ -8,14 +8,13 @@ import org.springframework.stereotype.Component;
 public class ProjectListBottomPanelConfiguration extends ContentListBottomPanelConfiguration {
 
     public ProjectListBottomPanelConfiguration(ProjectListLayoutController layoutController) {
-        this.layoutController = layoutController;
+        super(layoutController);
         addCommonButtonsConfiguration();
     }
 
     private void addCommonButtonsConfiguration() {
         bottomPanelButtonConfigs.add(new BottomPanelButtonConfig(
-                "Check materials",
-                event -> checkMaterialsForSelectedProjects()
+                "Check materials", event -> checkMaterialsForSelectedProjects(), null
         ));
     }
 

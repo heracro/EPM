@@ -8,23 +8,24 @@ import hihi.content.common.contentDetails.ContentDetailsLayoutController;
 import hihi.content.enums.LocationType;
 import hihi.content.enums.ProjectCause;
 import hihi.content.enums.ProjectStatus;
+import hihi.content.project.boxes.LeftPickersBox;
+import hihi.content.project.boxes.RightPickersBox;
 import hihi.content.task.Task;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.converter.NumberStringConverter;
+import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @ToString(callSuper = true)
-@Component
 public class ProjectDetailsLayoutController extends ContentDetailsLayoutController<Project> {
 
     //Layout elements
@@ -33,64 +34,37 @@ public class ProjectDetailsLayoutController extends ContentDetailsLayoutControll
     @FXML
     private TextArea bodyField;
     @FXML
-    private Label plannedStartDateLabel;
-    @FXML
-    private DatePicker plannedStartDateField;
-    @FXML
-    private Label plannedEndDateLabel;
-    @FXML
-    private DatePicker plannedEndDateField;
-    @FXML
-    private Label realStartDateLabel;
-    @FXML
-    private DatePicker realStartDateField;
-    @FXML
-    private Label realEndDateLabel;
-    @FXML
-    private DatePicker realEndDateField;
-    @FXML
-    private Label materialStartDateLabel;
-    @FXML
-    private DatePicker materialsReadyDateField;
-    @FXML
-    private Label workingHoursCountLabel;
-    @FXML
-    private TextField workingHoursCountField;
-    @FXML
-    private Label workingHoursPlannedLabel;
-    @FXML
-    private TextField workingHoursPlannedField;
-    @FXML
     private TextField projectLocationField;
     @FXML
     private ComboBox<LocationType> locationTypeField;
     @FXML
-    private ComboBox<ProjectStatus> statusField;
+    private HBox pickersBox;
     @FXML
-    private ComboBox<ProjectCause> causeField;
+    private VBox leftPickersBox;
+    @FXML
+    private VBox rightPickersBox;
     @FXML
     private ListView<String> tagListField;
     @FXML
     private BorderPane tablePlaceholder;
-    @FXML
-    private Label bomTableLabel = new Label("Bill of materials");
-    @FXML
-    private TableView<Bom> bomTable = new TableView<>();
-    @FXML
-    private Label taskTableLabel = new Label("Tasks");
-    @FXML
-    private TableView<Task> taskTable = new TableView<>();
+    private final Label bomTableLabel = new Label("Bill of materials");
+    private final TableView<Bom> bomTable = new TableView<>();
+    private final Label taskTableLabel = new Label("Tasks");
+    private final TableView<Task> taskTable = new TableView<>();
+
     @FXML
     private VBox contentBox;
 
-    public ProjectDetailsLayoutController() {
-        super("Project");
+    public ProjectDetailsLayoutController(Project project) {
+        super("Project", project);
         log.info("\033[92m ProjectDetailsLayoutController() \033[m");
+
     }
 
     public void initialize() {
         log.info("\033[92m initialize() \033[0m");
         super.initialize();
+        setContent();
         tablePlaceholder.widthProperty().addListener((observable, oldValue, newValue) -> {
             log.info("\033[92m Table Placeholder {} width change: {} --> {}\nWidth = [min={}, pref={}, max={}, current={}]\033[m",
                     tablePlaceholder, oldValue, newValue, tablePlaceholder.getMinWidth(), tablePlaceholder.getPrefWidth(),
@@ -98,31 +72,17 @@ public class ProjectDetailsLayoutController extends ContentDetailsLayoutControll
             adjustLayout(oldValue.doubleValue(), newValue.doubleValue());
         });
         tablePlaceholder.setMinWidth(200);
-        log.info("\033[92m END OF initialize() \033[0m");
     }
 
-    @Override
-    public void setContent(Project project) {
-        log.info("\033[92m setContent({})\033[0m", project);
-        uidField.textProperty().bind(project.uidProperty().asString());
-        nameField.textProperty().bindBidirectional(project.nameProperty());
-        bodyField.textProperty().bindBidirectional(project.bodyProperty());
-        plannedStartDateField.valueProperty().bindBidirectional(project.plannedStartDateProperty());
-        plannedEndDateField.valueProperty().bindBidirectional(project.plannedEndDateProperty());
-        realStartDateField.valueProperty().bindBidirectional(project.realStartDateProperty());
-        realEndDateField.valueProperty().bindBidirectional(project.realEndDateProperty());
-        materialsReadyDateField.valueProperty().bindBidirectional(project.materialsReadyDateProperty());
-        workingHoursCountField.textProperty().bindBidirectional(
-                project.workingHoursCountProperty(), new NumberStringConverter());
-        workingHoursPlannedField.textProperty().bindBidirectional(
-                project.workingHoursPlannedProperty(), new NumberStringConverter());
-        projectLocationField.textProperty().bindBidirectional(project.projectLocationProperty());
+    public void setContent() {
+        log.info("\033[92m setContent({})\033[0m", content);
+        new ProjectDetailsBottomPanelConfiguration(this, content).setupBottomPanel(bottomPanel);
+        uidField.textProperty().bind(content.uidProperty().asString());
+        nameField.textProperty().bindBidirectional(content.nameProperty());
+        bodyField.textProperty().bindBidirectional(content.bodyProperty());
+        projectLocationField.textProperty().bindBidirectional(content.projectLocationProperty());
         locationTypeField.setItems(FXCollections.observableArrayList(LocationType.values()));
-        locationTypeField.valueProperty().bindBidirectional(project.locationTypeProperty());
-        statusField.setItems(FXCollections.observableArrayList(ProjectStatus.values()));
-        statusField.valueProperty().bindBidirectional(project.statusProperty());
-        causeField.setItems(FXCollections.observableArrayList(ProjectCause.values()));
-        causeField.valueProperty().bindBidirectional(project.causeProperty());
+        locationTypeField.valueProperty().bindBidirectional(content.locationTypeProperty());
     }
 
     private void adjustLayout(double oldWidth, double newWidth) {
@@ -161,6 +121,15 @@ public class ProjectDetailsLayoutController extends ContentDetailsLayoutControll
     }
 
     private void setWidePickersBox() {
+        log.info("\033[92m setWidePickersBox()\033[0m");
+        Region spacer = new Region();
+        spacer.getStyleClass().add("hspacer");
+        pickersBox.getChildren().clear();
+        pickersBox.getChildren().addAll(
+                new LeftPickersBox(content).setupBox(),
+                spacer,
+                new RightPickersBox(content).setupBox()
+        );
     }
 
     private void setSlimLayout() {
@@ -170,15 +139,28 @@ public class ProjectDetailsLayoutController extends ContentDetailsLayoutControll
     }
 
     private void setSlimTablesView() {
-        VBox tables = new VBox(10); // 10 to odstęp między tabelami
+        log.info("\033[92m setSlimTablesView()\033[0m");
+        VBox tables = new VBox();
         tables.getChildren().addAll(bomTableLabel, bomTable, taskTableLabel, taskTable);
         tables.setAlignment(Pos.CENTER);
         tablePlaceholder.setCenter(tables);
     }
 
     private void setSlimPickersBox() {
-
+        log.info("\033[92m setSlimPickersBox()\033[0m");
+        VBox slimPickersBox = new VBox();
+        pickersBox.getChildren().clear();
+        Region spacer = new Region();
+        spacer.getStyleClass().add("vspacer");
+        slimPickersBox.getChildren().addAll(
+                new LeftPickersBox(content).setupBox(),
+                spacer,
+                new RightPickersBox(content).setupBox()
+        );
+        pickersBox.getChildren().add(slimPickersBox);
     }
+
+
 
 }
 

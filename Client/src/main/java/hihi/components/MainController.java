@@ -12,11 +12,13 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
 @Component
@@ -62,10 +64,9 @@ public class MainController {
         log.info("\033[31m setContentDetailsView({}, {})\033[m", moduleName, content.uidProperty().getValue());
         FXMLLoader contentLoader = new FXMLLoader(
                 getClass().getResource(ModuleConfig.getInstance(moduleName).getDetailsLayoutPath()));
+        contentLoader.setControllerFactory(singleParameterConstructorFactory(content));
         try {
             Node contentNode = contentLoader.load();
-            Controller controller = contentLoader.getController();
-            controller.setContent(content);
             contentPane.setCenter(contentNode);
             VBox.setVgrow(contentPane, Priority.ALWAYS);
             log.info("\033[31m contentView's parent: {}", contentNode.getParent());
@@ -74,8 +75,17 @@ public class MainController {
         }
     }
 
-    public <Buttons> void setBottomPane(String moduleName) {
-        log.info("\033[31m setBottomPane({})\033[m", moduleName);
+    private <Content extends AbstractContent> Callback<Class<?>, Object>
+    singleParameterConstructorFactory(Content content) {
+        return controllerClass -> {
+            try {
+                return controllerClass.getConstructor(content.getClass()).newInstance(content);
+            } catch (InvocationTargetException | InstantiationException
+                     | IllegalAccessException | NoSuchMethodException e) {
+                log.error("Failed to load details view due to constructor error. Error: {}", e.getMessage());
+                return null;
+            }
+        };
     }
 
  }

@@ -6,7 +6,6 @@ import hihi.content.enums.ProjectCause;
 import hihi.content.enums.ProjectStatus;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

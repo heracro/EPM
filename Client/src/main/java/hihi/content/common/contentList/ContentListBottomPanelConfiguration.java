@@ -14,14 +14,21 @@ public abstract class ContentListBottomPanelConfiguration
 
     protected ContentListLayoutController<? extends AbstractContent> layoutController;
 
-    protected ContentListBottomPanelConfiguration() {
+    protected ContentListBottomPanelConfiguration(ContentListLayoutController<? extends AbstractContent> layoutController) {
+        this.layoutController = layoutController;
         addCommonButtonsConfiguration();
     }
 
     private void addCommonButtonsConfiguration() {
-        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("Refresh list", event -> refreshList()));
-        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("New...", event -> createNewEntry()));
-        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig("Delete selected", event -> deleteSelectedEntries()));
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig(
+                "Refresh list", event -> refreshList(), null
+        ));
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig(
+                "New...", event -> createNewEntry(), null
+        ));
+        bottomPanelButtonConfigs.add(new BottomPanelButtonConfig(
+                "Delete selected", event -> deleteSelectedEntries(), null
+        ));
     }
 
     protected void refreshList() {
