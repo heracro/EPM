@@ -4,8 +4,10 @@ import hihi.content.common.LayoutConfigurationUtils;
 import hihi.content.common.contentDetails.BoxElementConfig;
 import hihi.content.common.dataModel.BoxedLayoutFragment;
 import hihi.content.project.Project;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -28,13 +30,13 @@ public class RightPickersBox implements BoxedLayoutFragment {
         log.info("\033[32m RightPickersBox({}) \033[0m", project.uidProperty());
         this.project = project;
         this.order = List.of(
-                new BoxElementConfig(new HBox(), "Hours planned", project::workingHoursPlannedProperty),
-                new BoxElementConfig(new Region(), null, null),
-                new BoxElementConfig(new HBox(), "Hours worked", project::workingHoursCountProperty),
-                new BoxElementConfig(new Region(), null, null),
-                new BoxElementConfig(new HBox(), "Cause", project::causeProperty),
-                new BoxElementConfig(new Region(), null, null),
-                new BoxElementConfig(new HBox(), "Status", project::statusProperty)
+                new BoxElementConfig(new HBox(), new TextField(), "Hours planned", project::workingHoursPlannedProperty),
+                new BoxElementConfig(new Region(), null, null, null),
+                new BoxElementConfig(new HBox(), new TextField(), "Hours worked", project::workingHoursCountProperty),
+                new BoxElementConfig(new Region(), null, null, null),
+                new BoxElementConfig(new HBox(), new ComboBox<>(), "Cause", project::causeProperty),
+                new BoxElementConfig(new Region(), null, null, null),
+                new BoxElementConfig(new HBox(), new ComboBox<>(), "Status", project::statusProperty)
         );
     }
 

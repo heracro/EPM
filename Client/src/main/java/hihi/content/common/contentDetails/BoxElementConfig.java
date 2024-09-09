@@ -6,5 +6,5 @@ import javafx.scene.Node;
 import java.util.function.Supplier;
 
 public record BoxElementConfig (
-        Node node, String label, Supplier<Property<?>> propertySupplier
+        Node container, Node activeElement, String label, Supplier<Property<?>> propertySupplier
 ) {}
